@@ -18,6 +18,13 @@
   Please enable Web Midi at:
   chrome://settings/content
 </div>
+<div class='full-width row center bold'>
+  <select name="wave" id="wave-selector">
+    <option name="sin">sin</option>
+    <option name="saw">saw</option>
+    <option name="pulse">pulse</option>
+  </select>
+</div>
 <div id="p-wrapper">
   <ul id="piano">
     <% (2..5).each do |octave| %>

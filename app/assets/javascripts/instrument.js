@@ -11,6 +11,7 @@ var Instrument = function(opts) {
   self = this;
   self.keyboardOn = true;
   self.currentOctave = 3;
+  self.velocity = opts["velocity"] || 128;
 
   self.firebaseInterface = new FirebaseAdapter({
     onReceive: self.playFunction
@@ -24,23 +25,23 @@ var Instrument = function(opts) {
   // calls child's play method
   self.playNoteFromKeys = function(keyPressed) {
     var note, velocity;
-    if (self.playFunction && Constants.KEYTONOTE[keyPressed]) {
+    if (self.play && Constants.KEYTONOTE[keyPressed]) {
 
       // look up note and velocity
       note = noteLookUp(keyPressed);
 
-      self.playFunction(note, velocity);
+      self.play(note, self.velocity);
      }
    }
 
   self.stopNoteFromKeys = function(keyPressed) {
     var note, velocity;
-    if (self.stopFunction && Constants.KEYTONOTE[keyPressed]) {
+    if (self.stop && Constants.KEYTONOTE[keyPressed]) {
 
       // look up note and velocity
       note = noteLookUp(keyPressed);
 
-      self.stopFunction(note);
+      self.stop(note);
     }
   }
 

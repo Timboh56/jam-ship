@@ -1,5 +1,6 @@
 Synth = function(opts) {
   "use strict";
+
   var freqSlide, self, opts, notes;
   
   self = this,
@@ -7,41 +8,58 @@ Synth = function(opts) {
     self.notes = {},
     self.freqs = {};
 
+  self.wave = opts["wave"] || "sin";
   self.attack = null;
   self.release = null;
 
   self.generateSynthFromSettings = function (freq) {
-    return  T(
-        generateLead(freq),
-        T("sin", {freq: freq  * 1.01, mul: 0.05, phase: Math.PI * 0.25 })
-      );
+    return T(self.wave, {attack: 1, freq: freq  * 1.01, mul: 0.05, phase: Math.PI * 0.25 })
+  }
+
+  self.addOscillator = function (opts) {
+
   }
 
   self.handleMidi = function(note, velocity) {
     var freq;
     if (self.notes[note]) {
       if (velocity > 0)
-        self.playFunction(note, velocity);
+        self.play(note, velocity);
       else
-        self.stopFunction(note);
+        self.stop(note);
     } else {
       freq = Constants.FREQUENCIES[note];
       self.notes[freq] = self.generateSynthFromSettings(freq);
     }
   }
 
-  self.playFunction = function(freq, velocity) {
-    self.notes[freq].play();
-    if (self.opts["onPlay"]) self.opts["onPlay"].call(this, freq)
+  self.play = function(note, velocity) {
+    self.playNote(note, velocity);
+    if (self.opts["onPlay"]) self.opts["onPlay"].call(this, note, velocity)
   }
 
-  self.stopFunction = function(freq) {
-    self.notes[freq].pause();
-    if (self.opts["onStop"]) self.opts["onStop"].call(this, freq) 
+  self.playNote = function(note, velocity) {
+    self.notes[note].set({ velocity: velocity });
+    self.notes[note].play();
   }
 
-  self.opts["playFunction"] = self.playFunction;
-  self.opts["stopFunction"] = self.stopFunction;
+  self.stop = function(note) {
+    self.stopNote(note)
+    if (self.opts["onStop"]) self.opts["onStop"].call(this, note) 
+  }
+
+  self.stopNote = function(note) {
+    self.notes[note].set({ velocity: 0 });
+    self.notes[note].pause();
+  }
+
+  self.setWave = function(wave) {
+    self.wave = wave;
+    initializeNoteBank();
+  }
+
+  self.opts["play"] = self.play;
+  self.opts["stop"] = self.stop;
 
   if (!T) throw "Could not find Timbre JS. Did you include it?";
   freqSlide = 880;
@@ -52,21 +70,7 @@ Synth = function(opts) {
   }
 
   function generateLead(freq) {
-    return T("saw", {freq: freq});
-  }
-
-  function generateMoog() {
-    var lead = generateLead();
-    return T("MoogFF", {freq:2400, gain:6, mul:0.1}, lead);
-  }
-
-  function generateEnv() {
-    return T("perc", {r:100});
-  }
-
-  function generateArp() {
-    var env = generateEnv();
-    return T("OscGen", {wave:"sin(15)", env:env, mul:0.5});
+    return T("saw", {freq: freq, attack: 1});
   }
 
   Synth.prototype = new Instrument(self);
