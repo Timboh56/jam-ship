@@ -1,7 +1,7 @@
 Synth = function(opts) {
   "use strict";
 
-  var freqSlide, self, opts, notes;
+  var parent, freqSlide, self, opts, notes;
   
   self = this,
     self.opts = opts || {},
@@ -13,7 +13,7 @@ Synth = function(opts) {
   self.release = null;
 
   self.generateSynthFromSettings = function (freq) {
-    return T(self.wave, {attack: 1, freq: freq  * 1.01, mul: 0.05, phase: Math.PI * 0.25 })
+    return T(self.wave, {freq: freq  * 1.01, mul: 0.05, phase: Math.PI * 0.25 });
   }
 
   self.addOscillator = function (opts) {
@@ -36,6 +36,7 @@ Synth = function(opts) {
   self.play = function(note, velocity) {
     self.playNote(note, velocity);
     if (self.opts["onPlay"]) self.opts["onPlay"].call(this, note, velocity)
+    self.parent.broadcast.call(this, note, velocity);
   }
 
   self.playNote = function(note, velocity) {
@@ -46,6 +47,7 @@ Synth = function(opts) {
   self.stop = function(note) {
     self.stopNote(note)
     if (self.opts["onStop"]) self.opts["onStop"].call(this, note) 
+    self.parent.broadcast.call(this, note, 0);
   }
 
   self.stopNote = function(note) {
@@ -73,7 +75,8 @@ Synth = function(opts) {
     return T("saw", {freq: freq, attack: 1});
   }
 
-  Synth.prototype = new Instrument(self);
-
+  parent = new Instrument(self);
+  Synth.prototype = parent;
+  self.parent = parent;
   initializeNoteBank();
 }

@@ -10,15 +10,29 @@ var Instrument = function(opts) {
 
   self = this;
   self.keyboardOn = true;
+  self.mode = "listening";
   self.currentOctave = 3;
   self.velocity = opts["velocity"] || 128;
 
   self.firebaseInterface = new FirebaseAdapter({
-    onReceive: self.playFunction
+    onReceive: function(snapshot) {
+      if (self.mode == "listening") {
+        var val = snapshot.val();
+        if(val.velocity == 0)
+          self.stopNote(val.note);
+        else
+          self.playNote(val.note, val.velocity);
+      }
+    }
   });
 
-  self.simplePlay = function() {};
-  self.simplePause = function() {};
+  self.broadcast = function(note, velocity) {
+    self.firebaseInterface.broadcast({
+      note: note,
+      velocity: velocity
+    });
+  };
+
   self.handleMidi = function() {};
 
   // playNote takes in a note and velocity and

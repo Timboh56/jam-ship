@@ -10,22 +10,19 @@ var FirebaseAdapter = function (opts) {
   else
     throw "Did you forget to include Firebase?";
 
-  this.broadcast = function(note) {
-    self.myDataRef.push({
-      channel: {
-        note: note
-      }
-    });
+  this.broadcast = function(opts) {
+    self.myDataRef.set(opts);
   }
 
   this.onReceive = function(snapshot) {
     var note, velocity;
-
     note = snapshot.note;
     velocity = snapshot.velocity;
 
-    self.opts["onReceive"].call(note, velocity);
+    if (self.opts["onReceive"])
+      self.opts["onReceive"](snapshot);
   }
 
-  self.myDataRef.child(self.channel).on('child_added', this.onReceive);
+  self.myDataRef.on('value', this.onReceive);
+  //self.myDataRef.child(self.channel).on('child_added', this.onReceive);
 }

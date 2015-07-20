@@ -2,12 +2,10 @@ window.myDataRef = new Firebase('https://jam-ship.firebaseio.com/');
 
 var synth = new Synth({
   onPlay: function(note, velocity) {
-    window.myDataRef.push({ note: note, velocity: velocity });
     note = note.replace('#', 'sharp');
     $("#" + note).addClass('active');
   },
   onStop: function(note) {
-    window.myDataRef.push({ note: note, velocity: 0 });
     note = note.replace('#', 'sharp');
     $("#" + note).removeClass('active');
   }
@@ -25,14 +23,6 @@ $(document).on('keypress', '#messageInput', function (e) {
     myDataRef.push({name: name, text: text});
     $('#messageInput').val('');
   }
-});
-
-myDataRef.on('child_added', function(snapshot) {
-  var val = snapshot.val();
-  if(val.velocity == 0)
-    synth.stopNote(val.note);
-  else
-    synth.playNote(val.note, val.velocity);
 });
 
 function displayChatMessage(name, text) {
