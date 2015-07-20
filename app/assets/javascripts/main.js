@@ -2,7 +2,12 @@ var myDataRef = new Firebase('https://pftxxze6h6m.firebaseio-demo.com/');
 
 var synth = new Synth({
   onPlay: function(note) {
-    window.document.body.style.backgroundColor = Constants.COLORS[note];
+    note = note.replace('#', 'sharp');
+    $("#" + note).addClass('active');
+  },
+  onStop: function(note) {
+    note = note.replace('#', 'sharp');
+    $("#" + note).removeClass('active');
   }
 });
 

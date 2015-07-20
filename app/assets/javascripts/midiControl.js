@@ -1,5 +1,7 @@
-var MidiControl = function(playFunction) {
+var MidiControl = function(instrument) {
   var self = this;
+
+  self.instrument = instrument || new Instrument();
 
   if (navigator.requestMIDIAccess) {
       navigator.requestMIDIAccess({
@@ -8,10 +10,10 @@ var MidiControl = function(playFunction) {
   }
 
   function onMidiSuccess(midiAccess) {
-    var midi, inputs, i;
+    var midi, inputs, input;
     midi = midiAccess;
     inputs = midi.inputs.values();
-    for (i = inputs.next(); i && !i.done; i.next()) {
+    for (input = inputs.next(); input && !input.done; input = inputs.next()) {
       input.value.onmidimessage = onMidiMessage;
     }
   }
@@ -28,18 +30,14 @@ var MidiControl = function(playFunction) {
         note = data[1],
         velocity = data[2];
 
-    switch (type) {
-      case 144:
-        self.playNote(note, velocity);
-        break;
-      case 128:
-        self.PauseNote(note, velocity);
-        break;
-    }
-    console.log("Midi data",data);
+    note = noteFromNoteNumber(note);
+    self.instrument.handleMidi(note, velocity);
   }
 
-  function frequencyFromNoteNumber(note) {
-    return 440 * Math.pow(2, (note - 69) / 12);
+  function noteFromNoteNumber(note) {
+    var octave, noteIndex;
+    octave = (note / 12) - 1;
+    noteIndex = (note % 12);
+    return Constants.NOTES[noteIndex] + parseInt(octave);
   }
 };

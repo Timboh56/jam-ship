@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  references: 
+  attack: 1
+  release: 1
+  wave: 1
+
+two:
+  references: 
+  attack: 1
+  release: 1
+  wave: 1

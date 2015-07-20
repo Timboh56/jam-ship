@@ -62,9 +62,10 @@ a:hover {
 /* Tuts */
 ul#piano {
   display:block;
-  width:100%;
   height:240px;
   border-top:2px solid #222;
+  width: 840px;
+  margin: 0 auto;
 }
 
 ul#piano li {
@@ -72,7 +73,7 @@ ul#piano li {
   float:left;
   display:inline;
   background:#aaa;
-  width:40px;
+  width: 30px;
   position:relative;
 }
 
@@ -94,16 +95,17 @@ ul#piano li a,ul#piano li div.anchor {
   border-radius:0 0 3px 3px;
 }
 
-ul#piano li a:active,ul#piano li div.anchor:active {
+ul#piano li a.active,ul#piano li div.anchor.active {
   -webkit-box-shadow:0 2px 2px rgba(0,0,0,0.4);
   -moz-box-shadow:0 2px 2px rgba(0,0,0,0.4);
   box-shadow:0 2px 2px rgba(0,0,0,0.4);
   position:relative;
   top:2px;
   height:216px;
+  background-color: black;
 }
 
-ul#piano li a:active:before,ul#piano li div.anchor:active:before {
+ul#piano li a.active:before,ul#piano li div.anchor.active:before {
   content:"";
   width:0px;
   height:0px;
@@ -115,7 +117,7 @@ ul#piano li a:active:before,ul#piano li div.anchor:active:before {
   top:0px;
 }
 
-ul#piano li a:active:after,ul#piano li div.anchor:active:after {
+ul#piano li a.active:after,ul#piano li div.anchor.active:after {
   content:"";
   width:0px;
   height:0px;
@@ -132,7 +134,7 @@ ul#piano li span {
   position:absolute;
   top:0px;
   left:-12px;
-  width:20px;
+  width: 15px;
   height:120px;
   background:#333;
   background:-webkit-linear-gradient(-20deg,#333,#000,#333);
@@ -152,7 +154,7 @@ ul#piano li span {
   border-radius:0 0 2px 2px;
 }
 
-ul#piano li span:active {
+ul#piano li span.active {
   border-bottom-width:2px;
   height:123px;
   -webkit-box-shadow:inset 0px -1px 1px rgba(255,255,255,0.4),0 1px 0px rgba(0,0,0,0.8),0 2px 2px rgba(0,0,0,0.4),0 -1px 0px #000;
@@ -345,7 +347,7 @@ ul#piano li li {
   background:transparent;
 }
 
-ul#piano li li a,ul#piano li li a:active {
+ul#piano li li a,ul#piano li li a.active {
   height:auto;
   display:block;
   padding:10px 15px;
@@ -366,7 +368,7 @@ ul#piano li li a,ul#piano li li a:active {
   margin-top:0px;
 }
 
-ul#piano li li a:active:before,ul#piano li li a:active:after {
+ul#piano li li a.active:before,ul#piano li li a.active:after {
   border:none !important;
 }
 

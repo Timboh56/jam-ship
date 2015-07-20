@@ -13,72 +13,27 @@
 <body>
 <div id="page-wrapper" class="clearfix">
     <canvas id="synth-pad"></canvas>
-
+</div>
+<div class='full-width row center bold'>
+  Please enable Web Midi at:
+  chrome://settings/content
+</div>
+<div id="p-wrapper">
+  <ul id="piano">
+    <% (2..5).each do |octave| %>
+      <div class="octave pull-right">
+        <li><div id="C<%= octave %>" class="anchor"></div></li>
+        <li><div id="D<%= octave %>" class="anchor"></div><span id="Csharp<%= octave %>"></span></li>
+        <li><div id="E<%= octave %>" class="anchor"></div><span id="Dsharp<%= octave %>"></span></li>
+        <li><div id="F<%= octave %>" class="anchor"></div></li>
+        <li><div id="G<%= octave %>" class="anchor"></div><span id="Fsharp<%= octave %>"></span></li>
+        <li><div id="A<%= octave %>" class="anchor"></div><span id="Gsharp<%= octave %>"></span></li>
+        <li><div id="B<%= %>" class="anchor"></div><span id="Asharp<%= octave %>"></span></li>
+      </div>
+    <% end %>
 </div>
 <textarea class="fixed full-width" id="messageInput">
 </textarea>
-<div id="p-wrapper">
-  <ul id="piano">
-    <li><div class="anchor"></div><span></span></li>
-    <li><div class="anchor"></div><span></span></li>
-    <li><div class="anchor"></div><span></span></li>
-    <li><div class="anchor"></div></li>
-    <li><div class="anchor"></div><span></span></li>
-    <li><div class="anchor"></div><span></span></li>
-    <li><div class="anchor"></div></li>
-    <li><a href="#"></a><span></span><b>Home</b></li>
-    <li><a href="#"></a><span></span><b>About</b></li>
-    <li><a href="#"></a><span></span><b>Archives</b>
-    </li>
-    
-    <li><a href="#"></a><b>Search</b>
-      <div id="search">
-        <form>
-          <input type="text" placeholder="Search..." />
-        </form>
-      </div>
-    </li>
-    
-    <li><a href="#"></a><span></span><b>Contact Me</b>
-      <div id="contact">
-        <form>
-          <input type="text" class="required" placeholder="Name" />
-          <input type="text" class="required" placeholder="Email" />
-          <textarea class="required" placeholder="Your messages..."></textarea>
-          <input type="submit" value="Send" />
-          <div class="clear"></div>
-        </form>
-      </div>
-    </li>
-
-    <li><div class="anchor"></div><span></span></li>
-    <li><div class="anchor"></div></li>
-    <li><div class="anchor"></div><span></span></li>
-    <li><div class="anchor"></div><span></span></li>
-    <li><div class="anchor"></div><span></span></li>
-    <li><div class="anchor"></div></li>
-    <li><div class="anchor"></div><span></span></li>
-    <li><div class="anchor"></div><span></span></li>
-    <li><div class="anchor"></div></li>
-    <li><div class="anchor"></div><span></span></li>
-    <li><div class="anchor"></div><span></span></li>
-    <li><div class="anchor"></div><span></span></li>
-    <li><div class="anchor"></div></li>
-    <li><div class="anchor"></div><span></span></li>
-    <li><div class="anchor"></div><span></span></li>
-    <li><div class="anchor"></div></li>
-    <li><div class="anchor"></div><span></span></li>
-    <li><div class="anchor"></div><span></span></li>
-    <li><div class="anchor"></div><span></span></li>
-    <li><div class="anchor"></div></li>
-  </ul>
-</div>
-
-<div class="credit">
-    <strong>Pure CSS3 Piano by Taufik Nurrohman</strong><br />
-    No Images, No JavaScripts! Usable for navigation too <strong style="color:#CE877B;">:)</strong><br />
-    <div class="credit_ribbon"></div>
-</div>
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
     (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
