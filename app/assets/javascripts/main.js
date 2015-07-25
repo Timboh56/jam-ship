@@ -8,12 +8,8 @@ var synth = new Synth({
   onStop: function(note) {
     note = note.replace('#', 'sharp');
     $("#" + note).removeClass('active');
-  }
-});
-
-$(document).on('change','#wave-selector', function (e) {
-  var wave = $('#wave-selector').val();
-  synth.setWave(wave);
+  },
+  inputFieldsClass: 'synth-field'
 });
 
 $(document).on('keypress', '#messageInput', function (e) {
@@ -25,7 +21,15 @@ $(document).on('keypress', '#messageInput', function (e) {
   }
 });
 
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 function displayChatMessage(name, text) {
   $('<div/>').text(text).prepend($('<em/>').text(name+': ')).appendTo($('#messagesDiv'));
   $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
 };
+
+function getChar(event) {
+  return String.fromCharCode(event.keyCode || event.charCode).toUpperCase();
+}

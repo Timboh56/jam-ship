@@ -17,6 +17,7 @@
 //= require modernizr-2.8.3.min
 //= require constants
 //= require firebaseAdapter
+//= require instrumentControl
 //= require midiControl
 //= require instrument
 //= require synth

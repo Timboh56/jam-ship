@@ -1,4 +1,10 @@
 var Constants = {
+  DEFAULT_WAVE: "sin",
+  DEFAULT_MUL: 0.25,
+  DEFAULT_ATTACK: 500,
+  DEFAULT_RELEASE: 500,
+  DEFAULT_DECAY: 500,
+  DEFAULT_SUSTAIN: 0.75,
   FREQUENCIES: {
     "C1": 32.7032,
     "C#1": 34.6478,
@@ -99,5 +105,6 @@ var Constants = {
     "D": "#d35400",
     "D#": "#f39c12"
   },
+  WAVES: ["sin", "tri", "saw"],
   NOTES: ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
 };

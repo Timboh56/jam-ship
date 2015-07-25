@@ -19,12 +19,57 @@
   chrome://settings/content
 </div>
 <div class='full-width row center bold'>
-  <select name="wave" id="wave-selector">
+  <select name="mode" id="mode-selector" data-synth-field="mode" class="synth-field" >
+    <option name="organ">organ</option>
+    <option name="envelope">envelope</option>
+  </select>
+  <select name="wave" id="wave-selector" data-synth-field="wave" class="synth-field" >
     <option name="sin">sin</option>
     <option name="saw">saw</option>
-    <option name="pulse">pulse</option>
+    <option name="tri">tri</option>
   </select>
+  <div class='row'>
+    <div class='col-xs-1'>
+      <label>
+        Attack
+      </label>
+    </div>
+    <div class='col-xs-3'>
+      <input type="number" id="synth-attack-input" data-synth-field="attack" name="synthAttack" class="synth-field synth-attack-input" placeholder="Attack 0-1000ms" value="100" ></input>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-xs-1'>
+      <label>
+        Decay Volume
+      </label>
+    </div>
+    <div class='col-xs-3'>
+      <input type="number" id="synth-decay-input" data-synth-field="decay" name="synthDecay" class="synth-field synth-Decay-input" placeholder="Decay 0-1000ms" value="100" ></input>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-xs-1'>
+      <label>
+        Sustain
+      </label>
+    </div>
+    <div class='col-xs-3'>
+      <input type="number" id="synth-sustain-input" data-synth-field="sustain" name="synthSustain" class="synth-field synth-sustain-input" placeholder="sustain 0-1" value="0.1" ></input>
+    </div>
+  </div>
+  <div class='row'>
+    <div class="col-xs-1">
+      <label>Volume</label>
+    </div>
+    <div class="col-xs-3">
+      <input type="number" data-synth-field='volume' id="synth-volume-input" name="synthVolume" class="synth-field synth-volume-input" placeholder="Volume 0 - 12" value="0.25" ></input>
+    </div>
+  </div>
 </div>
+<p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p>
+
 <div id="p-wrapper">
   <ul id="piano">
     <% (2..5).each do |octave| %>

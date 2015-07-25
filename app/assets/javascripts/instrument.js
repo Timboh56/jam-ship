@@ -9,7 +9,6 @@ var Instrument = function(opts) {
   var self, prop, keys, noteToFreq;
 
   self = this;
-  self.keyboardOn = true;
   self.mode = "listening";
   self.currentOctave = 3;
   self.velocity = opts["velocity"] || 128;
@@ -27,10 +26,12 @@ var Instrument = function(opts) {
   });
 
   self.broadcast = function(note, velocity) {
-    self.firebaseInterface.broadcast({
-      note: note,
-      velocity: velocity
-    });
+    if (self.mode == "playing") {
+      self.firebaseInterface.broadcast({
+        note: note,
+        velocity: velocity
+      });
+    }
   };
 
   self.handleMidi = function() {};
@@ -68,38 +69,9 @@ var Instrument = function(opts) {
     return Constants.KEYTONOTE[key] + octave;
   }
 
-  function getChar(event) {
-    return String.fromCharCode(event.keyCode || event.charCode).toUpperCase();
-  }
-
-  function attachKeyHandlers() {
-    window.document.onkeydown = function(event) {
-      if (self.keyboardOn) {
-        var keyPressed = getChar(event);
-        self.playNoteFromKeys(keyPressed);
-      }
-    }
-
-    window.document.onkeyup = function(event) {
-      if (self.keyboardOn) {
-        var keyPressed = getChar(event);
-        self.stopNoteFromKeys(keyPressed);
-      }
-    }
-
-    window.document.onkeypress = function(event) {
-      var keyPressed = getChar(event);
-
-      if (self.currentOctave > 1 && keyPressed == "Z")
-        self.currentOctave -= 1;
-      if (self.currentOctave < 4 && keyPressed == "X")
-        self.currentOctave += 1;
-    }
-  }
-
   for (prop in opts) self[prop] = opts[prop];
 
-  self.midiControl = new MidiControl(self);
+  self.MidiControl = new MidiControl(self);
   
-  attachKeyHandlers();
+  self.InstrumentControl = new InstrumentControl(self);
 };
