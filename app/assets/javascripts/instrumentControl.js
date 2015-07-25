@@ -11,11 +11,11 @@ var InstrumentControl = function (instrument) {
     window.document.onkeydown = function(event) {
       var keyPressed = getChar(event);
 
-      //if (self.keyboardOn && !self.keyDown) {
+      if (self.keyboardOn) {
         self.prevKey = keyPressed;
         self.instrument.playNoteFromKeys(keyPressed);
         self.keyDown = true;
-      //}
+      }
     }
     $(document).on('change', '.' + self.inputFieldsClass , function (e) {
       var synthField = capitalizeFirstLetter($(this).data('synth-field'));
@@ -27,11 +27,11 @@ var InstrumentControl = function (instrument) {
     });
 
     window.document.onkeyup = function(event) {
-      //if (self.keyboardOn) {
+      if (self.keyboardOn) {
         var keyPressed = getChar(event);
         self.instrument.stopNoteFromKeys(keyPressed);
         self.keyDown = false;
-      //}
+      }
     }
 
     window.document.onkeypress = function(event) {

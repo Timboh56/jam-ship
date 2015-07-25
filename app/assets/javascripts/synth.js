@@ -42,8 +42,18 @@ Synth = function(opts) {
     }).apply(this, [self, note, velocity, noteInterval]));
   }
 
-  self.playNote = function(note, velocity) {
+  self.playNote = function(note, velocity ,noteInterval) {
     var freq = Constants.FREQUENCIES[note];
+    if (noteInterval) {
+      setTimeout(self.playIndividualNote.apply(this, [note]), noteInterval);
+    }
+    if (self.synthMode == 'organ')
+      self.notes[note].play();
+    else
+      self.synth.noteOnWithFreq(freq, velocity);
+  }
+
+  self.playIndividualNote = function(note) {
     if (self.synthMode == 'organ')
       self.notes[note].play();
     else
