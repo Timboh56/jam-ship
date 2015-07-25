@@ -11,7 +11,20 @@ Synth = function(opts) {
   self.inputFieldsClass = opts['inputFieldsClass'];
   self.notes = {};
   self.wave = opts['wave'] || Constants.DEFAULT_WAVE;
-  
+
+  self.startNoteInterval = function(note) {
+    var df = $.Deferred();
+    self.notes[note].startTime = new Date().getTime();
+    df.resolve();
+    return df.promise()
+  }
+
+  self.elapsedSinceLastNote = function(note) {
+    if (self.notes[note].startTime)
+      return new Date().getTime() - self.notes[note].startTime;
+    else
+      return 0;
+  }
   self.handleMidi = function(note, velocity) {
     if (velocity > 0)
       self.play(note, velocity);
@@ -20,9 +33,14 @@ Synth = function(opts) {
   }
 
   self.play = function(note, velocity) {
+    var noteInterval;
     self.playNote(note, velocity);
     if (self.opts["onPlay"]) self.opts["onPlay"].call(this, note, velocity)
-    self.parent.broadcast.call(this, note, velocity);
+    noteInterval = self.notes[note].noteInterval = self.elapsedSinceLastNote();
+
+    self.startNoteInterval(note).then((function(self, note, velocity, noteInterval) {
+      self.parent.broadcast.apply(this, [note, velocity, noteInterval]);
+    }).apply(this, [self, note, velocity, noteInterval]));
   }
 
   self.playNote = function(note, velocity) {
@@ -34,8 +52,10 @@ Synth = function(opts) {
   }
 
   self.stop = function(note) {
+    var noteInterval;
     self.stopNote(note);
-    if (self.opts["onStop"]) self.opts["onStop"].call(this, note) 
+    if (self.opts["onStop"]) self.opts["onStop"].call(this, note);
+    noteInterval = self.notes[note].noteInterval = self.elapsedSinceLastNote();
     self.parent.broadcast.call(this, note, 0);
   }
 
@@ -117,8 +137,11 @@ Synth = function(opts) {
   }
 
   function initializeNoteBank() {
-    for (var i in Constants.FREQUENCIES)
+    for (var i in Constants.FREQUENCIES) {
       self.notes[i] = T(self.wave, {freq: Constants.FREQUENCIES[i] * 1.01, mul: 0.05, phase: Math.PI * 0.25 });
+      self.notes[i].noteInterval = 0;
+      self.notes[i].startTime = null;
+    }
   }
   initialize();
   initializeNoteBank();

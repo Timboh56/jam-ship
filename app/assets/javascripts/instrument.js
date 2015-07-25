@@ -11,6 +11,10 @@ var Instrument = function(opts) {
   self = this;
   self.mode = "playing";
   self.currentOctave = 3;
+
+  // milliseconds since last note
+  self.noteInterval = 0;
+
   self.velocity = opts["velocity"] || 128;
 
   self.firebaseInterface = new FirebaseAdapter({
@@ -20,16 +24,17 @@ var Instrument = function(opts) {
         if(val.velocity == 0)
           self.stopNote(val.note);
         else
-          self.playNote(val.note, val.velocity);
+          self.playNote(val.note, val.velocity, val.noteInterval);
       }
     }
   });
 
-  self.broadcast = function(note, velocity) {
+  self.broadcast = function(note, velocity, noteInterval) {
     if (self.mode == "playing") {
       self.firebaseInterface.broadcast({
         note: note,
-        velocity: velocity
+        velocity: velocity,
+        noteInterval: noteInterval || 0
       });
     }
   };
