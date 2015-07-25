@@ -36,8 +36,7 @@ Synth = function(opts) {
     var noteInterval;
     self.playNote(note, velocity);
     if (self.opts["onPlay"]) self.opts["onPlay"].call(this, note, velocity)
-    noteInterval = self.notes[note].noteInterval = self.elapsedSinceLastNote();
-
+    noteInterval = self.notes[note].noteInterval = self.elapsedSinceLastNote(note);
     self.startNoteInterval(note).then((function(self, note, velocity, noteInterval) {
       self.parent.broadcast.apply(this, [note, velocity, noteInterval]);
     }).apply(this, [self, note, velocity, noteInterval]));
@@ -55,7 +54,7 @@ Synth = function(opts) {
     var noteInterval;
     self.stopNote(note);
     if (self.opts["onStop"]) self.opts["onStop"].call(this, note);
-    noteInterval = self.notes[note].noteInterval = self.elapsedSinceLastNote();
+    noteInterval = self.notes[note].noteInterval = self.elapsedSinceLastNote(note);
     self.parent.broadcast.call(this, note, 0);
   }
 
