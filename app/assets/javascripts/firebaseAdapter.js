@@ -11,7 +11,6 @@ var FirebaseAdapter = function (opts) {
     throw "Did you forget to include Firebase?";
 
   this.broadcast = function(opts) {
-    console.log('brodcast');
     self.myDataRef.set(opts);
   }
 
