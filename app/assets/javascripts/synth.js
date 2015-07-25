@@ -107,8 +107,9 @@ Synth = function(opts) {
   }
 
   function initialize() {
-    for (var field of ['wave', 'attack', 'release', 'decay', 'mul'])
-      self[field] = Constants['DEFAULT_' + field.toUpperCase()];
+    var opts = ['wave', 'attack', 'release', 'decay', 'mul'];
+    for (var field in opts)
+      self[opts[field]] = Constants['DEFAULT_' + field.toUpperCase()];
     generateSynthFromSettings();
     self.parent = new Instrument(self);
   }
