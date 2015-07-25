@@ -9,7 +9,7 @@ var Instrument = function(opts) {
   var self, prop, keys, noteToFreq;
 
   self = this;
-  self.mode = "listening";
+  self.mode = "playing";
   self.currentOctave = 3;
   self.velocity = opts["velocity"] || 128;
 

@@ -7,10 +7,11 @@ Synth = function(opts) {
   self.opts = opts || {},
   self.notes = {},
   self.freqs = {};
-  self.mode = "organ" // or "envelope"
+  self.synthMode = "organ" // or "envelope"
   self.inputFieldsClass = opts['inputFieldsClass'];
   self.notes = {};
-
+  self.wave = opts['wave'] || Constants.DEFAULT_WAVE;
+  
   self.handleMidi = function(note, velocity) {
     if (velocity > 0)
       self.play(note, velocity);
@@ -26,7 +27,7 @@ Synth = function(opts) {
 
   self.playNote = function(note, velocity) {
     var freq = Constants.FREQUENCIES[note];
-    if (self.mode == 'organ')
+    if (self.synthMode == 'organ')
       self.notes[note].play();
     else
       self.synth.noteOnWithFreq(freq, velocity);
@@ -39,7 +40,7 @@ Synth = function(opts) {
   }
 
   self.stopNote = function(note) {
-    if (self.mode == 'organ')
+    if (self.synthMode == 'organ')
       self.notes[note].pause();
     else
       self.synth.noteOff();
@@ -85,7 +86,7 @@ Synth = function(opts) {
     var env, osc;
     env = generateAdsr(self.attack, self.decay, self.sustain, self.release);
 
-    if (self.mode == 'organ')
+    if (self.synthMode == 'organ')
       initializeNoteBank();
     else
       self.synth = T('OscGen', { osc: T(self.wave), env: env, mul: self.mul }).play();
@@ -109,16 +110,16 @@ Synth = function(opts) {
   function initialize() {
     var opts = ['wave', 'attack', 'release', 'decay', 'mul'];
     for (var field in opts)
-      self[opts[field]] = Constants['DEFAULT_' + field.toUpperCase()];
+      self[opts[field]] = Constants['DEFAULT_' + opts[field].toUpperCase()];
+    
     generateSynthFromSettings();
     self.parent = new Instrument(self);
   }
 
   function initializeNoteBank() {
     for (var i in Constants.FREQUENCIES)
-      self.notes[i] = generateOsc(Constants.FREQUENCIES[i]);
+      self.notes[i] = T(self.wave, {freq: Constants.FREQUENCIES[i] * 1.01, mul: 0.05, phase: Math.PI * 0.25 });
   }
-
   initialize();
   initializeNoteBank();
 }
