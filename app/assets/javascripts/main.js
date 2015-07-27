@@ -4,7 +4,6 @@ $(document).ready(function() {
   var synth = new App.Synth({
     onPlay: function(note, velocity) {
       note = note.replace('#', 'sharp');
-      console.log(note);
       $("#" + note).addClass('active');
     },
     onStop: function(note) {
@@ -39,6 +38,9 @@ $(document).ready(function() {
       fontWeight: 'normal',
       fontFamily: 'Roboto',
       fontSize: '12px',
+      release: function(e, v) {
+        synth.InstrumentControl.onChangeInput($('#' + id));
+      }
     });
   });
 });

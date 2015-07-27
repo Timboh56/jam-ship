@@ -46,17 +46,18 @@
         }
       }).bind(this),
 
-      onChangeInput: (function(event) {
-        var target = $(event.currentTarget),
-          val = target.val(),
+      onChangeInput: (function(el) {
+        var target = el,
+          val = (parseFloat(target.val()) == NaN ? target.val() : parseFloat(target.val())),
           dataType = target.data('type'),
           max = parseFloat(target.data('max')),
+          id = el.attr('id'),
           synthField = capitalizeFirstLetter(target.data('synth-field'));
 
         if (dataType == 'seconds')
           val = parseFloat(val) * 1000;
-        if (synthField == 'Volume' && (val < 0 || val > 0.99)) 
-          $(event.currentTarget).val(App.Constants.DEFAULT_MUL);
+        if (synthField == 'Volume' && (parseFloat(val) < 0 || parseFloat(val) > 0.99)) 
+          $('#' + id).val(App.Constants.DEFAULT_MUL);
 
         self['set' + synthField](val);
       }).bind(this)
@@ -106,13 +107,14 @@
       release = opts['release'] || self.release;
       wave = opts['wave'] || self.wave;
 
-      env = self.generateAdsfr(attack, decay, sustain, fade, release);
+      // until i can fix the sustain issue, i'll use default
+      env = self.generateAdsfr(attack, decay, App.Constants.DEFAULT_SUSTAIN, fade, release);
       
       self.initializeNoteBank();
 
       osc = T(wave);
       //osc = self.attachDelayAndDist(osc);
-      self.synth = T('OscGen', { osc: osc, env: env, poly: true, mul: self.mul }).play();
+      self.synth = T('OscGen', { lv: 0.25, osc: osc, env: env, poly: true, mul: self.mul }).play();
     }
 
     self.initialize = function() {

@@ -6,8 +6,8 @@
       DEFAULT_RELEASE: 500,
       DEFAULT_DECAY: 50,
       DEFAULT_FADE: 50, 
-      DEFAULT_SUSTAIN: 10,
-      DEFAULT_VELOCITY: 100,
+      DEFAULT_SUSTAIN: 1,
+      DEFAULT_VELOCITY: 50,
       FREQUENCIES: {
         "C1": 32.7032,
         "C#1": 34.6478,
