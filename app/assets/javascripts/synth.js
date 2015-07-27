@@ -10,9 +10,8 @@
         keyPressed = getChar(event);
         if (self.InstrumentControl.keyboardOn && self.mode == "playing") {
           self.InstrumentControl.prevKey = keyPressed;
-
         if (self.play && App.Constants.KEYTONOTE[keyPressed]) {
-          note = self.noteLookUp(keyPressed);
+          note = self.noteLookUp.apply(self, [keyPressed]);
           self.play(note, self.velocity);
          }
         }
@@ -23,7 +22,7 @@
         if (self.InstrumentControl.keyboardOn && self.mode == "playing") {
           keyPressed = getChar(event);
           if (self.stop && App.Constants.KEYTONOTE[keyPressed]) {
-            note = self.noteLookUp(keyPressed);
+            note = self.noteLookUp.apply(self, [keyPressed]);
             self.stop(note);
           }
         }
@@ -31,16 +30,15 @@
 
       onKeyPress: (function(event) {
         var keyPressed = getChar(event);
-
         if (self.currentOctave > 1 && keyPressed == "Z")
-          self.currentOctave -= 1;
-        if (self.currentOctave < 4 && keyPressed == "X")
-          self.currentOctave += 1;
+          self.decrementCurrentOctave()
+        if (self.currentOctave < 5 && keyPressed == "X")
+          self.incrementCurrentOctave()
         if (keyPressed == 'R')
           self.toggleRecording();
       }).bind(this),
 
-      onChangeInput: (function(event) {
+      onChangeInput: function(event) {
         var synthField,  val;
         synthField = capitalizeFirstLetter($(event.currentTarget).data('synth-field'));
         val = $(event.currentTarget).val();
@@ -49,7 +47,7 @@
 
         self['set' + synthField]($(event.currentTarget).val());
 
-      }).bind(this)
+      }
     });
 
     self.opts = opts || {},
@@ -63,6 +61,16 @@
 
     if (!T) throw "Could not find Timbre JS. Did you include it?";
     freqSlide = 880;
+
+    self.incrementCurrentOctave = function() {
+      self.currentOctave = self.currentOctave + 1;
+      self.generateSynthFromSettings();
+    }
+
+    self.decrementCurrentOctave = function() {
+      self.currentOctave = self.currentOctave - 1;
+      self.generateSynthFromSettings();
+    }
 
     self.generateOsc = function(freq) {
       return T(self.wave, {freq: freq  * 1.01, mul: 0.05, phase: Math.PI * 0.25 });
@@ -90,10 +98,8 @@
 
       env = self.generateAdsr(attack, decay, sustain, release);
       
-      if (self.synthMode == 'organ')
-        self.initializeNoteBank();
-      else
-        self.synth = T('OscGen', { osc: T(wave), env: env, poly: true, mul: self.mul }).play();
+      self.initializeNoteBank();
+      self.synth = T('OscGen', { osc: T(wave), env: env, poly: true, mul: self.mul }).play();
     }
 
     self.initialize = function() {
@@ -201,11 +207,9 @@
       self.InstrumentControl.attachKeyHandlers(mode);
     }
 
-    self.initializeNoteBank();
     self.initialize();
     return self;
   }
   self = App.Synth.prototype;
-
   return App;
 })(App);

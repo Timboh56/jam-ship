@@ -62,7 +62,7 @@
     }
 
     self.noteLookUp = function(key) {
-      var octave = self.currentOctave || 3;
+      var octave = this.currentOctave || 3;
 
       if (['K', 'O', 'L', 'P'].indexOf(key) != -1)
         octave += 1;
