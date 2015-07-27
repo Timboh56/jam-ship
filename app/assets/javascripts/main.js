@@ -1,6 +1,6 @@
 window.myDataRef = new Firebase('https://jam-ship.firebaseio.com/');
 
-var synth = new Synth({
+var synth = new App.Synth({
   onPlay: function(note, velocity) {
     note = note.replace('#', 'sharp');
     $("#" + note).addClass('active');

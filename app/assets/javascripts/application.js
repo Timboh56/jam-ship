@@ -14,8 +14,13 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require timbre
+//= require mouse
+//= require keyboard
 //= require modernizr-2.8.3.min
+//= require app
 //= require constants
+//= require recorder
+//= require MoogFF
 //= require firebaseAdapter
 //= require instrumentControl
 //= require midiControl

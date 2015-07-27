@@ -1,82 +1,75 @@
-/**
-  * Instrument take in opts
-  *   opts: { 
-  *     playFunction: play()
-  *   }
-  */
-var Instrument = function(opts) {
+(function(App) {
   "use strict";
-  var self, prop, keys, noteToFreq;
 
-  self = this;
-  self.mode = "listening";
-  self.currentOctave = 3;
+  /**
+    * Instrument take in opts
+    *   opts: { 
+    *     playFunction: play()
+    *   }
+    */
+  App.Instrument = function(opts) {
+    var self = App.Instrument.prototype;
+    self.mode = "playing";
+    self.currentOctave = opts['currentOctave'] || 3;
+    self.inputFieldsClass = opts['inputFieldsClass'];
+    self.notes = {};
+    self.noteInterval = 0; // milliseconds since last note
+    self.velocity = App.Constants.DEFAULT_VELOCITY;
+    self.MidiControl = new App.MidiControl(self);
+    self.Recorder = new App.Recorder();
 
-  // milliseconds since last note
-  self.noteInterval = 0;
+    self.InstrumentControl = new App.InstrumentControl({
+      inputFieldsClass: opts['inputFieldsClass'],
+      onKeyDown: opts['onKeyDown'],
+      onKeyUp: opts['onKeyUp'],
+      onKeyPress: opts['onKeyPress'],
+      onChangeInput: opts['onChangeInput']
+    });
 
-  self.velocity = opts["velocity"] || 128;
 
-  self.firebaseInterface = new FirebaseAdapter({
-    onReceive: function(snapshot) {
-      if (self.mode == "listening") {
-        var val = snapshot.val();
-        if(val.velocity == 0)
-          self.stopNote(val.note);
-        else
-          self.playNote(val.note, val.velocity, val.noteInterval);
+    self.firebaseInterface = new FirebaseAdapter({
+      onReceive: function(snapshot) {
+        if (self.mode == "listening") {
+          var val = snapshot.val();
+          if(val.velocity == 0)
+            self.stopNote(val.note);
+          else
+            self.playNote(val.note, val.velocity, val.noteInterval);
+        }
       }
+    });
+
+    self.startNoteInterval = function(note) {
+      return new Date().getTime();
     }
-  });
 
-  self.broadcast = function(note, velocity, noteInterval) {
-    if (self.mode == "playing") {
-      self.firebaseInterface.broadcast({
-        note: note,
-        velocity: velocity,
-        noteInterval: noteInterval || 0
-      });
+    self.elapsedSinceLastNote = function(startTime) {
+      return new Date().getTime() - startTime;
     }
-  };
 
-  self.handleMidi = function() {};
+    self.broadcast = function(note, velocity, noteInterval) {
+      if (self.mode == "playing") {
+        self.firebaseInterface.broadcast({
+          note: note,
+          velocity: velocity,
+          noteInterval: noteInterval || 0
+        });
+      }
+    };
 
-  // playNote takes in a note and velocity and
-  // calls child's play method
-  self.playNoteFromKeys = function(keyPressed) {
-    var note, velocity;
-    if (self.play && Constants.KEYTONOTE[keyPressed]) {
+    self.toggleRecording = function() {
+      //if (self)
+    }
 
-      // look up note and velocity
-      note = noteLookUp(keyPressed);
+    self.noteLookUp = function(key) {
+      var octave = self.currentOctave || 3;
 
-      self.play(note, self.velocity);
-     }
-   }
+      if (['K', 'O', 'L', 'P'].indexOf(key) != -1)
+        octave += 1;
 
-  self.stopNoteFromKeys = function(keyPressed) {
-    var note, velocity;
-    if (self.stop && Constants.KEYTONOTE[keyPressed]) {
-
-      // look up note and velocity
-      note = noteLookUp(keyPressed);
-
-      self.stop(note);
+      return App.Constants.KEYTONOTE[key] + octave;
     }
   }
 
-  function noteLookUp(key) {
-    var octave = self.currentOctave;
-
-    if (["K", "O", "L", "P"].indexOf(key) != -1)
-      octave += 1;
-
-    return Constants.KEYTONOTE[key] + octave;
-  }
-
-  for (prop in opts) self[prop] = opts[prop];
-
-  self.MidiControl = new MidiControl(self);
-  
-  self.InstrumentControl = new InstrumentControl(self);
-};
+  return App;
+})(App);

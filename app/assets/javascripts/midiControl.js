@@ -1,43 +1,47 @@
-var MidiControl = function(instrument) {
-  var self = this;
+(function(App) {
+  App.MidiControl = function(instrument) {
+    var self = this;
 
-  self.instrument = instrument || new Instrument();
+    self.instrument = instrument || new Instrument();
 
-  if (navigator.requestMIDIAccess) {
-      navigator.requestMIDIAccess({
-        sysex: false
-      }).then(onMidiSuccess, onMidiFailure);
-  }
-
-  function onMidiSuccess(midiAccess) {
-    var midi, inputs, input;
-    midi = midiAccess;
-    inputs = midi.inputs.values();
-    for (input = inputs.next(); input && !input.done; input = inputs.next()) {
-      input.value.onmidimessage = onMidiMessage;
+    if (navigator.requestMIDIAccess) {
+        navigator.requestMIDIAccess({
+          sysex: false
+        }).then(onMidiSuccess, onMidiFailure);
     }
-  }
 
-  function onMidiFailure(e) {
-    console.log("[Error] There was a problem accessing Web Midi");
-  }
+    function onMidiSuccess(midiAccess) {
+      var midi, inputs, input;
+      midi = midiAccess;
+      inputs = midi.inputs.values();
+      for (input = inputs.next(); input && !input.done; input = inputs.next()) {
+        input.value.onmidimessage = onMidiMessage;
+      }
+    }
 
-  function onMidiMessage(event) {
-    var data = event.data,
-        cmd = data[0] >> 4,
-        channel = data[0] & 0xf,
-        type = data[0] & 0xf0,
-        note = data[1],
-        velocity = data[2];
+    function onMidiFailure(e) {
+      console.log("[Error] There was a problem accessing Web Midi");
+    }
 
-    note = noteFromNoteNumber(note);
-    self.instrument.handleMidi(note, velocity);
-  }
+    function onMidiMessage(event) {
+      var data = event.data,
+          cmd = data[0] >> 4,
+          channel = data[0] & 0xf,
+          type = data[0] & 0xf0,
+          note = data[1],
+          velocity = data[2];
 
-  function noteFromNoteNumber(note) {
-    var octave, noteIndex;
-    octave = (note / 12) - 1;
-    noteIndex = (note % 12);
-    return Constants.NOTES[noteIndex] + parseInt(octave);
-  }
-};
+      note = noteFromNoteNumber(note);
+      self.instrument.handleMidi(note, velocity);
+    }
+
+    function noteFromNoteNumber(note) {
+      var octave, noteIndex;
+      octave = (note / 12) - 1;
+      noteIndex = (note % 12);
+      return Constants.NOTES[noteIndex] + parseInt(octave);
+    }
+  };
+
+  return App;
+})(App || {});

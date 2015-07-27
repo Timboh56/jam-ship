@@ -1,49 +1,26 @@
-var InstrumentControl = function (instrument) {
-  var self = this;
-  self.inputFieldsClass = instrument.inputFieldsClass; 
-  self.instrument = instrument;
-  self.keyboardOn = true;
-  self.keyDown = false;
-  self.prevKey = null;
+(function(App) {
 
-  function attachKeyHandlers() {
-    var keydown = false;
-    window.document.onkeydown = function(event) {
-      var keyPressed = getChar(event);
+  /** InstrumentControl is the interface module between instruments
+    * and the UI (controls, selectors, inputs, keyboard, etc).
+    */
+  App.InstrumentControl = function (opts) {
+    var self = this;
+    self.inputFieldsClass = opts['inputFieldsClass']; 
+    self.instrument = opts['instrument'];
+    self.keyboardOn = true;
+    self.keyDown = false;
+    self.prevKey = null;
 
-      if (self.keyboardOn) {
-        self.prevKey = keyPressed;
-        self.instrument.playNoteFromKeys(keyPressed);
-        self.keyDown = true;
-      }
-    }
-    $(document).on('change', '.' + self.inputFieldsClass , function (e) {
-      var synthField = capitalizeFirstLetter($(this).data('synth-field'));
-      var val = $(this).val();
-      if (synthField == 'Volume' && (val < 0 || val > 0.99)) 
-        $(this).val(Constants.DEFAULT_MUL);
+    for (var prop in opts) self[prop] = opts[prop];
 
-      self.instrument['set' + synthField]($(this).val());
-    });
+    window.document.onkeydown = opts['onKeyDown'];
 
-    window.document.onkeyup = function(event) {
-      if (self.keyboardOn) {
-        var keyPressed = getChar(event);
-        self.instrument.stopNoteFromKeys(keyPressed);
-        self.keyDown = false;
-      }
-    }
+    $(document).on('change', '.' + self.inputFieldsClass , opts['onChangeInput']);
 
-    window.document.onkeypress = function(event) {
-      var keyPressed = getChar(event);
+    window.document.onkeyup = opts['onKeyUp'];
 
-      if (self.instrument.currentOctave > 1 && keyPressed == "Z")
-        self.instrument.currentOctave -= 1;
-      if (self.instrument.currentOctave < 4 && keyPressed == "X")
-        self.instrument.currentOctave += 1;
-    }
-  }
+    window.document.onkeypress = opts['onKeyPress'];
+  };
 
-
-  attachKeyHandlers();
-}
+  return App;
+})(App || {});
