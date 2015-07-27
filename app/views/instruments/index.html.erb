@@ -1,0 +1,109 @@
+<div id="page-wrapper" class="clearfix">
+    <canvas id="synth-pad"></canvas>
+</div>
+<div class='full-width row center bold'>
+  Please enable Web Midi at:
+  chrome://settings/content
+</div>
+<div class='full-width row center bold'>
+  <select name="mode" id="mode-selector" data-synth-field="mode" class="synth-field" >
+    <option name="playing">playing</option>
+    <option name="listening">listening</option>
+  </select>
+  <select name="mode" id="synth-mode-selector" data-synth-field="synthMode" class="synth-field" >
+    <option name="envelope">envelope</option>
+    <option name="organ">organ</option>
+  </select>
+  <select name="wave" id="wave-selector" data-synth-field="wave" class="synth-field" >
+    <option name="sin">sin</option>
+    <option name="saw">saw</option>
+    <option name="tri">tri</option>
+  </select>
+  <div class='row'>
+    <div class='col-xs-1'>
+      <label>
+        Attack (s)
+      </label>
+    </div>
+    <div class='col-xs-3'>
+      <input type="number" id="synth-attack-input" data-synth-field="attack" name="synthAttack" class="knob synth-field synth-attack-input" data-type="seconds" data-min="0" data-max="10" placeholder="Attack 0-10s" value="1" ></input>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-xs-1'>
+      <label>
+        Decay (s)
+      </label>
+    </div>
+    <div class='col-xs-3'>
+      <input type="number" id="synth-decay-input" data-synth-field="decay" name="synthDecay" class="knob synth-field synth-Decay-input" data-type="seconds" placeholder="Decay 0-10s" data-min="0" data-max="10" value="1" ></input>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-xs-1'>
+      <label>
+        Sustain (s)
+      </label>
+    </div>
+    <div class='col-xs-3'>
+      <input type="number" id="synth-sustain-input" data-synth-field="sustain" name="synthSustain" data-type="seconds" class="knob synth-field synth-sustain-input" data-min="0" data-max="10" placeholder="sustain (0 - 10s)" value="1" ></input>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-xs-1'>
+      <label>
+        Release (s)
+      </label>
+    </div>
+    <div class='col-xs-3'>
+      <input type="number" id="synth-release-input" data-synth-field="release" name="synthRelease" data-type="seconds" class="knob synth-field synth-release-input" data-min="0" data-max="10" placeholder="Release (0 - 10s)" value="1" ></input>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-xs-1'>
+      <label>
+        Reverb
+      </label>
+    </div>
+    <div class='col-xs-3'>
+      <input type="number" id="synth-reverb-input" data-synth-field="reverb" name="synthReverb" class="knob synth-field synth-reverb-input" data-min="0" data-max="1" placeholder="reverb 0-100%" value="100" ></input>
+    </div>
+  </div> 
+  <div class='row'>
+    <div class="col-xs-1">
+      <label>Volume</label>
+    </div>
+    <div class="col-xs-3">
+      <input type="number" data-synth-field='volume' id="synth-volume-input" name="synthVolume" class="knob synth-field synth-volume-input" data-min="0" data-max="1" placeholder="Volume 0 - 12" value="0.25" ></input>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-xs-1'>
+      <label>
+        BPM
+      </label>
+    </div>
+    <div class='col-xs-3'>
+      <input type="number" id="synth-bpm-input" data-synth-field="BPM" name="synthBPM" class="knob synth-field synth-BPM-input" data-min="1" data-max="200" placeholder="BPM (ms)" value="128" ></input>
+    </div>
+  </div> 
+</div>
+<p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p>
+
+<div id="p-wrapper">
+  <ul id="piano">
+    <% (2..5).each do |octave| %>
+      <div class="octave pull-right">
+        <li><div id="C<%= octave %>" class="anchor"></div></li>
+        <li><div id="D<%= octave %>" class="anchor"></div><span id="Csharp<%= octave %>"></span></li>
+        <li><div id="E<%= octave %>" class="anchor"></div><span id="Dsharp<%= octave %>"></span></li>
+        <li><div id="F<%= octave %>" class="anchor"></div></li>
+        <li><div id="G<%= octave %>" class="anchor"></div><span id="Fsharp<%= octave %>"></span></li>
+        <li><div id="A<%= octave %>" class="anchor"></div><span id="Gsharp<%= octave %>"></span></li>
+        <li><div id="B<%= %>" class="anchor"></div><span id="Asharp<%= octave %>"></span></li>
+      </div>
+    <% end %>
+</div>
+<textarea class="fixed full-width" id="messageInput">
+</textarea>

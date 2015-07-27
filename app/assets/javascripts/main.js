@@ -33,7 +33,8 @@ $(function(){
     $('#' + id).knob({
       min: min,
       max: max,
-      step: step
+      step: step,
+      width: '10px'
     });
   });
 });
