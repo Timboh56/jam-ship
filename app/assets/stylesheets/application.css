@@ -13,4 +13,5 @@
  *= require main
  *= require piano
  *= require_self
+ *= require_tree
  */

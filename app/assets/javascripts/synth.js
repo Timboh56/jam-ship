@@ -1,7 +1,7 @@
 (function(App) {
   var self;
   App.Synth = function(opts) {
-    var parent, freqSlide, self, opts, notes;
+    var parent, freqSlide, self, opts, notes, onChangeInput;
 
     self = App.Synth.prototype = new App.Instrument({
       inputFieldsClass: opts['inputFieldsClass'],
@@ -46,7 +46,7 @@
         }
       }).bind(this),
 
-      onChangeInput: function(event) {
+      onChangeInput: (function(event) {
         var target = $(event.currentTarget),
           val = target.val(),
           dataType = target.data('type'),
@@ -59,8 +59,7 @@
           $(event.currentTarget).val(App.Constants.DEFAULT_MUL);
 
         self['set' + synthField](val);
-      }
-
+      }).bind(this)
     });
 
     self.opts = opts || {},

@@ -14,8 +14,10 @@
     for (var prop in opts) self[prop] = opts[prop];
 
     window.document.onkeydown = opts['onKeyDown'];
-  
-    $(document).on('change', '.' + self.inputFieldsClass , opts['onChangeInput']);
+
+    self.onChangeInput = opts['onChangeInput'];
+
+    $('.' + self.inputFieldsClass).on('change', opts['onChangeInput']);
 
     window.document.onkeyup = opts['onKeyUp'];
 
