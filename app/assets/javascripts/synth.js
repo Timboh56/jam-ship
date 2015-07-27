@@ -5,55 +5,68 @@
 
     self = App.Synth.prototype = new App.Instrument({
       inputFieldsClass: opts['inputFieldsClass'],
+
       onKeyDown: (function(event) {
         var keyPressed, note, velocity;
         keyPressed = getChar(event);
-        if (self.InstrumentControl.keyboardOn && self.mode == "playing") {
-          self.InstrumentControl.prevKey = keyPressed;
-        if (self.play && App.Constants.KEYTONOTE[keyPressed]) {
-          note = self.noteLookUp.apply(self, [keyPressed]);
-          self.play(note, self.velocity);
-         }
+        note = self.noteLookUp.apply(self, [keyPressed]);
+        if (self.InstrumentControl.keyboardOn && "playing" == self.mode) {
+          if (App.Constants.KEYTONOTE[keyPressed] && !self.notes[note].keyDown) {
+            self.notes[note].keyDown = true;
+            self.play(note, self.velocity);
+          }
         }
       }).bind(this),
 
       onKeyUp: (function(event) {
         var keyPressed, note, velocity;
-        if (self.InstrumentControl.keyboardOn && self.mode == "playing") {
-          keyPressed = getChar(event);
-          if (self.stop && App.Constants.KEYTONOTE[keyPressed]) {
-            note = self.noteLookUp.apply(self, [keyPressed]);
+
+        keyPressed = getChar(event);
+        note = self.noteLookUp.apply(self, [keyPressed]);
+        if (self.InstrumentControl.keyboardOn && "playing" == self.mode) {
+          if (App.Constants.KEYTONOTE[keyPressed] && self.notes[note].keyDown) {
+            self.notes[note].keyDown = false;
             self.stop(note);
           }
         }
       }).bind(this),
 
       onKeyPress: (function(event) {
-        var keyPressed = getChar(event);
+        var keyPressed, instrument;
+        keyPressed = getChar(event);
         if (self.currentOctave > 1 && keyPressed == "Z")
           self.decrementCurrentOctave()
         if (self.currentOctave < 5 && keyPressed == "X")
           self.incrementCurrentOctave()
-        if (keyPressed == 'R')
-          self.toggleRecording();
+        if (keyPressed == 'R') {
+          instrument = self.synth;
+          self.Recorder.toggleRecording({
+            instrument: instrument
+          });
+        }
       }).bind(this),
 
       onChangeInput: function(event) {
-        var synthField,  val;
-        synthField = capitalizeFirstLetter($(event.currentTarget).data('synth-field'));
-        val = $(event.currentTarget).val();
+        var target = $(event.currentTarget),
+          val = target.val(),
+          dataType = target.data('type'),
+          max = parseFloat(target.data('max')),
+          synthField = capitalizeFirstLetter(target.data('synth-field'));
+
+        if (dataType == 'seconds')
+          val = parseFloat(val) * 1000;
         if (synthField == 'Volume' && (val < 0 || val > 0.99)) 
           $(event.currentTarget).val(App.Constants.DEFAULT_MUL);
 
-        self['set' + synthField]($(event.currentTarget).val());
-
+        self['set' + synthField](val);
       }
+
     });
 
     self.opts = opts || {},
     self.notes = {},
     self.freqs = {};
-    self.synthMode = "organ" // or "envelope"
+    self.synthMode = "envelope" // or "envelope"
     self.inputFieldsClass = opts['inputFieldsClass'];
     self.wave = opts['wave'] || App.Constants.DEFAULT_WAVE;
     self.opts["play"] = self.play;
@@ -77,34 +90,35 @@
     }
 
     self.generateEnv = function(attack, decay, sustain, release) {
-      return T("perc", {d: decay, a: attack, r: release});
+      return T("perc", {sustained: true, d: decay, a: attack, r: release});
     }
 
-    self.generateAdsr = function(attack, decay, sustain, release) {
-      var env = T("adshr", { a: attack, d:decay, s: sustain,r: release}, T(self.wave)).on("ended", function() {
-        this.pause();
-      }).bang();
-      return env;
+    self.generateAdsfr = function(attack, decay, sustain, fade, release) {
+      return T("ahdsfr", { f: fade, sustained: true, a: attack, d:decay, s: sustain,r: release}, T(self.wave));
     }
 
     self.generateSynthFromSettings = function(opts) {
-      var env, osc, wave, opts, attack, decay, sustain, release;
+      var env, osc, wave, opts, attack, decay, sustain, fade, release;
       opts = opts || {};
       attack = opts['attack'] || self.attack;
       decay = opts['decay'] || self.decay;
       sustain = opts['sustain'] || self.sustain;
+      fade = opts['fade'] || self.fade;
       release = opts['release'] || self.release;
       wave = opts['wave'] || self.wave;
 
-      env = self.generateAdsr(attack, decay, sustain, release);
+      env = self.generateAdsfr(attack, decay, sustain, fade, release);
       
       self.initializeNoteBank();
-      self.synth = T('OscGen', { osc: T(wave), env: env, poly: true, mul: self.mul }).play();
+
+      osc = T(wave);
+      //osc = self.attachDelayAndDist(osc);
+      self.synth = T('OscGen', { osc: osc, env: env, poly: true, mul: self.mul }).play();
     }
 
     self.initialize = function() {
       var dfd = $.Deferred();
-      var opts = ['wave', 'attack', 'release', 'decay', 'mul'];
+      var opts = ['wave', 'attack', 'release', 'fade', 'sustain', 'decay', 'velocity', 'mul'];
       for (var field in opts)
         self[opts[field]] = App.Constants['DEFAULT_' + opts[field].toUpperCase()];
 
@@ -171,6 +185,12 @@
         self.synth.noteOff();
     }
 
+    self.attachDelayAndDist = function(synth) {
+      synth = T("dist" , {pre:60, post:-12}, synth);
+      synth = T("delay", {fb :0.5, mix:0.2}, synth);
+      return synth;
+    }
+
     self.setDecay = function(decay) {
       self.decay = parseFloat(decay) || App.Constants.DEFAULT_DECAY;
       self.generateSynthFromSettings();
@@ -186,6 +206,11 @@
       self.generateSynthFromSettings();
     }
 
+    self.setRelease = function(release) {
+      self.release = release;
+      self.generateSynthFromSettings();
+    }
+
     self.setSustain = function(sustain) {
       self.sustain = parseFloat(sustain) || App.Constants.DEFAULT_SUSTAIN;
       self.generateSynthFromSettings();
@@ -194,6 +219,14 @@
     self.setVolume = function(mul) {
       self.mul = parseFloat(mul);
       self.generateSynthFromSettings();
+    }
+
+    self.setBPM = function(bpm) {
+      self.Recorder.setBPM(bpm);
+    }
+
+    self.setBPL = function(bpl) {
+      self.Recorder.setBPL(bpl);
     }
 
     self.setSynthMode = function(synthMode) {

@@ -21,6 +21,22 @@ $(document).on('keypress', '#messageInput', function (e) {
   }
 });
 
+$(function(){
+  $('.knob').each(function(index, el) {
+    var self = $(el),
+      id = self.attr('id'),
+      min = parseFloat(self.data('min')),
+      max = parseFloat(self.data('max')),
+      dataType = self.data('type'),
+      step = max < 1.01 ? 0.01 : 0.1;
+
+    $('#' + id).knob({
+      min: min,
+      max: max,
+      step: step
+    });
+  });
+});
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);

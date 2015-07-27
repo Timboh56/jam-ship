@@ -12,8 +12,9 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require bootstrap
-//= require timbre
+//= require jquery.knob
+//= require bootstrap.min
+//= require timbre.dev
 //= require mouse
 //= require keyboard
 //= require modernizr-2.8.3.min

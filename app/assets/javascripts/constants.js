@@ -2,10 +2,11 @@
     App.Constants = {
       DEFAULT_WAVE: "sin",
       DEFAULT_MUL: 0.25,
-      DEFAULT_ATTACK: 500,
+      DEFAULT_ATTACK: 50,
       DEFAULT_RELEASE: 500,
-      DEFAULT_DECAY: 500,
-      DEFAULT_SUSTAIN: 0.75,
+      DEFAULT_DECAY: 50,
+      DEFAULT_FADE: 50, 
+      DEFAULT_SUSTAIN: 10,
       DEFAULT_VELOCITY: 100,
       FREQUENCIES: {
         "C1": 32.7032,
