@@ -4,6 +4,14 @@
     var parent, freqSlide, self, opts, notes, onChangeInput;
 
     self = App.Synth.prototype = new App.Instrument({
+      onDeleteBuffer: opts['onDeleteBuffer'],
+      onCreateBuffer: opts['onCreateBuffer'],
+      onMidiMessage: opts['onMidiMessage'] || function(note, velocity) {
+        if (velocity > 0 && self.mode == 'playing')
+          self.play(note, velocity);
+        else
+          self.stop(note);
+      },
       inputFieldsClass: opts['inputFieldsClass'],
 
       onKeyDown: (function(event) {
@@ -47,11 +55,11 @@
       }).bind(this),
 
       onChangeInput: (function(el) {
-        var target = el,
-          val = (parseFloat(target.val()) == NaN ? target.val() : parseFloat(target.val())),
+        var target = (el.val ? el : $(el.currentTarget)),
+          val = (parseFloat(target.val()) ?parseFloat(target.val()) : target.val()),
           dataType = target.data('type'),
           max = parseFloat(target.data('max')),
-          id = el.attr('id'),
+          id = target.attr('id'),
           synthField = capitalizeFirstLetter(target.data('synth-field'));
 
         if (dataType == 'seconds')
@@ -135,13 +143,6 @@
         self.notes[i].noteInterval = 0;
         self.notes[i].startTime = null;
       }
-    }
-
-    self.handleMidi = function(note, velocity) {
-      if (velocity > 0 && self.mode == 'playing')
-        self.play(note, velocity);
-      else
-        self.stop(note);
     }
 
     self.play = function(note, velocity) {
@@ -228,6 +229,14 @@
 
     self.setBPL = function(bpl) {
       self.Recorder.setBPL(bpl);
+    }
+
+    self.setBFS = function(bfs) {
+      self.BFS = bfs;
+    }
+
+    self.setReverb = function(reverb) {
+      self.reverb = reverb;
     }
 
     self.setSynthMode = function(synthMode) {

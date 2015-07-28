@@ -1,0 +1,11 @@
+<script type="template" class="template record-row-template">
+  <div id="recording-track-container-{{ id }}" class='col-xs-4 col-sm-4 col-lg-3 mhl mtl pvmd shadow panel'>
+    <label class='full-width mvmd'>
+      Track {{ id }}
+    </label>
+    <br />
+    <div class='full-width'>
+      <a data-action="play" data-record-id="{{ id }}" class="btn js-record-action" id="play-btn-{{ id }}"> <%= fa_icon "play" %> Play </a> <a data-action="stop" class="btn js-record-action" data-record-id="{{ id }}" id="stop-btn-{{ id }}"> <%= fa_icon "stop" %> Stop </a> <a data-action="deleteBuffer" class="btn js-record-action" data-record-id="{{ id }}" id="delete-btn-{{ id }}"> <%= fa_icon "remove" %> Delete <a/>
+    </div>
+  </div>
+</script>

@@ -15,8 +15,13 @@
     self.notes = {};
     self.noteInterval = 0; // milliseconds since last note
     self.velocity = App.Constants.DEFAULT_VELOCITY;
-    self.MidiControl = new App.MidiControl(self);
-    self.Recorder = new App.Recorder();
+    for (var prop in opts) self[prop] = self[prop] || opts[prop];
+
+    self.MidiControl = new App.MidiControl({
+      onMidiMessage: self.onMidiMessage
+    });
+
+    self.Recorder = new App.Recorder(opts);
 
     self.InstrumentControl = new App.InstrumentControl({
       inputFieldsClass: opts['inputFieldsClass'],

@@ -34,6 +34,7 @@ gem 'omniauth-facebook'
 gem 'omniauth-linkedin'
 gem 'therubyracer' # Ruby
 gem 'less-rails', '~> 2.7.0'
+gem "font-awesome-rails"
 
 gem 'twitter-bootstrap-rails', :git => 'http://github.com/seyhunak/twitter-bootstrap-rails.git'
 # Use ActiveModel has_secure_password

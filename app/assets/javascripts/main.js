@@ -2,6 +2,20 @@ window.myDataRef = new Firebase('https://jam-ship.firebaseio.com/');
 
 $(document).ready(function() {
   var synth = new App.Synth({
+    onCreateBuffer: function (id) {
+      // add jqery row
+      var opts = { 'id' : id},
+        rowHtml = $('.record-row-template').html();
+      for (var prop in opts){
+        var pattern = '{{\\s*' + prop + '\\s*}}';
+        rowHtml = rowHtml.replace(new RegExp(pattern, 'g'), opts[prop]);
+      }
+
+      $('.recordings-container').append(rowHtml);
+    },
+    onDeleteBuffer: function(id) {
+      $('#recording-track-container-' + id).remove();
+    },
     onPlay: function(note, velocity) {
       note = note.replace('#', 'sharp');
       $("#" + note).addClass('active');
@@ -11,6 +25,13 @@ $(document).ready(function() {
       $("#" + note).removeClass('active');
     },
     inputFieldsClass: 'synth-field'
+  });
+
+  $(document).on('click', '.js-record-action', function(el) {
+    var self = $(this),
+      recordId = self.data('record-id'),
+      action = self.data('action');
+    synth.Recorder[action].apply(this, [recordId])
   });
 
   $(document).on('keypress', '#messageInput', function (e) {
@@ -34,10 +55,12 @@ $(document).ready(function() {
       min: min,
       max: max,
       step: step,
-      width: '90px',
-      fontWeight: 'normal',
+      width: 60,
+      height: 60,
+      fontWeight: 'bold',
       fontFamily: 'Roboto',
-      fontSize: '12px',
+      fgColor: '#222222',
+      thickness: 0.4,
       release: function(e, v) {
         synth.InstrumentControl.onChangeInput($('#' + id));
       }

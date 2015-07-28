@@ -77,6 +77,8 @@ GEM
     firebase (0.2.4)
       httpclient
       json
+    font-awesome-rails (4.3.0.0)
+      railties (>= 3.2, < 5.0)
     globalid (0.3.5)
       activesupport (>= 4.1.0)
     hashie (3.4.2)
@@ -220,6 +222,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   devise
   firebase
+  font-awesome-rails
   jbuilder (~> 2.0)
   jquery-rails
   less-rails (~> 2.7.0)

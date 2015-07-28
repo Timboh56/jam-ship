@@ -1,0 +1,143 @@
+// Place all the styles related to the home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+label {
+  font-family: 'Roboto', sans-serif;
+}
+
+h3 {
+  font-size: 21px;
+}
+.no-padding {
+  padding: 0 !important;
+}
+
+input[type=number].synth-field {
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
+
+.pvsm {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+.pvmd {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+.pvlg {
+  padding-top: 21px;
+  padding-bottom: 21px;
+}
+.mtsm { margin-top: 7px; }
+.mtmd { margin-top: 14px; }
+
+.mvmd {
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+
+.mhl {
+  margin-left: 21px;
+  margin-right: 21px;
+}
+
+.mll {
+  margin-left: 21px;
+}
+
+.mrl {
+  margin-left: 21px;
+}
+
+.mlmd {
+  margin-left: 14px;
+}
+
+.mrmd {
+  margin-right: 14px;
+}
+
+.mtl { margin-top: 21px; }
+
+.mvlg, .mvl {
+  margin-top: 21px;
+  margin-bottom: 21px;
+}
+
+.mtlg { margin-top: 21px; }
+.text-center { text-align: center; }
+.recordings-container {}
+
+input[type=number].synth-field {
+
+}
+
+.block {
+  display: block;
+}
+
+
+.full-width {
+    width: 100%;
+}
+
+.template {
+    display: none;
+}
+
+.btn {
+    border-color: #2c3e50;
+    background-color: #fff;
+    color: #2c3e50;
+}
+
+.gray {
+  background-color: #aaa;
+}
+
+.gray-text {
+  color: #34495e;
+}
+
+.panel {
+  border-color: #2c3e50;
+}
+.red {
+    background-color: #FF1744 !important;
+}
+
+.red:hover {
+    background-color: #FF5252 !important;
+}
+
+.red-text {
+    color: #FF1744 !important;
+}
+
+.red-text:hover {
+    color: #FF5252 !important;
+}
+
+.lrg-font {
+    font-size: 28px;
+}
+
+.med-font {
+    font-size: 14px;
+}
+
+.small-font {
+    font-size: 12px;
+}

@@ -19,12 +19,12 @@
 
 body {
   background:#666;
-  background:-webkit-radial-gradient(bottom left,cover,#999,#666);
-  background:-moz-radial-gradient(bottom left,cover,#999,#666);
-  background:-ms-radial-gradient(bottom left,cover,#999,#666);
-  background:-o-radial-gradient(bottom left,cover,#999,#666);
-  background:radial-gradient(bottom left,cover,#999,#666);
-  height:500px;
+  background:-webkit-radial-gradient(bottom left,cover,#eee,#95a5a6);
+  background:-moz-radial-gradient(bottom left,cover,#eee,#95a5a6);
+  background:-ms-radial-gradient(bottom left,cover,#eee,#95a5a6);
+  background:-o-radial-gradient(bottom left,cover,#eee,#95a5a6);
+  background:radial-gradient(bottom left,cover,#eee,#95a5a6);
+  height:100%;
 }
 
 a {
@@ -36,15 +36,23 @@ a:hover {
   text-decoration:underline;
 }
 
+.shadow {
+  -webkit-box-shadow: 10px 10px 5px -6px rgba(196,196,196,1);
+-moz-box-shadow: 10px 10px 5px -6px rgba(196,196,196,1);
+box-shadow: 10px 10px 5px -6px rgba(196,196,196,1);
+}
+
 /* Piano Wrapper */
 #p-wrapper {
+  height: auto;
+  overflow: auto;
   background:#000;
   background:-webkit-linear-gradient(-60deg,#000,#333,#000,#666,#333 70%);
   background:-moz-linear-gradient(-60deg,#000,#333,#000,#666,#333 70%);
   background:-ms-linear-gradient(-60deg,#000,#333,#000,#666,#333 70%);
   background:-o-linear-gradient(-60deg,#000,#333,#000,#666,#333 70%);
   background:linear-gradient(-60deg,#000,#333,#000,#666,#333 70%);
-  width:1300px;
+  width:100%;
   position:relative;
   left:-20px;
   -webkit-box-shadow:0 2px 0px #666,0 3px 0px #555,0 4px 0px #444,0 6px 6px #000,inset 0 -1px 1px rgba(255,255,255,0.5),inset 0 -4px 5px #000;
@@ -62,10 +70,10 @@ a:hover {
 /* Tuts */
 ul#piano {
   display:block;
-  height:240px;
+  height:200px;
   border-top:2px solid #222;
-  width: 840px;
   margin: 0 auto;
+  width: 840px;
 }
 
 ul#piano li {
@@ -73,7 +81,7 @@ ul#piano li {
   float:left;
   display:inline;
   background:#aaa;
-  width: 30px;
+  width: 3.43%;
   position:relative;
 }
 

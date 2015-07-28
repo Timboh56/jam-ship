@@ -5,40 +5,27 @@
     self.recording = false;
     self.recorder = null;
     self.recordingTime = 3000;
-
+    self.buffers = {};
+    self.tempBuffer = [];
+    self.onCreateBuffer = opts['onCreateBuffer'];
+    self.onDeleteBuffer = opts['onDeleteBuffer'];
     self.initializeRecorder = function(opts) {
-      var instrument, recorderOpts, recOpts;
-
+      var dfd, instrument, recorderOpts, recOpts, tempBuffer;
+      self.tempBuffer = []
+      dfd = $.Deferred();
       recOpts = opts || {};
 
       if (recOpts['instrument'])
         instrument = recOpts['instrument'];
       else throw 'Please include an instrument to record';
-      
-      /**self.recorder = timbre.rec(function(output) {
 
-        var gen = T("PluckGen", {env:T("adsr", {r:100})});
-        var mml = "o3 l8 d0grf0b-rg0<c4.> d0grf0b-ra-0<d->g0<c2> d0grf0b-rg0<c4.>f0b-rd0g2..";
+      self.recorder = T('rec', { timeout: self.recordingTime || recOpts['recordingTime']}, instrument).on('ended', (function(buffer) {
+        self.tempBuffer.push(T('buffer', {buffer:buffer, loop:true}));
+        self.recording = false;
+        dfd.resolve();
+      }).bind(this));
 
-        T("mml", {mml:mml}, gen).on("ended", function() {
-          output.done();
-        }).start();
-
-        var synth = gen;
-        synth = T("dist" , {pre:60, post:-12}, synth);
-        synth = T("delay", {fb :0.5, mix:0.2}, synth);
-
-        output.send(synth);
-
-      }).then(function(buffer) {
-
-        T("buffer", {buffer:buffer, loop:true, reverse:true}).play();
-
-      });**/
-
-      self.recorder = T('rec', { timeout: recOpts['recordingTime'] || self.recordingTime }, instrument).on('ended', function(buffer) {
-        T('buffer', {buffer:buffer, loop:true}).play();
-      }); 
+      return dfd.promise();
     }
 
     self.toggleRecording = function(opts) {
@@ -49,23 +36,45 @@
     }
 
     self.startRecording = function(opts) {
-      if (!self.recorder)
-        self.initializeRecorder(opts);
+      self.initializeRecorder(opts).then((function() {
+        var timestamp = new Date().getUTCMilliseconds();
+
+        self.buffers[timestamp] = self.tempBuffer;
+        self.onCreateBuffer.call(this, timestamp);
+        $('.recording-status-text').html('');
+        $('.record-btn').removeClass('hide');
+        $('.stop-btn').addClass('hide');
+        self.play(timestamp);
+
+      }).bind(this));
+
+      $('.recording-status-text').html('recording..');
+      $('.record-btn').addClass('hide');
+      $('.stop-btn').removeClass('hide');
       self.recording = true;
       self.recorder.start();
     }
 
-    self.stopRecording = function() {
-      //self.recorder.stop();
-      self.recorder.done();
-      self.recording = false;
-      self.playRecording();
+    self.stop = function(recordId) {
+      var arr = self.buffers[recordId];
+      for (var i = 0; i < arr.length; i++) arr[i].pause();
     }
 
-    self.playRecording = function() {
-      self.recorder.then(function(buffer) {
-        T("buffer", {buffer:buffer, loop:true, reverse:true}).play();
-      });
+    self.deleteBuffer = function(recordId) {
+      self.stop(recordId);
+      delete self.buffers[recordId];
+      self.onDeleteBuffer.call(this, recordId);
+    }
+
+    self.play = function(recordId) {
+      var arr = self.buffers[recordId];
+      for (var i = 0; i < arr.length; i++) arr[i].play();
+    }
+
+    self.stopRecording = function() {
+      self.recorder.stop();
+      //self.recorder.done();
+      self.recording = false;
     }
 
     self.setBPM = function(bpm, bpl) {

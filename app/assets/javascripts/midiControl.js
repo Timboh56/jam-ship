@@ -1,8 +1,7 @@
 (function(App) {
-  App.MidiControl = function(instrument) {
+  App.MidiControl = function(opts) {
     var self = this;
-
-    self.instrument = instrument || new Instrument();
+    for (var prop in opts) self[prop] = opts[prop];
 
     if (navigator.requestMIDIAccess) {
         navigator.requestMIDIAccess({
@@ -30,16 +29,15 @@
           type = data[0] & 0xf0,
           note = data[1],
           velocity = data[2];
-
       note = noteFromNoteNumber(note);
-      self.instrument.handleMidi(note, velocity);
+      self.onMidiMessage.call(this, note, velocity);
     }
 
     function noteFromNoteNumber(note) {
       var octave, noteIndex;
       octave = (note / 12) - 1;
       noteIndex = (note % 12);
-      return Constants.NOTES[noteIndex] + parseInt(octave);
+      return App.Constants.NOTES[noteIndex] + parseInt(octave);
     }
   };
 
