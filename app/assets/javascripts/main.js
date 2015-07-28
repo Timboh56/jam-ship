@@ -4,8 +4,12 @@ $(document).ready(function() {
   var synth = new App.Synth({
     onCreateBuffer: function (id) {
       // add jqery row
-      var opts = { 'id' : id},
-        rowHtml = $('.record-row-template').html();
+      var rowHtml = $('.record-row-template').html(),
+        recordTrackCount = $('.recording-track').length + 1,
+        opts = {
+          'id' : id,
+          'count' : recordTrackCount
+        };
       for (var prop in opts){
         var pattern = '{{\\s*' + prop + '\\s*}}';
         rowHtml = rowHtml.replace(new RegExp(pattern, 'g'), opts[prop]);

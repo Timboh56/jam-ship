@@ -17,21 +17,6 @@
     self.velocity = App.Constants.DEFAULT_VELOCITY;
     for (var prop in opts) self[prop] = self[prop] || opts[prop];
 
-    self.MidiControl = new App.MidiControl({
-      onMidiMessage: self.onMidiMessage
-    });
-
-    self.Recorder = new App.Recorder(opts);
-
-    self.InstrumentControl = new App.InstrumentControl({
-      inputFieldsClass: opts['inputFieldsClass'],
-      onKeyDown: opts['onKeyDown'],
-      onKeyUp: opts['onKeyUp'],
-      onKeyPress: opts['onKeyPress'],
-      onChangeInput: opts['onChangeInput']
-    });
-
-
     self.firebaseInterface = new FirebaseAdapter({
       onReceive: function(snapshot) {
         if (self.mode == "listening") {
@@ -42,6 +27,22 @@
             self.playNote(val.note, val.velocity, val.noteInterval);
         }
       }
+    });
+
+    self.MidiControl = new App.MidiControl({
+      onMidiMessage: self.onMidiMessage
+    });
+
+    opts['broadcast'] = self.firebaseInterface.broadcast;
+
+    self.Recorder = new App.Recorder(opts);
+
+    self.InstrumentControl = new App.InstrumentControl({
+      inputFieldsClass: opts['inputFieldsClass'],
+      onKeyDown: opts['onKeyDown'],
+      onKeyUp: opts['onKeyUp'],
+      onKeyPress: opts['onKeyPress'],
+      onChangeInput: opts['onChangeInput']
     });
 
     self.startNoteInterval = function(note) {

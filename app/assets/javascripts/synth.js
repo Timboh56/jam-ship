@@ -247,7 +247,6 @@
     self.setMode = function(mode) {
       self.mode = mode;
       self.generateSynthFromSettings();
-      self.InstrumentControl.attachKeyHandlers(mode);
     }
 
     self.initialize();

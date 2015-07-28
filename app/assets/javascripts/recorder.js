@@ -4,9 +4,11 @@
     var self = this;
     self.recording = false;
     self.recorder = null;
-    self.recordingTime = 3000;
+    self.recordingTime = 60000;
+    self.currentRecordId = null;
     self.buffers = {};
     self.tempBuffer = [];
+    self.broadcast = opts['broadcast'];
     self.onCreateBuffer = opts['onCreateBuffer'];
     self.onDeleteBuffer = opts['onDeleteBuffer'];
     self.initializeRecorder = function(opts) {
@@ -20,7 +22,9 @@
       else throw 'Please include an instrument to record';
 
       self.recorder = T('rec', { timeout: self.recordingTime || recOpts['recordingTime']}, instrument).on('ended', (function(buffer) {
-        self.tempBuffer.push(T('buffer', {buffer:buffer, loop:true}));
+        var t = T('buffer', {buffer: buffer, loop:true});
+        t.buffer = buffer;
+        self.tempBuffer.push(t);
         self.recording = false;
         dfd.resolve();
       }).bind(this));
@@ -36,17 +40,19 @@
     }
 
     self.startRecording = function(opts) {
-      self.initializeRecorder(opts).then((function() {
-        var timestamp = new Date().getUTCMilliseconds();
+      var timestamp = new Date().getUTCMilliseconds();
 
+      self.initializeRecorder(opts).then((function() {
         self.buffers[timestamp] = self.tempBuffer;
         self.onCreateBuffer.call(this, timestamp);
         $('.recording-status-text').html('');
         $('.record-btn').removeClass('hide');
         $('.stop-btn').addClass('hide');
         self.play(timestamp);
-
+        //self.broadcast.apply(this, [ { buffer: self.buffers[self.currentRecordId].buffer }]);
       }).bind(this));
+      
+      self.currentRecordId = timestamp;
 
       $('.recording-status-text').html('recording..');
       $('.record-btn').addClass('hide');
@@ -73,7 +79,6 @@
 
     self.stopRecording = function() {
       self.recorder.stop();
-      //self.recorder.done();
       self.recording = false;
     }
 
