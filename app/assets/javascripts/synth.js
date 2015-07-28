@@ -40,16 +40,15 @@
       }).bind(this),
 
       onKeyPress: (function(event) {
-        var keyPressed, instrument;
+        var keyPressed;
         keyPressed = getChar(event);
         if (self.currentOctave > 1 && keyPressed == "Z")
           self.decrementCurrentOctave()
         if (self.currentOctave < 5 && keyPressed == "X")
           self.incrementCurrentOctave()
         if (keyPressed == 'R') {
-          instrument = self.synth;
           self.Recorder.toggleRecording({
-            instrument: instrument
+            instrument: self.getCurrentInstrument()
           });
         }
       }).bind(this),
@@ -191,6 +190,14 @@
       synth = T("dist" , {pre:60, post:-12}, synth);
       synth = T("delay", {fb :0.5, mix:0.2}, synth);
       return synth;
+    }
+
+
+    self.getCurrentInstrument = function() {
+      if (self.synthMode == 'organ')
+        return self.notes;
+      else
+        return self.synth;
     }
 
     self.setDecay = function(decay) {

@@ -40,19 +40,25 @@
     }
 
     self.startRecording = function(opts) {
-      var timestamp = new Date().getUTCMilliseconds();
-
-      self.initializeRecorder(opts).then((function() {
-        self.buffers[timestamp] = self.tempBuffer;
-        self.onCreateBuffer.call(this, timestamp);
-        $('.recording-status-text').html('');
-        $('.record-btn').removeClass('hide');
-        $('.stop-btn').addClass('hide');
-        self.play(timestamp);
-        //self.broadcast.apply(this, [ { buffer: self.buffers[self.currentRecordId].buffer }]);
-      }).bind(this));
+      var timestamp, recorder;
+      timestamp = new Date().getUTCMilliseconds();
       
       self.currentRecordId = timestamp;
+
+      // record from previous created track??????
+      if (opts['recordId'])
+        self.recorder = recorder = self.buffers[opts['recordId']];
+      else {
+        recorder = self.initializeRecorder(opts).then((function() {
+          self.buffers[timestamp] = self.tempBuffer;
+          self.onCreateBuffer.call(this, timestamp);
+          $('.recording-status-text').html('');
+          $('.record-btn').removeClass('hide');
+          $('.stop-btn').addClass('hide');
+          self.play(timestamp);
+          //self.broadcast.apply(this, [ { buffer: self.buffers[self.currentRecordId].buffer }]);
+        }).bind(this));
+      }
 
       $('.recording-status-text').html('recording..');
       $('.record-btn').addClass('hide');
@@ -77,7 +83,7 @@
       for (var i = 0; i < arr.length; i++) arr[i].play();
     }
 
-    self.stopRecording = function() {
+    self.stopRecording = function(opts) {
       self.recorder.stop();
       self.recording = false;
     }

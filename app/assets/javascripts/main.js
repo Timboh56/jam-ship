@@ -35,8 +35,15 @@ $(document).ready(function() {
     var self = $(this),
       recordId = self.data('record-id'),
       action = self.data('action');
-    synth.Recorder[action].apply(this, [recordId])
-  });
+      if (action == 'startRecording' || action == 'stopRecording') {
+        synth.Recorder[action].call(this, {
+          recordId: recordId,
+          instrument: synth.getCurrentInstrument()
+        });
+      } else {
+        synth.Recorder[action].call(this, recordId);
+      }
+});
 
   $(document).on('keypress', '#messageInput', function (e) {
     if (e.keyCode == 13) {
