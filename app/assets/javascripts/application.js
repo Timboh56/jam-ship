@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.knob
+//= require velocity.min
 //= require bootstrap.min
 //= require timbre.dev
 //= require mouse
@@ -28,3 +29,4 @@
 //= require instrument
 //= require synth
 //= require main
+//= require helmet

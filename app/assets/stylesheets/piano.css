@@ -17,8 +17,7 @@
   outline:none !important;
 }
 
-body {
-  background:#666;
+body.dark {
   background:-webkit-radial-gradient(bottom left,cover,#eee,#95a5a6);
   background:-moz-radial-gradient(bottom left,cover,#eee,#95a5a6);
   background:-ms-radial-gradient(bottom left,cover,#eee,#95a5a6);

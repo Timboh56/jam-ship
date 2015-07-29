@@ -1,11 +1,13 @@
 <script type="template" class="template record-row-template">
-  <div id="recording-track-container-{{ id }}" class='col-xs-4 col-sm-4 col-lg-3 mhl mtl pvmd recording-track shadow panel'>
+  <div id="recording-track-container-{{ id }}" class='col-xs-4 col-sm-4 col-lg-3 mhsm mtl pvmd recording-track shadow panel'>
     <label class='full-width mvmd'>
       Track {{ count }}
     </label>
     <br />
     <div class='full-width'>
-      <a data-action="play" data-record-id="{{ id }}" class="btn js-record-action" id="play-btn-{{ id }}"> <%= fa_icon "play" %> Play </a> <a data-action="stop" class="btn js-record-action" data-record-id="{{ id }}" id="stop-btn-{{ id }}"> <%= fa_icon "stop" %> Stop </a> <a data-action="deleteBuffer" class="btn js-record-action" data-record-id="{{ id }}" id="delete-btn-{{ id }}"> <%= fa_icon "remove" %> Delete <a/>
+      <a data-action="play" data-record-id="{{ id }}" class="btn js-record-action mlxs mvmd" id="play-btn-{{ id }}"> <%= fa_icon "play" %> Play </a>
+      <a data-action="stop" class="btn js-record-action mlxs mvmd" data-record-id="{{ id }}" id="stop-btn-{{ id }}"> <%= fa_icon "stop" %> Stop </a>
+      <a data-action="deleteBuffer" class="btn js-record-action mlxs mvmd" data-record-id="{{ id }}" id="delete-btn-{{ id }}"> <%= fa_icon "remove" %> Delete <a/>
     </div>
   </div>
 </script>

@@ -1,4 +1,25 @@
-<h1>
-  Instruments
-</h1>
-<a href="/instruments">click</a>
+<div class="col-lg-8 col-sm-8 col-xs-12">
+  <div class='hidden-xs visible-lg-block'>
+    <%= inline_svg('spacemonkey.svg', { preserve_aspect_ratio: 'xMaxYMax meet'}) %>
+  </div>
+  <div class='visible-sm-block visible-md-block hidden-xs-block'>
+    <%= inline_svg('spacemonkey-md.svg', { preserve_aspect_ratio: 'xMaxYMax meet'}) %>
+  </div>
+  <div class='visible-xs-block'>
+    <%= inline_svg('spacemonkey-xs.svg', { preserve_aspect_ratio: 'xMaxYMax meet'}) %>
+  </div>
+  <a href="/instruments">click</a>
+</div>
+<div class="col-lg-4 col-sm-4 col-xs-12">
+  <div class="sidebar-nav">
+    <div class='welcome-container mvxl'>
+      <h1>Make music anywhere.</h1>
+    </div>
+    <ul class="nav nav-list mtxl">
+      <li><%= link_to "#{ fa_icon 'plus' } Create channel".html_safe, "/instruments", { class: 'btn' }  %>
+      <li class='mtmd'><%= link_to "#{ fa_icon 'headphones' } Join channel".html_safe,  "/instruments", { class: 'btn' }   %>
+      <li class='mtmd'><%= link_to "#{ fa_icon 'question' } About".html_safe,  "/instruments", { class: 'btn' }   %>
+    </ul>
+  </div><!--/.well -->
+</div><!--/span-->
+</div><!--/row-->
