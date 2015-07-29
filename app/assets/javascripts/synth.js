@@ -77,6 +77,7 @@
     self.synthMode = "envelope" // or "envelope"
     self.inputFieldsClass = opts['inputFieldsClass'];
     self.wave = opts['wave'] || App.Constants.DEFAULT_WAVE;
+    self.mul = App.Constants.DEFAULT_MUL
     self.opts["play"] = self.play;
     self.opts["stop"] = self.stop;
 
@@ -102,8 +103,8 @@
     }
 
     self.generatePluck = function(attack, decay, sustain, release) {
-      var env = T("perc", {a: attack || 50, d: decay, s: sustain, r: release || 2500 });
-      return T("PluckGen", {env: env, mul:0.5});
+      var env = T("perc", {a: attack || self.attack, r: release || self.release});
+      return T("PluckGen", {env:env, mul:0.5}).play();
     }
 
     self.generateAdsfr = function(attack, decay, sustain, fade, release) {
@@ -134,10 +135,10 @@
           self.initializeNoteBank();
           break;
         case 'envelope':
-          self.synth = T('OscGen', { lv: 0.25, osc: osc, env: env, poly: 64, mul: self.mul }).play();
+          self.synth = T('OscGen', { lv: 0.25, osc: osc, env: env, poly: 4, mul: (self.mul/3) }).play();
           break;
         case 'pluck':
-          self.synth = self.generatePluck();
+          self.synth = self.generatePluck(self.attack, self.decay, self.sustain, self.release);
           break;
       } 
 
@@ -186,7 +187,7 @@
           self.synth.noteOnWithFreq(freq, velocity);
           break;
         case 'pluck':
-          self.synth.noteOn(freq, velocity);
+          self.synth.noteOnWithFreq(freq, velocity);
           break;
       }
     }
