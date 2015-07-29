@@ -4,6 +4,7 @@
     var parent, freqSlide, self, opts, notes, onChangeInput;
 
     self = App.Synth.prototype = new App.Instrument({
+      onStopRecording: opts['onStopRecording'],
       onDeleteBuffer: opts['onDeleteBuffer'],
       onCreateBuffer: opts['onCreateBuffer'],
       onMidiMessage: opts['onMidiMessage'] || function(note, velocity) {
@@ -100,6 +101,11 @@
       return T("perc", {sustained: true, d: decay, a: attack, r: release});
     }
 
+    self.generatePluck = function(attack, decay, sustain, release) {
+      var env = T("perc", {a: attack || 50, d: decay, s: sustain, r: release || 2500 });
+      return T("PluckGen", {env: env, mul:0.5});
+    }
+
     self.generateAdsfr = function(attack, decay, sustain, fade, release) {
       return T("ahdsfr", { f: fade, sustained: true, a: attack, d:decay, s: sustain,r: release}, T(self.wave));
     }
@@ -121,7 +127,20 @@
 
       osc = T(wave);
       //osc = self.attachDelayAndDist(osc);
-      self.synth = T('OscGen', { lv: 0.25, osc: osc, env: env, poly: true, mul: self.mul }).play();
+
+      switch(self.synthMode)
+      {
+        case 'organ':
+          self.initializeNoteBank();
+          break;
+        case 'envelope':
+          self.synth = T('OscGen', { lv: 0.25, osc: osc, env: env, poly: 64, mul: self.mul }).play();
+          break;
+        case 'pluck':
+          self.synth = self.generatePluck();
+          break;
+      } 
+
     }
 
     self.initialize = function() {
@@ -147,21 +166,29 @@
     self.play = function(note, velocity) {
       var noteInterval;
       if (self.opts["onPlay"]) self.opts["onPlay"].call(this, note, velocity);
-      noteInterval = self.notes[note].noteInterval = self.elapsedSinceLastNote(self.notes[note].startTime)
+      noteInterval = self.notes[note].noteInterval = self.Recorder.elapsedSince(self.notes[note].startTime)
       self.playNote.apply(this, [note, velocity, noteInterval]);
-      self.notes[note].startTime = self.startNoteInterval(note);
+      self.notes[note].startTime = self.Recorder.getNow();
       self.broadcast.apply(this, [note, velocity, noteInterval]);
     }
 
     self.playNote = function(note, velocity, noteInterval) {
       var freq = App.Constants.FREQUENCIES[note];
-      if (noteInterval) {
+      if (noteInterval)
         setTimeout(self.playIndividualNote.apply(this, [note, freq, velocity]), noteInterval);
+      
+      switch(self.synthMode)
+      {
+        case 'organ':
+          self.notes[note].play();
+          break;
+        case 'envelope':
+          self.synth.noteOnWithFreq(freq, velocity);
+          break;
+        case 'pluck':
+          self.synth.noteOn(freq, velocity);
+          break;
       }
-      if (self.synthMode == 'organ')
-        self.notes[note].play();
-      else
-        self.synth.noteOnWithFreq(freq, velocity);
     }
 
     self.playIndividualNote = function(note, freq, velocity) {
@@ -175,7 +202,7 @@
       var noteInterval;
       self.stopNote(note);
       if (self.opts["onStop"]) self.opts["onStop"].call(this, note);
-      noteInterval = self.elapsedSinceLastNote(note);
+      noteInterval = self.Recorder.elapsedSince(note);
       self.broadcast.call(this, note, 0);
     }
 
@@ -230,15 +257,17 @@
       self.generateSynthFromSettings();
     }
 
-    self.setBPM = function(bpm) {
+    self.setBpm = function(bpm) {
       self.Recorder.setBPM(bpm);
     }
 
-    self.setBPL = function(bpl) {
-      self.Recorder.setBPL(bpl);
-    }
+    $(['setBpm', 'setBpl', 'setRecordingTime', 'setMetronomeVel']).each((function(index, el) {
+      self[el] = function(field) {
+        self.Recorder[el].call(this, field);
+      }
+    }).bind(this));
 
-    self.setBFS = function(bfs) {
+    self.setBfs = function(bfs) {
       self.BFS = bfs;
     }
 

@@ -1,16 +1,59 @@
+String.prototype.toUnderscore = function(){
+  return this.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
+};
+
 (function(App) {
   App.Recorder = function(opts) {
     'use strict';
     var self = this;
     self.recording = false;
     self.recorder = null;
-    self.recordingTime = 60000;
+    self.recordingTime = 32000;
+    self.bpl = 8;
+    self.bpm = 128;
+    self.metronomeOn = false;
+    self.metronomeObj = null;
     self.currentRecordId = null;
     self.buffers = {};
     self.tempBuffer = [];
+    self.onStopRecording = opts['onStopRecording'];
+
+    $(['bpl', 'bpm', 'metronomeVel', 'metronomeFreq']).each((function(index, el) {
+      var constantKey = el.toUnderscore().toUpperCase();
+      self[el] = App.Constants['DEFAULT_' + constantKey];
+    }).bind(this));
+
+
     self.broadcast = opts['broadcast'];
     self.onCreateBuffer = opts['onCreateBuffer'];
     self.onDeleteBuffer = opts['onDeleteBuffer'];
+
+    self.playMetronomeTick = function () {
+      var osc = T("sin"),
+        env = T("perc", {a:10, r:5}),
+        oscenv = T("OscGen", {osc:osc, env:env, mul: 0.15}).play();
+
+      oscenv.play();
+      oscenv.noteOnWithFreq(600, self.metronomeVel);
+    }
+
+    self.toggleMetronome = function() {
+      self.metronomeOn = !self.metronomeOn;
+      var interval, beat;
+      beat = 1
+
+      if (self.metronomeOn) { 
+        self.metronomeObj = T("interval", {interval: self.recordingTime/self.bpl}, (function(count) {
+          self.playMetronomeTick();
+          $('.record-time').html(beat);
+          if (beat % 4 === 0) beat = 1;
+          else beat = beat + 1;
+        }).bind(this));
+        self.metronomeObj.start();
+      } else
+        self.metronomeObj.stop();
+    }
+
     self.initializeRecorder = function(opts) {
       var dfd, instrument, recorderOpts, recOpts, tempBuffer;
       self.tempBuffer = []
@@ -64,6 +107,7 @@
       $('.record-btn').addClass('hide');
       $('.stop-btn').removeClass('hide');
       self.recording = true;
+      self.startTime = self.getNow();
       self.recorder.start();
     }
 
@@ -83,19 +127,37 @@
       for (var i = 0; i < arr.length; i++) arr[i].play();
     }
 
+    self.getNow = function() {
+      return new Date().getTime();
+    }
+
+    self.elapsedSince = function(startTime) {
+      return self.getNow() - (startTime || self.startTime);
+    }
+
     self.stopRecording = function(opts) {
       self.recorder.stop();
+      var now = new Date();
+      self.recordingTime = self.elapsedSince();
+      self.onStopRecording.call(this, self.recordingTime);
       self.recording = false;
     }
 
-    self.setBPM = function(bpm, bpl) {
-      self.BPM = bpm;
+    self.setRecordingTime = function(recordingTime) {
+      self.recordingTime = recordingTime;
+    }
+
+    self.setMetronomeVel = function(velocity) {
+      self.metronomeVel = velocity;
+    }
+
+    self.setBpm = function(bpm, bpl) {
+      self.bpm = bpm;
       self.recordingTime = self.calculateRecordingTime(bpm, bpl)
     }
 
-    self.setBPL = function(bpm, bpl) {
-      self.BPL = bpl;
-      self.recordingTime = self.calculateBPM(self.BPM, bpl)
+    self.setBpl = function(bpl) {
+      self.bpl = bpl;
     }
 
     // convert BPM into recording Time in milliseconds

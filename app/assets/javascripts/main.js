@@ -28,6 +28,11 @@ $(document).ready(function() {
       note = note.replace('#', 'sharp');
       $("#" + note).removeClass('active');
     },
+    onStopRecording: function(val) {
+      var secs = parseInt(val/1000);
+      $('#synth-recording-time-input').val(secs);
+      $('#synth-recording-time-input').attr('value', secs).knob();
+    },
     inputFieldsClass: 'synth-field'
   });
 
@@ -60,7 +65,8 @@ $(document).ready(function() {
       min = parseFloat(self.data('min')),
       max = parseFloat(self.data('max')),
       dataType = self.data('type'),
-      step = max < 1.01 ? 0.01 : 0.5;
+      stepData = parseFloat(self.data('step')),
+      step = stepData || (max < 1.01 ? 0.01 : 0.5);
 
     $('#' + id).knob({
       min: min,

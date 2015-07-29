@@ -45,14 +45,6 @@
       onChangeInput: opts['onChangeInput']
     });
 
-    self.startNoteInterval = function(note) {
-      return new Date().getTime();
-    }
-
-    self.elapsedSinceLastNote = function(startTime) {
-      return new Date().getTime() - startTime;
-    }
-
     self.broadcast = function(note, velocity, noteInterval) {
       if (self.mode == "playing") {
         self.firebaseInterface.broadcast({
