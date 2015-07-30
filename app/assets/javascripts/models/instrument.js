@@ -8,14 +8,41 @@ try {
 (function(App) {
   "use strict";
 
+  App.InstrumentCRUD = function(opts) {
+    var self = App.InstrumentCRUD.prototype;
+    self.saveBuffer = function(bufferData) {
+      debugger
+      $.ajax({
+        type: 'POST',
+        url: '/buffers/',
+        data: {
+          buffer: {
+            hash: stringify(bufferData, null, 2)
+          }
+        },
+        dataType: 'JSON',
+        success: function(xhr) {
+          debugger
+        },
+        error: function(xhr) {
+          debugger
+        }
+      })
+    }
+
+    return self;
+  };
+
   /**
     * Instrument take in opts
     *   opts: { 
     *     playFunction: play()
     *   }
     */
+
   App.Instrument = function(opts) {
     var self = App.Instrument.prototype;
+    self.InstrumentCRUD = new App.InstrumentCRUD(opts);
     self.mode = "playing";
     self.currentOctave = opts['currentOctave'] || 3;
     self.inputFieldsClass = opts['inputFieldsClass'];

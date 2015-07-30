@@ -237,13 +237,12 @@
 
     self.setDecay = function(decay) {
       self.decay = parseFloat(decay) || App.Constants.DEFAULT_DECAY;
-      self.synthEnv.set({ d: decay });
+      self.generateSynthFromSettings();
     }
 
     self.setAttack = function(attack) {
       self.attack = parseFloat(attack) || App.Constants.DEFAULT_ATTACK;
-      self.synthEnv.set({ a: self.attack });
-      self.synth.set({ env: self.synthEnv });
+      self.generateSynthFromSettings();
     }
 
     self.setWave = function(wave) {
@@ -270,7 +269,7 @@
       self.Recorder.setBPM(bpm);
     }
 
-    $(['setBpm', 'setBpl', 'setRecordingTime', 'setMetronomeVel']).each((function(index, el) {
+    $(['saveBuffer', 'setBpm', 'setBpl', 'setRecordingTime', 'setMetronomeVel']).each((function(index, el) {
       self[el] = function(field) {
         self.Recorder[el].call(this, field);
       }

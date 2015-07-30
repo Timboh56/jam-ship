@@ -15,12 +15,12 @@ String.prototype.toUnderscore = function(){
     self.buffers = {};
     self.tempBuffer = [];
     self.onStopRecording = opts['onStopRecording'];
+    self.InstrumentCRUD = new App.InstrumentCRUD(opts);
 
     $(['bpl', 'bpm', 'metronomeVel', 'metronomeFreq']).each((function(index, el) {
       var constantKey = el.toUnderscore().toUpperCase();
       self[el] = App.Constants['DEFAULT_' + constantKey];
     }).bind(this));
-
 
     self.broadcast = opts['broadcast'];
     self.onCreateBuffer = opts['onCreateBuffer'];
@@ -113,6 +113,10 @@ String.prototype.toUnderscore = function(){
     self.stop = function(recordId) {
       var arr = self.buffers[recordId];
       for (var i = 0; i < arr.length; i++) arr[i].pause();
+    }
+
+    self.saveBuffer = function(recordId) {
+      self.InstrumentCRUD.saveBuffer(self.buffers[recordId]);
     }
 
     self.deleteBuffer = function(recordId) {
