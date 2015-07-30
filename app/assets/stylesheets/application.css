@@ -14,5 +14,8 @@
  *= require main
  *= require piano
  *= require_self
- *= require_tree
+ *= require main
+ *= require shared
+ *= require instruments
+ *= require components
  */

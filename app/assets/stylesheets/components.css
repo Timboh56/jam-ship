@@ -8,7 +8,7 @@
 }
 .onoffswitch-label {
     display: block; overflow: hidden; cursor: pointer;
-    border: 2px solid #999999; border-radius: 20px;
+    border: 2px solid #999999; border-radius: 13px;
 }
 .onoffswitch-inner {
     display: block; width: 200%; margin-left: -100%;
@@ -22,7 +22,7 @@
 .onoffswitch-inner:before {
     content: "ON";
     padding-left: 10px;
-    background-color: #34A7C1; color: #FFFFFF;
+    background-color: #2ecc71; color: #FFFFFF;
 }
 .onoffswitch-inner:after {
     content: "OFF";
@@ -35,7 +35,7 @@
     background: #FFFFFF;
     position: absolute; top: 0; bottom: 0;
     right: 56px;
-    border: 2px solid #999999; border-radius: 20px;
+    border: 2px solid #999999; border-radius: 13px;
     transition: all 0.3s ease-in 0s; 
 }
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {

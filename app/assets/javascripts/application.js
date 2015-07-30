@@ -22,6 +22,7 @@
 //= require app
 //= require constants
 //= require recorder
+// require_tree ./synth
 //= require MoogFF
 //= require firebaseAdapter
 //= require instrumentControl

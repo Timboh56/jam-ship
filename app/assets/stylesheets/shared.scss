@@ -10,8 +10,11 @@ label {
   font-family: 'Roboto', sans-serif;
 }
 
-h3 {
-  font-size: 21px;
+h1, h2, h3, h4 { margin: 0; }
+h2 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 28px;
+  line-height: 38px;
 }
 .no-padding {
   padding: 0 !important;
@@ -36,6 +39,8 @@ input[type=number]::-webkit-outer-spin-button {
   padding-top: 14px;
   padding-bottom: 14px;
 }
+.pbmd { padding-bottom: 14px; }
+.pbl, .pblg { padding-bottom: 21px; }
 .pvlg {
   padding-top: 21px;
   padding-bottom: 21px;
@@ -133,8 +138,17 @@ input[type=number].synth-field {
     -webkit-transition: .25s all;
 }
 
+.border-bottom {
+  border-bottom: 1px solid #eee;  
+}
+
 .white {
   background-color: white !important;
+}
+
+.height-auto {
+  height: auto;
+  overflow: auto;
 }
 
 .gray {

@@ -1,3 +1,10 @@
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+try {
+  audioContext = new AudioContext();
+} catch(e) {
+  alert('The Web Audio API is apparently not supported in this browser.');
+}
+
 (function(App) {
   "use strict";
 

@@ -123,7 +123,9 @@ String.prototype.toUnderscore = function(){
 
     self.play = function(recordId) {
       var arr = self.buffers[recordId];
-      for (var i = 0; i < arr.length; i++) arr[i].play();
+      for (var i = 0; i < arr.length; i++) {
+        arr[i].bang().play();
+      }
     }
 
     self.getNow = function() {

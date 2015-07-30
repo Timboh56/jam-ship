@@ -102,6 +102,13 @@
       return T("perc", {sustained: true, d: decay, a: attack, r: release});
     }
 
+    self.generateLPF = function(freq, velocity, table) {
+      var table = table || [ 200, [ 4800, 150 ], [ 2400, 500 ] ];
+      var cutoff = T("env", {table:table }).bang();
+      var VCO = T("saw", {mul: self.mul, freq: freq });
+      return T("lpf", {cutoff:cutoff, Q:10}, VCO);
+    }
+
     self.generatePluck = function(attack, decay, sustain, release) {
       var env = T("perc", {a: attack || self.attack, r: release || self.release});
       return T("PluckGen", {env:env, mul:0.5}).play();
@@ -123,19 +130,17 @@
 
       // until i can fix the sustain issue, i'll use default
       env = self.generateAdsfr(attack, decay, App.Constants.DEFAULT_SUSTAIN, fade, release);
-      
-      self.initializeNoteBank();
+            
+      self.synthEnv = env;
 
       osc = T(wave);
       //osc = self.attachDelayAndDist(osc);
+      self.initializeNoteBank();
 
       switch(self.synthMode)
       {
-        case 'organ':
-          self.initializeNoteBank();
-          break;
         case 'envelope':
-          self.synth = T('OscGen', { lv: 0.25, osc: osc, env: env, poly: 4, mul: (self.mul/3) }).play();
+          self.synth = T('OscGen', { lv: 0.25, osc: osc, env: env, poly: 4, mul: self.mul }).play();
           break;
         case 'pluck':
           self.synth = self.generatePluck(self.attack, self.decay, self.sustain, self.release);
@@ -158,7 +163,9 @@
 
     self.initializeNoteBank = function() {
       for (var i in App.Constants.FREQUENCIES) {
-        self.notes[i] = T(self.wave, {freq: App.Constants.FREQUENCIES[i] * 1.01, mul: 0.05, phase: Math.PI * 0.25 });
+
+        //self.generateLPF(App.Constants.FREQUENCIES[i]); 
+        self.notes[i] = T(self.wave, {freq: App.Constants.FREQUENCIES[i] * 1.01, mul: self.mul, phase: Math.PI * 0.25 });
         self.notes[i].noteInterval = 0;
         self.notes[i].startTime = null;
       }
@@ -230,12 +237,13 @@
 
     self.setDecay = function(decay) {
       self.decay = parseFloat(decay) || App.Constants.DEFAULT_DECAY;
-      self.generateSynthFromSettings();
+      self.synthEnv.set({ d: decay });
     }
 
     self.setAttack = function(attack) {
       self.attack = parseFloat(attack) || App.Constants.DEFAULT_ATTACK;
-      self.generateSynthFromSettings();
+      self.synthEnv.set({ a: self.attack });
+      self.synth.set({ env: self.synthEnv });
     }
 
     self.setWave = function(wave) {
@@ -245,17 +253,17 @@
 
     self.setRelease = function(release) {
       self.release = release;
-      self.generateSynthFromSettings();
+      self.synthEnv.set({ r: release });
     }
 
     self.setSustain = function(sustain) {
       self.sustain = parseFloat(sustain) || App.Constants.DEFAULT_SUSTAIN;
-      self.generateSynthFromSettings();
+      self.synthEnv.set({ s: self.sustain });
     }
 
     self.setVolume = function(mul) {
       self.mul = parseFloat(mul);
-      self.generateSynthFromSettings();
+      self.synth.set({ mul: self.mul });
     }
 
     self.setBpm = function(bpm) {

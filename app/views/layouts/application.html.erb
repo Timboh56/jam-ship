@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= content_for?(:title) ? yield(:title) : "JamShip" %></title>
     <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat|Open+Sans|Roboto' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,400italic,500,700' rel='stylesheet' type='text/css'>
     <link rel="apple-touch-icon" sizes="57x57" href="<%= image_path("apple-icon-57x57.png") %>">
     <link rel="apple-touch-icon" sizes="60x60" href="<%= image_path("apple-icon-60x60.png") %>">
@@ -64,7 +65,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/">
           <%= fa_icon "rocket" %>
           JamShip</a>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
@@ -77,15 +78,13 @@
     </div>
 
     <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <%= bootstrap_flash %>
-          <%= yield %>
-        </div>
+      <div class='row'>
+        <%= bootstrap_flash %>
+        <%= yield %>
+      </div>
       <footer>
         <p>&copy; Company 2015</p>
       </footer>
-
     </div> <!-- /container -->
     <script>
       (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
