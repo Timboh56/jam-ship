@@ -8,7 +8,7 @@ Bundler.require(*Rails.groups)
 
 module JamShip
   class Application < Rails::Application
-    Dotenv::Railtie.load
+    Dotenv::Railtie.load if Rails.env.development? || Rails.env.test?
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
