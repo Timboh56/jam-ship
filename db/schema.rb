@@ -11,19 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150730102012) do
+ActiveRecord::Schema.define(version: 20150806101620) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "buffers", force: :cascade do |t|
-    t.json     "hash"
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "buffers", ["user_id"], name: "index_buffers_on_user_id", using: :btree
 
   create_table "channels", force: :cascade do |t|
     t.string   "name"
@@ -31,6 +22,25 @@ ActiveRecord::Schema.define(version: 20150730102012) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "clips", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "attachment"
+    t.integer  "user_id"
+    t.string   "name"
+    t.integer  "channel_id"
+  end
+
+  create_table "identities", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "provider"
+    t.string   "uid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "identities", ["user_id"], name: "index_identities_on_user_id", using: :btree
 
   create_table "instrument_settings", force: :cascade do |t|
     t.integer  "user_id"
@@ -54,10 +64,12 @@ ActiveRecord::Schema.define(version: 20150730102012) do
     t.inet     "last_sign_in_ip"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.string   "name"
+    t.datetime "confirmed_at"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
-  add_foreign_key "buffers", "users"
+  add_foreign_key "identities", "users"
 end

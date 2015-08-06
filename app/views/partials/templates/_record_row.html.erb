@@ -7,7 +7,8 @@
     <div class='full-width'>
       <a data-action="play" data-record-id="{{ id }}" class="btn js-record-action mlxs mvmd" id="play-btn-{{ id }}"> <%= fa_icon "play" %> Play </a>
       <a data-action="stop" class="btn js-record-action mlxs mvmd" data-record-id="{{ id }}" id="stop-btn-{{ id }}"> <%= fa_icon "stop" %> Stop </a>
-      <a class='btn js-record-action' data-record-id="{{ id }}" data-action='saveBuffer'> <%= fa_icon 'save' %> Save</a>
+      <a class='btn js-record-action' data-record-id="{{ id }}" data-action='saveBuffer'> <%= fa_icon 'save' %> Save </a>
+      <a class='btn js-record-action' data-record-id="{{ id }}" data-action='exportBuffer'> <%= fa_icon 'save' %> Export </a>
       <a data-action="deleteBuffer" class="btn js-record-action mlxs mvmd" data-record-id="{{ id }}" id="delete-btn-{{ id }}"> <%= fa_icon "remove" %> Delete <a/>
     </div>
   </div>

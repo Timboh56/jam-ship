@@ -16,9 +16,18 @@
       <h2>Make music. Anywhere.</h2>
     </div>
     <ul class="nav nav-list mtxl">
-      <li><%= link_to "#{ fa_icon 'plus' } Create channel".html_safe, "/instruments", { class: 'btn' }  %>
+      <% if current_user %>
+        <li><%= link_to "#{ fa_icon 'plus' } Create channel".html_safe, "/instruments", { class: 'btn' }  %>
+      <% else %>
+        <li>
+          <a type="button" class="btn" data-toggle="modal" data-target="#login-modal">
+            <%= fa_icon 'plus' %> Create Channel
+          </a>
+        </li>
+      <% end %>
       <li class='mtmd'><%= link_to "#{ fa_icon 'headphones' } Join channel".html_safe,  "/instruments", { class: 'btn' }   %>
       <li class='mtmd'><%= link_to "#{ fa_icon 'question' } About".html_safe,  "/instruments", { class: 'btn' }   %>
     </ul>
   </div><!--/.well -->
 </div><!--/span-->
+<%= render partial: 'partials/login' %>

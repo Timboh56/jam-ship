@@ -13,10 +13,10 @@ String.prototype.toUnderscore = function(){
     self.metronomeObj = null;
     self.currentRecordId = null;
     self.buffers = {};
-    self.tempBuffer = [];
+    self.blobs = [];
     self.onStopRecording = opts['onStopRecording'];
     self.InstrumentCRUD = new App.InstrumentCRUD(opts);
-
+    if(!saveAs) throw "FileSaver.js not included!";
     $(['bpl', 'bpm', 'metronomeVel', 'metronomeFreq']).each((function(index, el) {
       var constantKey = el.toUnderscore().toUpperCase();
       self[el] = App.Constants['DEFAULT_' + constantKey];
@@ -29,7 +29,7 @@ String.prototype.toUnderscore = function(){
     self.playMetronomeTick = function () {
       var osc = T("sin"),
         env = T("perc", {a:10, r:5}),
-        oscenv = T("OscGen", {osc:osc, env:env, mul: 0.15}).play();
+        oscenv = T("OscGen", {osc:osc, env:env, mul: self.metronomeVol}).play();
 
       oscenv.play();
       oscenv.noteOnWithFreq(600, self.metronomeVel);
@@ -54,8 +54,7 @@ String.prototype.toUnderscore = function(){
     }
 
     self.initializeRecorder = function(opts) {
-      var dfd, instrument, recorderOpts, recOpts, tempBuffer;
-      self.tempBuffer = []
+      var dfd, instrument, recorderOpts, recOpts;
       dfd = $.Deferred();
       recOpts = opts || {};
 
@@ -64,11 +63,28 @@ String.prototype.toUnderscore = function(){
       else throw 'Please include an instrument to record';
 
       self.recorder = T('rec', { timeout: self.recordingTime || recOpts['recordingTime']}, instrument).on('ended', (function(buffer) {
-        var t = T('buffer', {buffer: buffer, loop:true});
+        var t, timestamp, buf, sr, dataview, audioBlob;
+ 
+        timestamp = new Date().getUTCMilliseconds();
+
+        t = T('buffer', {buffer: buffer, loop:true}); // create buffer object
         t.buffer = buffer;
-        self.tempBuffer.push(t);
         self.recording = false;
+
+        buf = buffer.buffer;      // buf = a Float32Array of data
+        sr = buffer.samplerate;    //sample rate of the data
+
+        dataview = encodeWAV(buf, sr);
+        audioBlob = new Blob([dataview], { type: 'audio/wav' });
+        self.blobs[timestamp] = audioBlob;
+
+        self.currentRecordId = timestamp;
+        self.buffers[timestamp] = t;
+        self.onCreateBuffer.call(this, timestamp);
+        self.play(timestamp);
+
         dfd.resolve();
+
       }).bind(this));
 
       return dfd.promise();
@@ -83,21 +99,16 @@ String.prototype.toUnderscore = function(){
 
     self.startRecording = function(opts) {
       var timestamp, recorder;
-      timestamp = new Date().getUTCMilliseconds();
-      
-      self.currentRecordId = timestamp;
 
       // record from previous created track??????
       if (opts['recordId'])
         self.recorder = recorder = self.buffers[opts['recordId']];
       else {
         recorder = self.initializeRecorder(opts).then((function() {
-          self.buffers[timestamp] = self.tempBuffer;
-          self.onCreateBuffer.call(this, timestamp);
+
           $('.recording-status-text').html('');
           $('.record-btn').removeClass('hide');
           $('.stop-btn').addClass('hide');
-          self.play(timestamp);
           //self.broadcast.apply(this, [ { buffer: self.buffers[self.currentRecordId].buffer }]);
         }).bind(this));
       }
@@ -111,12 +122,15 @@ String.prototype.toUnderscore = function(){
     }
 
     self.stop = function(recordId) {
-      var arr = self.buffers[recordId];
-      for (var i = 0; i < arr.length; i++) arr[i].pause();
+      self.buffers[recordId].pause();
     }
 
     self.saveBuffer = function(recordId) {
-      self.InstrumentCRUD.saveBuffer(self.buffers[recordId]);
+      self.InstrumentCRUD.saveBuffer(self.blobs[recordId]);
+    }
+
+    self.exportBuffer = function(recordId) {
+      saveAs(self.blobs[recordId], 'track ' + recordId + '.wav');
     }
 
     self.deleteBuffer = function(recordId) {
@@ -126,9 +140,10 @@ String.prototype.toUnderscore = function(){
     }
 
     self.play = function(recordId) {
-      var arr = self.buffers[recordId];
-      for (var i = 0; i < arr.length; i++) {
-        arr[i].bang().play();
+      try {
+        self.buffers[recordId].bang().play();
+      }catch(err) {
+        console.log('Could not play: ' + err);
       }
     }
 
@@ -148,22 +163,13 @@ String.prototype.toUnderscore = function(){
       self.recording = false;
     }
 
-    self.setRecordingTime = function(recordingTime) {
-      self.recordingTime = recordingTime;
-    }
+    $(['recordingTime', 'metronomeVol', 'metronomeVel', 'bpm', 'bpl']).each((function(i, el) {
 
-    self.setMetronomeVel = function(velocity) {
-      self.metronomeVel = velocity;
-    }
+      self['set' + capitalizeFirstLetter(el)] = function(field) {
+        self[el] = field;
+      };
 
-    self.setBpm = function(bpm, bpl) {
-      self.bpm = bpm;
-      self.recordingTime = self.calculateRecordingTime(bpm, bpl)
-    }
-
-    self.setBpl = function(bpl) {
-      self.bpl = bpl;
-    }
+    }).bind(this));
 
     // convert BPM into recording Time in milliseconds
     self.calculateBPM = function(recordingTime, bpl) {
@@ -176,6 +182,56 @@ String.prototype.toUnderscore = function(){
       beatsPerLoop = bpl || 4;
       loopsPerMinute = (bpm / bpl);
       return 60000/loopsPerMinute;
+    }
+
+    // functions to convert timbre buffer to WAV
+    function encodeWAV(buf, sr) {
+      var buffer = new ArrayBuffer(44 + buf.length * 2);
+      var view = new DataView(buffer);
+
+      /* RIFF identifier */
+      writeString(view, 0, 'RIFF');
+      /* file length */
+      view.setUint32(4, 32 + buf.length * 2, true);
+      /* RIFF type */
+      writeString(view, 8, 'WAVE');
+      /* format chunk identifier */
+      writeString(view, 12, 'fmt ');
+      /* format chunk length */
+      view.setUint32(16, 16, true);
+      /* sample format (raw) */
+      view.setUint16(20, 1, true);
+      /* channel count */
+      view.setUint16(22, 1, true);
+      /* sample rate */
+      view.setUint32(24, sr, true);
+      /* byte rate (sample rate * block align) */
+      view.setUint32(28, sr *2 , true);
+      /* block align (channel count * bytes per sample) */
+      view.setUint16(32, 2, true);
+      /* bits per sample */
+      view.setUint16(34, 16, true);
+      /* data chunk identifier */
+      writeString(view, 36, 'data');
+      /* data chunk length */
+      view.setUint32(40, buf.length * 2, true);
+
+      floatTo16BitPCM(view, 44, buf);
+
+      return view;
+    }
+
+    function floatTo16BitPCM(output, offset, input){
+      for (var i = 0; i < input.length; i++, offset+=2){
+        var s = Math.max(-1, Math.min(1, input[i]));
+        output.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+      }
+    }
+
+    function writeString(view, offset, string){
+      for (var i = 0; i < string.length; i++){
+        view.setUint8(offset + i, string.charCodeAt(i));
+      }
     }
   }
 

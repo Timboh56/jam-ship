@@ -10,24 +10,36 @@ try {
 
   App.InstrumentCRUD = function(opts) {
     var self = App.InstrumentCRUD.prototype;
-    self.saveBuffer = function(bufferData) {
-      debugger
+
+    var supports_html5_storage = function () {
+      try {
+        return 'localStorage' in window && window['localStorage'] !== null;
+      } catch (e) {
+        return false;
+      }
+    }
+    var updateLocalData = function(data){
+      if(supports_html5_storage())
+        localStorage.setItem('shape', JSON.stringify(data));
+    }
+
+    self.saveBuffer = function(blob) {
+      var fd = new FormData();
+      fd.append('fname', 'test.wav');
+      fd.append('data', blob);
       $.ajax({
         type: 'POST',
-        url: '/buffers/',
-        data: {
-          buffer: {
-            hash: stringify(bufferData, null, 2)
-          }
-        },
-        dataType: 'JSON',
+        url: '/api/clips/',
+        data: fd,
+        processData: false,
+        contentType: false,
         success: function(xhr) {
-          debugger
+          alert('Saved!');
         },
         error: function(xhr) {
-          debugger
+          alert('Error!');
         }
-      })
+      });
     }
 
     return self;

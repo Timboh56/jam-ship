@@ -15,6 +15,7 @@
 //= require jquery.knob
 //= require velocity.min
 //= require bootstrap.min
+//= require FileSaver.min
 //= require timbre.dev
 //= require mouse
 //= require helpers

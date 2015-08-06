@@ -269,7 +269,7 @@
       self.Recorder.setBPM(bpm);
     }
 
-    $(['saveBuffer', 'setBpm', 'setBpl', 'setRecordingTime', 'setMetronomeVel']).each((function(index, el) {
+    $(['saveBuffer', 'setBpm', 'setBpl', 'setRecordingTime', 'setMetronomeVol', 'setMetronomeVel']).each((function(index, el) {
       self[el] = function(field) {
         self.Recorder[el].call(this, field);
       }
