@@ -183,7 +183,7 @@
 
     self.play = function(note, velocity) {
       var noteInterval;
-      if (self.opts["onPlay"]) self.opts["onPlay"].call(this, note, velocity);
+      if (self.opts["onPlay"]) self.opts["onPlay"].apply(this, [ note, velocity ]);
       noteInterval = self.notes[note].noteInterval = self.Recorder.elapsedSince(self.notes[note].startTime)
       self.playNote.apply(this, [note, velocity, noteInterval]);
       self.notes[note].startTime = self.Recorder.getNow();

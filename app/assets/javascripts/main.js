@@ -32,7 +32,7 @@ window.initialize = function(channel) {
     onStop: function(note) {
       note = note.replace('#', 'sharp');
       $("#" + note).removeClass('active');
-      if (synth.mode == 'live') synth.broadcast({ note: note });
+      if (synth.mode == 'live') synth.broadcast({ note: note, velocity: 0 });
     },
 
     onPlayRecording: function(val) {

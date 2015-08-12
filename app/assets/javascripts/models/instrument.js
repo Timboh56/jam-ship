@@ -82,14 +82,8 @@ try {
       onChangeInput: opts['onChangeInput']
     });
 
-    self.broadcast = function(note, velocity, noteInterval) {
-      if (self.mode == "live") {
-        self.firebaseInterface.broadcast({
-          note: note,
-          velocity: velocity,
-          noteInterval: noteInterval || 0
-        });
-      }
+    self.broadcast = function(opts) {
+       self.firebaseInterface.broadcast(opts);
     };
 
     self.toggleRecording = function() {
