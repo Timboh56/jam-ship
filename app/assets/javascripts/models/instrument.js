@@ -111,6 +111,7 @@ try {
     });
 
     self.broadcast = function(opts) {
+      opts = $.extend({}, opts, { channel: self.channel });
        self.firebaseInterface.broadcast(opts);
     };
 

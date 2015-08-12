@@ -4,9 +4,9 @@ var FirebaseAdapter = function (opts) {
   self.channel = opts['channel'] || "test_channel";
   self.myDataRef = null;
   self.opts = opts;
-
+  debugger
   if (Firebase)
-    self.myDataRef = new Firebase('https://pftxxze6h6m.firebaseio-demo.com/');
+    self.myDataRef = new Firebase('https://pftxxze6h6m.firebaseio-demo.com/channels/' + self.channel);
   else
     throw "Did you forget to include Firebase?";
 
