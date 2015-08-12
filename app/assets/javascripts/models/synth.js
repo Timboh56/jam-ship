@@ -7,8 +7,8 @@
       onReceive: (function(snapshot) {
         if (self.mode == "listening") {
           var val = snapshot.val();
-          if (val.buffer) {
-            //var buffer = JSON.parse(val.buffer);
+          if (val.url) {
+            self.Recorder.setTrack(val);
           } else {
             if(val.velocity == 0)
               self.stop(val.note);

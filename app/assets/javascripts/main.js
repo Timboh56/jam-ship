@@ -45,6 +45,11 @@ window.initialize = function(channel, clips) {
       $('#synth-recording-time-input').val(secs);
       $('#synth-recording-time-input').attr('value', secs).knob();
     },
+
+    onSaveBuffer: function(res) {
+      synth.broadcast(res);
+    },
+
     inputFieldsClass: 'synth-field'
   });
 

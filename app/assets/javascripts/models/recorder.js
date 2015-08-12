@@ -14,6 +14,7 @@ String.prototype.toUnderscore = function(){
     self.currentRecordId = null;
     self.buffers = {};
     self.blobs = [];
+    self.onSaveBuffer = opts['onSaveBuffer'];
     self.onPlayRecording = opts['onPlayRecording'];
     self.onStopRecording = opts['onStopRecording'];
     self.InstrumentCRUD = new App.InstrumentCRUD(opts);
@@ -52,6 +53,20 @@ String.prototype.toUnderscore = function(){
         self.metronomeObj.start();
       } else
         self.metronomeObj.stop();
+    }
+
+    self.setTrack = function(opts) {
+      try {
+        opts = opts || {};
+        opts['id'] = opts['id'] || new Date().getUTCMilliseconds();
+        self.buffers[opts['id']] = T('audio', { load: opts['url'] } ).on('ended', function() {
+          this.pause();
+        }).play();
+        self.buffers[opts['id']].persists = true;
+        if (self.onCreateBuffer) self.onCreateBuffer(opts['id']);
+      } catch (err) {
+        console.log('Error setting track: ' + err);
+      }
     }
 
     self.initializeRecorder = function(opts) {
@@ -120,12 +135,10 @@ String.prototype.toUnderscore = function(){
 
     self.stop = function(recordId) {
       self.buffers[recordId].pause();
-      if (self.stopRecording) self.stopRecording.call(this);
     }
 
     self.saveBuffer = function(recordId) {
-      self.InstrumentCRUD.saveBuffer(self.blobs[recordId]);
-
+      self.InstrumentCRUD.saveBuffer(self.blobs[recordId]).done(self.onSaveBuffer);
     }
 
     self.exportBuffer = function(recordId) {
@@ -134,6 +147,7 @@ String.prototype.toUnderscore = function(){
 
     self.deleteBuffer = function(recordId) {
       self.stop(recordId);
+      if (self.buffers[recordId].persists) self.InstrumentCRUD.deleteClip(recordId);
       delete self.buffers[recordId];
       self.onDeleteBuffer.call(this, recordId);
     }
@@ -156,7 +170,7 @@ String.prototype.toUnderscore = function(){
     }
 
     self.stopRecording = function(opts) {
-      self.recorder.stop();
+      self.recorder.stop(); 
       var now = new Date();
       //self.recordingTime = self.elapsedSince();
       self.onStopRecording.call(this, self.recordingTime);
@@ -220,6 +234,8 @@ String.prototype.toUnderscore = function(){
 
       return view;
     }
+
+    for (var clip in opts['clips']) self.setTrack(opts['clips'][clip]);
 
     function floatTo16BitPCM(output, offset, input){
       for (var i = 0; i < input.length; i++, offset+=2){

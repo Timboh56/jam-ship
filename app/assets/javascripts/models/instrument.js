@@ -24,6 +24,7 @@ try {
     }
 
     self.saveBuffer = function(blob) {
+      var dfd = $.Deferred();
       var fd = new FormData();
       fd.append('fname', 'test.wav');
       fd.append('channel_id', self.channel_id);
@@ -36,12 +37,38 @@ try {
         contentType: false,
         success: function(xhr) {
           var successFlashDiv = $('.alert-info').html('Uploaded and saved.').clone();
-          $('.flash-messages').append(successFlashDiv);
+          $('.flash-messages').html(successFlashDiv);
+          dfd.resolve(xhr);
         },
         error: function(xhr) {
-          var errorlashDiv = $('.alert-danger').html('Upload was not successful.').clone();
-          $('.flash-messages').append(successFlashDiv);        }
+          var errorFlashDiv = $('.alert-danger').html('Upload was not successful.').clone();
+          $('.flash-messages').html(errorFlashDiv);  
+          dfd.reject();
+        }
       });
+      return dfd.promise();
+    }
+
+    self.deleteClip = function(id) {
+      var dfd = $.Deferred();
+      $.ajax({
+        type: 'DELETE',
+        url: '/api/clips/' + id,
+        data: { id: id },
+        processData: false,
+        contentType: false,
+        success: function(xhr) {
+          var successFlashDiv = $('.alert-info').html('Successfully deleted.').clone();
+          $('.flash-messages').html(successFlashDiv);
+          dfd.resolve(xhr);
+        },
+        error: function(xhr) {
+          var errorFlashDiv = $('.alert-danger').html('Upload was not successful.').clone();
+          $('.flash-messages').html(errorFlashDiv);  
+          dfd.reject();
+        }
+      });
+      return dfd.promise();
     }
 
     return self;
