@@ -4,6 +4,16 @@
     var parent, freqSlide, self, opts, notes, onChangeInput;
 
     opts = $.extend({}, opts, {
+      onReceive: (function(snapshot) {
+        if (self.mode == "listening") {
+          var val = snapshot.val();
+          if(val.velocity == 0)
+            self.stop(val.note);
+          else
+            self.play(val.note, val.velocity, val.noteInterval);
+        }
+      }).bind(this),
+
       onMidiMessage: opts['onMidiMessage'] || function(note, velocity) {
         if (velocity > 0 && self.mode == 'live')
           self.play(note, velocity);
@@ -206,10 +216,8 @@
     }
 
     self.stop = function(note) {
-      var noteInterval;
       self.stopNote(note);
       if (self.opts["onStop"]) self.opts["onStop"].call(this, note);
-      noteInterval = self.Recorder.elapsedSince(note);
     }
 
     self.stopNote = function(note) {

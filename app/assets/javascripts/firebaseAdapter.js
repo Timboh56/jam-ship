@@ -1,7 +1,7 @@
 var FirebaseAdapter = function (opts) {
   var self = this;
 
-  self.channel = "test_channel"
+  self.channel = opts['channel'] || "test_channel";
   self.myDataRef = null;
   self.opts = opts;
 
@@ -11,7 +11,7 @@ var FirebaseAdapter = function (opts) {
     throw "Did you forget to include Firebase?";
 
   this.broadcast = function(opts) {
-    opts = stringify(opts);
+    //opts = stringify(opts);
     self.myDataRef.set(opts);
   }
 

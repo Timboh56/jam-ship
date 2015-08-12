@@ -55,8 +55,8 @@ try {
 
   App.Instrument = function(opts) {
     var self = App.Instrument.prototype;
+    self.mode = opts['mode'] || 'live';
     self.InstrumentCRUD = new App.InstrumentCRUD(opts);
-    self.mode = "live";
     self.currentOctave = opts['currentOctave'] || 3;
     self.inputFieldsClass = opts['inputFieldsClass'];
     self.notes = {};
@@ -64,18 +64,7 @@ try {
     self.velocity = App.Constants.DEFAULT_VELOCITY;
     for (var prop in opts) self[prop] = self[prop] || opts[prop];
 
-    self.firebaseInterface = FirebaseAdapter({
-      onReceive: function(snapshot) {
-        debugger
-        if (self.mode == "listening") {
-          var val = snapshot.val();
-          if(val.velocity == 0)
-            self.stopNote(val.note);
-          else
-            self.playNote(val.note, val.velocity, val.noteInterval);
-        }
-      }
-    });
+    self.firebaseInterface = FirebaseAdapter(opts);
 
     self.MidiControl = new App.MidiControl({
       onMidiMessage: self.onMidiMessage

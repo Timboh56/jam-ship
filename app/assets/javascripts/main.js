@@ -1,8 +1,8 @@
 window.myDataRef = new Firebase('https://jam-ship.firebaseio.com/');
 
-$(document).ready(function() {
+window.initialize = function(channel) {
   var synth = new App.Synth({
-
+    channel: channel,
     onCreateBuffer: function (id) {
       var rowHtml = $('.record-row-template').html(),
         recordTrackCount = $('.recording-track').length + 1,
@@ -95,4 +95,4 @@ $(document).ready(function() {
       }
     });
   });
-});
+};

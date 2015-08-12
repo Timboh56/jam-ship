@@ -18,3 +18,8 @@
 </div>
 <%= render partial: 'partials/orig_synth' %>
 <%= render partial: 'partials/templates/alert_templates' %>
+<script type='text/javascript'>
+  $(document).ready(function() {
+    window.initialize('<%= params[:id] %>');
+  });
+</script>
