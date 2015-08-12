@@ -16,10 +16,6 @@ var FirebaseAdapter = function (opts) {
   }
 
   this.onReceive = function(snapshot) {
-    var note, velocity;
-    note = snapshot.note;
-    velocity = snapshot.velocity;
-
     if (self.opts["onReceive"])
       self.opts["onReceive"](snapshot);
   }

@@ -76,9 +76,12 @@ String.prototype.toUnderscore = function(){
         sr = buffer.samplerate;    //sample rate of the data
 
         dataview = encodeWAV(buf, sr);
+
+        // save blob
         audioBlob = new Blob([dataview], { type: 'audio/wav' });
         self.blobs[timestamp] = audioBlob;
         self.currentRecordId = timestamp;
+
         self.buffers[timestamp] = t;
         self.onCreateBuffer.call(this, timestamp);
         self.play(timestamp);
@@ -121,7 +124,8 @@ String.prototype.toUnderscore = function(){
     }
 
     self.saveBuffer = function(recordId) {
-      self.InstrumentCRUD.saveBuffer(self.buffers[recordId]);
+      self.InstrumentCRUD.saveBuffer(self.blobs[recordId]);
+
     }
 
     self.exportBuffer = function(recordId) {

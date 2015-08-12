@@ -1,6 +1,6 @@
 class Api::ClipsController < ApplicationController
   def create
-    Clip.create!(user: current_user, name: params[:fname], attachment: params[:data])
+    Clip.create!(user: current_user, channel_id: params[:channel_id], name: params[:fname], attachment: params[:data])
     render nothing: true, status: 200
   end
 

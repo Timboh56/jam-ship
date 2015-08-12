@@ -20,6 +20,10 @@
 <%= render partial: 'partials/templates/alert_templates' %>
 <script type='text/javascript'>
   $(document).ready(function() {
-    window.initialize('<%= params[:id] %>');
+    var clips = [];
+    <% @channel.clips.each do |clip| %>
+      clip.push({ id: clip.id, url: clip.attachment.url });
+    <% end %>
+    window.initialize('<%= params[:id] %>', clips);
   });
 </script>

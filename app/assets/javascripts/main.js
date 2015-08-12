@@ -1,8 +1,9 @@
 window.myDataRef = new Firebase('https://jam-ship.firebaseio.com/');
 
-window.initialize = function(channel) {
+window.initialize = function(channel, clips) {
   var synth = new App.Synth({
     channel: channel,
+    clips: clips,
     onCreateBuffer: function (id) {
       var rowHtml = $('.record-row-template').html(),
         recordTrackCount = $('.recording-track').length + 1,
@@ -36,7 +37,7 @@ window.initialize = function(channel) {
     },
 
     onPlayRecording: function(val) {
-      //if (synth.mode == 'live') synth.broadcast(val);
+      //if (synth.mode == 'live') synth.broadcast({ buffer: stringify(val) });
     },
 
     onStopRecording: function(val) {

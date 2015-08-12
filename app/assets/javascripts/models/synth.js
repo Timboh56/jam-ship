@@ -7,10 +7,14 @@
       onReceive: (function(snapshot) {
         if (self.mode == "listening") {
           var val = snapshot.val();
-          if(val.velocity == 0)
-            self.stop(val.note);
-          else
-            self.play(val.note, val.velocity, val.noteInterval);
+          if (val.buffer) {
+            //var buffer = JSON.parse(val.buffer);
+          } else {
+            if(val.velocity == 0)
+              self.stop(val.note);
+            else
+              self.play(val.note, val.velocity, val.noteInterval);
+          }
         }
       }).bind(this),
 

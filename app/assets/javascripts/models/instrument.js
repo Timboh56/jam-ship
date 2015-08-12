@@ -10,7 +10,7 @@ try {
 
   App.InstrumentCRUD = function(opts) {
     var self = App.InstrumentCRUD.prototype;
-
+    self.channel_id = opts['channel'];
     var supports_html5_storage = function () {
       try {
         return 'localStorage' in window && window['localStorage'] !== null;
@@ -26,6 +26,7 @@ try {
     self.saveBuffer = function(blob) {
       var fd = new FormData();
       fd.append('fname', 'test.wav');
+      fd.append('channel_id', self.channel_id);
       fd.append('data', blob);
       $.ajax({
         type: 'POST',
