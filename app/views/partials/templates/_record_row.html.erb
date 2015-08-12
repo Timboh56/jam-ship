@@ -1,15 +1,26 @@
 <script type="template" class="template record-row-template">
-  <div id="recording-track-container-{{ id }}" class='col-xs-4 col-sm-4 col-lg-3 mhsm mtl pvmd recording-track shadow panel'>
+  <div id="recording-track-container-{{ id }}" class='col-xs-12 col-sm-6 col-md-4 mhsm mtl pvmd block clearfix recording-track shadow panel'>
     <label class='full-width mvmd'>
       Track {{ count }}
     </label>
     <br />
-    <div class='full-width'>
-      <a data-action="play" data-record-id="{{ id }}" class="btn js-record-action mlxs mvmd" id="play-btn-{{ id }}"> <%= fa_icon "play" %> Play </a>
-      <a data-action="stop" class="btn js-record-action mlxs mvmd" data-record-id="{{ id }}" id="stop-btn-{{ id }}"> <%= fa_icon "stop" %> Stop </a>
-      <a class='btn js-record-action' data-record-id="{{ id }}" data-action='saveBuffer'> <%= fa_icon 'save' %> Save </a>
-      <a class='btn js-record-action' data-record-id="{{ id }}" data-action='exportBuffer'> <%= fa_icon 'save' %> Export </a>
-      <a data-action="deleteBuffer" class="btn js-record-action mlxs mvmd" data-record-id="{{ id }}" id="delete-btn-{{ id }}"> <%= fa_icon "remove" %> Delete <a/>
+    <div class='row'>
+      <div class='col-xs-3 col-sm-3'>
+        <a data-action="play" data-record-id="{{ id }}" class="btn js-record-action mvmd" id="play-btn-{{ id }}"> <%= fa_icon "play" %> Play </a>
+      </div>
+
+      <div class='col-xs-3 col-sm-3'>
+        <a data-action="stop" class=" btn js-record-action mvmd" data-record-id="{{ id }}" id="stop-btn-{{ id }}"> <%= fa_icon "stop" %> Stop </a>
+      </div>
+      <div class='col-xs-3 col-sm-3'>
+        <a class=' mvmd btn js-record-action' data-record-id="{{ id }}" data-action='saveBuffer'> <%= fa_icon 'save' %> Save </a>
+      </div>
+      <div class='col-xs-3 col-sm-3'>
+        <a class=' mvmd btn js-record-action' data-record-id="{{ id }}" data-action='exportBuffer'> <%= fa_icon 'save' %> Export </a>
+      </div>
+      <div class='col-xs-3 col-sm-3'>
+        <a data-action="deleteBuffer" class="  btn js-record-action mvmd" data-record-id="{{ id }}" id="delete-btn-{{ id }}"> <%= fa_icon "remove" %> Delete <a/>
+      </div>
     </div>
   </div>
 </script>
