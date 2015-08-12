@@ -34,11 +34,12 @@ try {
         processData: false,
         contentType: false,
         success: function(xhr) {
-          alert('Saved!');
+          var successFlashDiv = $('.alert-info').html('Uploaded and saved.').clone();
+          $('.flash-messages').append(successFlashDiv);
         },
         error: function(xhr) {
-          alert('Error!');
-        }
+          var errorlashDiv = $('.alert-danger').html('Upload was not successful.').clone();
+          $('.flash-messages').append(successFlashDiv);        }
       });
     }
 

@@ -129,7 +129,7 @@
       wave = opts['wave'] || self.wave;
 
       // until i can fix the sustain issue, i'll use default
-      env = self.generateAdsfr(attack, decay, App.Constants.DEFAULT_SUSTAIN, fade, release);
+      env = self.generateEnv(attack, decay, App.Constants.DEFAULT_SUSTAIN, fade, release);
             
       self.synthEnv = env;
 
@@ -215,6 +215,7 @@
     }
 
     self.stopNote = function(note) {
+      console.log('stopping note');
       if (self.synthMode == 'organ')
         self.notes[note].pause();
       else
@@ -252,28 +253,22 @@
 
     self.setRelease = function(release) {
       self.release = release;
-      self.synthEnv.set({ r: release });
+      self.generateSynthFromSettings();
     }
 
     self.setSustain = function(sustain) {
       self.sustain = parseFloat(sustain) || App.Constants.DEFAULT_SUSTAIN;
-      self.synthEnv.set({ s: self.sustain });
+      self.generateSynthFromSettings();
     }
 
     self.setVolume = function(mul) {
       self.mul = parseFloat(mul);
-      self.synth.set({ mul: self.mul });
+      self.generateSynthFromSettings();
     }
 
     self.setBpm = function(bpm) {
       self.Recorder.setBPM(bpm);
     }
-
-    $(['saveBuffer', 'setBpm', 'setBpl', 'setRecordingTime', 'setMetronomeVol', 'setMetronomeVel']).each((function(index, el) {
-      self[el] = function(field) {
-        self.Recorder[el].call(this, field);
-      }
-    }).bind(this));
 
     self.setBfs = function(bfs) {
       self.BFS = bfs;
@@ -292,6 +287,12 @@
       self.mode = mode;
       self.generateSynthFromSettings();
     }
+
+    $(['saveBuffer', 'setBpm', 'setBpl', 'setRecordingTime', 'setMetronomeVol', 'setMetronomeVel']).each((function(index, el) {
+      self[el] = function(field) {
+        self.Recorder[el].call(this, field);
+      }
+    }).bind(this));
 
     self.initialize();
     return self;

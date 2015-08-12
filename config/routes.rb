@@ -54,11 +54,14 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-  resources :clips
+  get '/me' => 'users#show'
+
   namespace :api do
     resources :clips
+    resources :channels
   end
+
   devise_for :users, :controllers => { omniauth_callbacks: 'omniauth_callbacks' }
   match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
-  resources :instruments
+  resources :channels
 end

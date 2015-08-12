@@ -100,18 +100,13 @@ String.prototype.toUnderscore = function(){
     self.startRecording = function(opts) {
       var timestamp, recorder;
 
-      // record from previous created track??????
-      if (opts['recordId'])
-        self.recorder = recorder = self.buffers[opts['recordId']];
-      else {
-        recorder = self.initializeRecorder(opts).then((function() {
+      recorder = self.initializeRecorder(opts).then((function() {
 
-          $('.recording-status-text').html('');
-          $('.record-btn').removeClass('hide');
-          $('.stop-btn').addClass('hide');
-          //self.broadcast.apply(this, [ { buffer: self.buffers[self.currentRecordId].buffer }]);
-        }).bind(this));
-      }
+        $('.recording-status-text').html('');
+        $('.record-btn').removeClass('hide');
+        $('.stop-btn').addClass('hide');
+        //self.broadcast.apply(this, [ { buffer: self.buffers[self.currentRecordId].buffer }]);
+      }).bind(this));
 
       $('.recording-status-text').html('recording..');
       $('.record-btn').addClass('hide');
@@ -126,7 +121,7 @@ String.prototype.toUnderscore = function(){
     }
 
     self.saveBuffer = function(recordId) {
-      self.InstrumentCRUD.saveBuffer(self.blobs[recordId]);
+      self.InstrumentCRUD.saveBuffer(self.buffers[recordId]);
     }
 
     self.exportBuffer = function(recordId) {

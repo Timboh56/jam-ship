@@ -71,12 +71,16 @@
         <div class="navbar-collapse collapse navbar-responsive-collapse">
           <ul class="nav navbar-nav">
             <% if current_user %>
-              <li><%= link_to "Logout", destroy_user_session_path  %></li>
+              <li>
+                <%= link_to "#{ fa_icon 'th-large' } Dashboard".html_safe, '/me' %>
+              </li>
+              <li>
+                <%= link_to "Logout", destroy_user_session_path  %>
+              </li>
             <% else %>
               <li>
-                <a type="button" class="btn" data-toggle="modal" data-target="#login-modal">
-                  <%= fa_icon 'twitter' %> Login
-                </a>
+                <%= link_to "#{ fa_icon 'twitter' } Login".html_safe, omniauth_authorize_path('user', 'twitter') %><br />
+
               </li>
             <% end %>
           </ul>
@@ -89,10 +93,10 @@
         <%= bootstrap_flash %>
         <%= yield %>
       </div>
-      <footer>
-        <p>&copy; Company 2015</p>
-      </footer>
     </div> <!-- /container -->
+    <footer class='text-left'>
+      <p>&copy; Tim Hui 2015</p>
+    </footer>
     <script>
       (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
       function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;

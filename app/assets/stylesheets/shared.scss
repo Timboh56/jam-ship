@@ -10,14 +10,28 @@ label {
   font-family: 'Roboto', sans-serif;
 }
 
-h1, h2, h3, h4 { margin: 0; }
+h1, h2, h3, h4 {
+  margin: 0; 
+  color: #2c3e50;
+}
 h2 {
   font-family: 'Roboto', sans-serif;
   font-size: 28px;
   line-height: 38px;
 }
+
+h3 {
+  font-size: 21px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
 .no-padding {
   padding: 0 !important;
+}
+
+.fade-animate {
+  animation: taufik 2s;
 }
 
 input[type=number].synth-field {
@@ -127,7 +141,7 @@ input[type=number].synth-field {
 }
 
 .btn:hover {
-  background-color: rgba(52, 152, 219,0.1);
+  background-color: #2980b9 !important;
 }
 
 .btn {
@@ -148,7 +162,7 @@ input[type=number].synth-field {
 
 .height-auto {
   height: auto;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .gray {
@@ -192,4 +206,58 @@ input[type=number].synth-field {
 
 .spaceMonkey {
   opacity: 0;
+}
+
+.nav.navbar-nav {
+  li {
+    height: 50px;
+  }
+}
+
+.navbar.navbar-default {
+  background-color: #2c3e50;
+  a.navbar-brand, li a { color: white !important; }
+}
+
+.form-control {
+  height: 50px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  border-radius: 0px;
+  box-shadow: none;
+}
+
+.modal {
+  padding: 15px;
+}
+
+.new-channel-modal {
+  .modal-dialog {
+    float: none;
+    width: 30%;
+    margin: 0 35%;
+  }
+}
+
+a, a:visited, a:focus {
+  color: #2980b9;
+  text-decoration: none !important;
+}
+
+.edit-btn, .delete-btn {
+  padding: 10px;
+  border-radius: 3px;
+  display: inline-block;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.edit-btn {
+  color: white !important;
+  background-color: #16a085;
+}
+
+.delete-btn {
+  color: white !important; 
+  background-color: #c0392b;
 }

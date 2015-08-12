@@ -23,7 +23,8 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'firebase'
-
+gem 'redis'
+gem 'resque'
 gem 'omniauth-twitter'
 
 gem 'devise'

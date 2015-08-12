@@ -1,9 +1,10 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :finish_signup]
-
+  before_action :set_user, only: [:destroy, :finish_signup]
+  before_action :authenticate_user!, only: [ :destroy, :update, :edit ]
   # GET /users/:id.:format
   def show
-    # authorize! :read, @user
+    @user = current_user
+    @channel = Channel.new
   end
 
   # GET /users/:id/edit

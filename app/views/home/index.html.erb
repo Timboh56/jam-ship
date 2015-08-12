@@ -8,7 +8,6 @@
   <div class='visible-xs-block'>
     <%= inline_svg('spacemonkey-xs.svg', { preserve_aspect_ratio: 'xMaxYMax meet'}) %>
   </div>
-  <a href="/instruments">click</a>
 </div>
 <div class="col-lg-4 col-sm-4 col-xs-12">
   <div class="sidebar-nav">
@@ -17,17 +16,22 @@
     </div>
     <ul class="nav nav-list mtxl">
       <% if current_user %>
-        <li><%= link_to "#{ fa_icon 'plus' } Create channel".html_safe, "/instruments", { class: 'btn' }  %>
+        <li>
+          <a class='btn btn-primary' id='show-create-channel-form'>
+            <%= fa_icon 'plus' %> Channel
+          </a>
+        </li>
       <% else %>
         <li>
-          <a type="button" class="btn" data-toggle="modal" data-target="#login-modal">
+          <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#login-modal">
             <%= fa_icon 'plus' %> Create Channel
           </a>
         </li>
       <% end %>
-      <li class='mtmd'><%= link_to "#{ fa_icon 'headphones' } Join channel".html_safe,  "/instruments", { class: 'btn' }   %>
-      <li class='mtmd'><%= link_to "#{ fa_icon 'question' } About".html_safe,  "/instruments", { class: 'btn' }   %>
+      <li class='mtmd'><%= link_to "#{ fa_icon 'headphones' } Join channel".html_safe,  "/channels", { class: 'btn btn-primary' }   %>
+      <li class='mtmd'><%= link_to "#{ fa_icon 'question' } About".html_safe,  "/channels", { class: 'btn btn-primary' }   %>
     </ul>
   </div><!--/.well -->
 </div><!--/span-->
 <%= render partial: 'partials/login' %>
+<%= render partial: 'partials/new_channel_modal' if current_user %>

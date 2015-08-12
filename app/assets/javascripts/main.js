@@ -2,14 +2,15 @@ window.myDataRef = new Firebase('https://jam-ship.firebaseio.com/');
 
 $(document).ready(function() {
   var synth = new App.Synth({
+
     onCreateBuffer: function (id) {
-      // add jqery row
       var rowHtml = $('.record-row-template').html(),
         recordTrackCount = $('.recording-track').length + 1,
         opts = {
           'id' : id,
           'count' : recordTrackCount
         };
+
       for (var prop in opts){
         var pattern = '{{\\s*' + prop + '\\s*}}';
         rowHtml = rowHtml.replace(new RegExp(pattern, 'g'), opts[prop]);
@@ -17,17 +18,21 @@ $(document).ready(function() {
 
       $('.recordings-container').append(rowHtml);
     },
+
     onDeleteBuffer: function(id) {
       $('#recording-track-container-' + id).remove();
     },
+
     onPlay: function(note, velocity) {
       note = note.replace('#', 'sharp');
       $("#" + note).addClass('active');
     },
+
     onStop: function(note) {
       note = note.replace('#', 'sharp');
       $("#" + note).removeClass('active');
     },
+
     onStopRecording: function(val) {
       var secs = parseInt(val/1000);
       $('#synth-recording-time-input').val(secs);
@@ -40,6 +45,7 @@ $(document).ready(function() {
     var self = $(this),
       recordId = self.data('record-id'),
       action = self.data('action');
+
       if (action == 'startRecording' || action == 'stopRecording') {
         synth.Recorder[action].call(this, {
           recordId: recordId,

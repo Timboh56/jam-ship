@@ -1,0 +1,68 @@
+<div class='container'>
+  <div class='row mtl'>
+    <div class='col-xs-12'>
+      <h1>
+        <%= fa_icon 'th-large' %> Dashboard
+      </h1>
+    </div>
+  </div>
+  <div class='row mtl'>
+    <div class='col-xs-12 col-sm-4'>
+      <a class='btn btn-primary' id='show-create-channel-form'>
+        <%= fa_icon 'plus' %> Channel
+      </a>
+    </div>
+  </div>
+  <div class='row mtl fade in'>
+    <div class='col-xs-12 col-sm-6'>
+      <h3 class='border-bottom pbl'>
+        Channels
+      </h3>
+      <div class='row mtl'>
+        <div class='col-xs-12'>
+          <div class='row'>
+            <ul>
+              <% @user.channels.each do |channel| %>
+                <li class='mtl'>
+                  <div class='col-xs-8 col-sm-8'>
+                    <%= link_to channel.name, channel_path(channel) %>
+                  </div>
+                  <div class='col-xs-6 col-sm-4 text-right'>
+                    <a href='#' class='mll edit-btn' data-action='edit'>
+                      <%= fa_icon 'edit' %> Edit
+                    </a>
+                    <%= link_to "#{ fa_icon 'trash' } Delete".html_safe, { action: :destroy, controller: 'api/channels', id: channel.id }, method: :delete, data: { remote: true, confirm: 'Are you sure you want to delete this?' }, class: 'delete-btn'  %>
+                  </div>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='col-xs-12 col-sm-6'>
+      <h3 class='border-bottom pbl'>
+        <%= fa_icon 'file' %> Files
+      </h3>
+      <div class='row mtl'>
+        <div class='col-xs-12'>
+          <div class='row'>
+            <ul>
+              <% @user.clips.each do |clip| %>
+                <li>
+                  <div class='col-xs-9 col-sm-10'>
+                    <%= clip.name %>
+                  </div>
+                  <div class='col-xs-3 col-sm-2 text-right'>
+                    <%= link_to fa_icon('trash').html_safe, { action: :destroy, controller: "api/clips", id: clip.id }, method: :delete, data: { remote: true, confirm: 'Are you sure you want to delete this?' } %>
+                  </div>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%= render partial: 'partials/new_channel_modal' %>
