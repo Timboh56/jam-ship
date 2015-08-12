@@ -3,12 +3,9 @@
   App.Synth = function(opts) {
     var parent, freqSlide, self, opts, notes, onChangeInput;
 
-    self = App.Synth.prototype = new App.Instrument({
-      onStopRecording: opts['onStopRecording'],
-      onDeleteBuffer: opts['onDeleteBuffer'],
-      onCreateBuffer: opts['onCreateBuffer'],
+    opts = $.extend({}, opts, {
       onMidiMessage: opts['onMidiMessage'] || function(note, velocity) {
-        if (velocity > 0 && self.mode == 'playing')
+        if (velocity > 0 && self.mode == 'live')
           self.play(note, velocity);
         else
           self.stop(note);
@@ -19,7 +16,7 @@
         var keyPressed, note, velocity;
         keyPressed = getChar(event);
         note = self.noteLookUp.apply(self, [keyPressed]);
-        if (self.InstrumentControl.keyboardOn && "playing" == self.mode) {
+        if (self.InstrumentControl.keyboardOn && 'live' == self.mode) {
           if (App.Constants.KEYTONOTE[keyPressed] && !self.notes[note].keyDown) {
             self.notes[note].keyDown = true;
             self.play(note, self.velocity);
@@ -32,7 +29,7 @@
 
         keyPressed = getChar(event);
         note = self.noteLookUp.apply(self, [keyPressed]);
-        if (self.InstrumentControl.keyboardOn && "playing" == self.mode) {
+        if (self.InstrumentControl.keyboardOn && 'live' == self.mode) {
           if (App.Constants.KEYTONOTE[keyPressed] && self.notes[note].keyDown) {
             self.notes[note].keyDown = false;
             self.stop(note);
@@ -71,7 +68,10 @@
       }).bind(this)
     });
 
-    self.opts = opts || {},
+
+    self = App.Synth.prototype = new App.Instrument(opts);
+
+    self.opts = opts,
     self.notes = {},
     self.freqs = {};
     self.synthMode = "envelope" // or "envelope"
@@ -177,7 +177,6 @@
       noteInterval = self.notes[note].noteInterval = self.Recorder.elapsedSince(self.notes[note].startTime)
       self.playNote.apply(this, [note, velocity, noteInterval]);
       self.notes[note].startTime = self.Recorder.getNow();
-      self.broadcast.apply(this, [note, velocity, noteInterval]);
     }
 
     self.playNote = function(note, velocity, noteInterval) {
@@ -211,11 +210,9 @@
       self.stopNote(note);
       if (self.opts["onStop"]) self.opts["onStop"].call(this, note);
       noteInterval = self.Recorder.elapsedSince(note);
-      self.broadcast.call(this, note, 0);
     }
 
     self.stopNote = function(note) {
-      console.log('stopping note');
       if (self.synthMode == 'organ')
         self.notes[note].pause();
       else

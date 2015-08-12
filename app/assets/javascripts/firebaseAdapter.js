@@ -11,6 +11,7 @@ var FirebaseAdapter = function (opts) {
     throw "Did you forget to include Firebase?";
 
   this.broadcast = function(opts) {
+    opts = stringify(opts);
     self.myDataRef.set(opts);
   }
 
@@ -25,4 +26,6 @@ var FirebaseAdapter = function (opts) {
 
   self.myDataRef.on('value', this.onReceive);
   self.myDataRef.child(self.channel).on('child_added', this.onReceive);
+
+  return self;
 }

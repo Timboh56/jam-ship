@@ -14,6 +14,7 @@ String.prototype.toUnderscore = function(){
     self.currentRecordId = null;
     self.buffers = {};
     self.blobs = [];
+    self.onPlayRecording = opts['onPlayRecording'];
     self.onStopRecording = opts['onStopRecording'];
     self.InstrumentCRUD = new App.InstrumentCRUD(opts);
     if(!saveAs) throw "FileSaver.js not included!";
@@ -77,7 +78,6 @@ String.prototype.toUnderscore = function(){
         dataview = encodeWAV(buf, sr);
         audioBlob = new Blob([dataview], { type: 'audio/wav' });
         self.blobs[timestamp] = audioBlob;
-
         self.currentRecordId = timestamp;
         self.buffers[timestamp] = t;
         self.onCreateBuffer.call(this, timestamp);
@@ -105,7 +105,6 @@ String.prototype.toUnderscore = function(){
         $('.recording-status-text').html('');
         $('.record-btn').removeClass('hide');
         $('.stop-btn').addClass('hide');
-        //self.broadcast.apply(this, [ { buffer: self.buffers[self.currentRecordId].buffer }]);
       }).bind(this));
 
       $('.recording-status-text').html('recording..');
@@ -118,6 +117,7 @@ String.prototype.toUnderscore = function(){
 
     self.stop = function(recordId) {
       self.buffers[recordId].pause();
+      if (self.stopRecording) self.stopRecording.call(this);
     }
 
     self.saveBuffer = function(recordId) {
@@ -137,6 +137,7 @@ String.prototype.toUnderscore = function(){
     self.play = function(recordId) {
       try {
         self.buffers[recordId].bang().play();
+        if (self.onPlayRecording) self.onPlayRecording(self.buffers[recordId]);
       }catch(err) {
         console.log('Could not play: ' + err);
       }
@@ -154,7 +155,7 @@ String.prototype.toUnderscore = function(){
       self.recorder.stop();
       var now = new Date();
       //self.recordingTime = self.elapsedSince();
-      //self.onStopRecording.call(this, self.recordingTime);
+      self.onStopRecording.call(this, self.recordingTime);
       self.recording = false;
     }
 

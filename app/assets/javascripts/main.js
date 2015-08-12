@@ -26,11 +26,17 @@ $(document).ready(function() {
     onPlay: function(note, velocity) {
       note = note.replace('#', 'sharp');
       $("#" + note).addClass('active');
+      if (synth.mode == 'live') synth.broadcast({ note: note, velocity: velocity });
     },
 
     onStop: function(note) {
       note = note.replace('#', 'sharp');
       $("#" + note).removeClass('active');
+      if (synth.mode == 'live') synth.broadcast({ note: note });
+    },
+
+    onPlayRecording: function(val) {
+      //if (synth.mode == 'live') synth.broadcast(val);
     },
 
     onStopRecording: function(val) {

@@ -23,15 +23,15 @@
           <div class='row'>
             <ul>
               <% @user.channels.each do |channel| %>
-                <li class='mtl'>
-                  <div class='col-xs-8 col-sm-8'>
+                <li class='mvl block clearfix'>
+                  <div class='col-xs-12 col-md-8'>
                     <%= link_to channel.name, channel_path(channel) %>
                   </div>
-                  <div class='col-xs-6 col-sm-4 text-right'>
-                    <a href='#' class='mll edit-btn' data-action='edit'>
+                  <div class='col-xs-12 col-md-4 text-right'>
+                    <a href='#' class='edit-btn' data-action='edit'>
                       <%= fa_icon 'edit' %> Edit
                     </a>
-                    <%= link_to "#{ fa_icon 'trash' } Delete".html_safe, { action: :destroy, controller: 'api/channels', id: channel.id }, method: :delete, data: { remote: true, confirm: 'Are you sure you want to delete this?' }, class: 'delete-btn'  %>
+                    <%= link_to "#{ fa_icon 'trash' } Delete".html_safe, { action: :destroy, controller: 'api/channels', id: channel.id }, method: :delete, data: { confirm: 'Are you sure you want to delete this?' }, class: 'mll delete-btn'  %>
                   </div>
                 </li>
               <% end %>
@@ -49,12 +49,12 @@
           <div class='row'>
             <ul>
               <% @user.clips.each do |clip| %>
-                <li>
-                  <div class='col-xs-9 col-sm-10'>
+                <li class='mvl clearfix'>
+                  <div class='col-xs-12 col-sm-9'>
                     <%= clip.name %>
                   </div>
-                  <div class='col-xs-3 col-sm-2 text-right'>
-                    <%= link_to fa_icon('trash').html_safe, { action: :destroy, controller: "api/clips", id: clip.id }, method: :delete, data: { remote: true, confirm: 'Are you sure you want to delete this?' } %>
+                  <div class='col-xs-12 col-sm-3 text-right'>
+                    <%= link_to (fa_icon('trash') + ' Delete').html_safe, { action: :destroy, controller: "api/clips", id: clip.id }, method: :delete, data: { remote: true, confirm: 'Are you sure you want to delete this?' }, class: 'delete-btn' %>
                   </div>
                 </li>
               <% end %>

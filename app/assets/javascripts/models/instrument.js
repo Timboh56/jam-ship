@@ -56,7 +56,7 @@ try {
   App.Instrument = function(opts) {
     var self = App.Instrument.prototype;
     self.InstrumentCRUD = new App.InstrumentCRUD(opts);
-    self.mode = "playing";
+    self.mode = "live";
     self.currentOctave = opts['currentOctave'] || 3;
     self.inputFieldsClass = opts['inputFieldsClass'];
     self.notes = {};
@@ -64,7 +64,7 @@ try {
     self.velocity = App.Constants.DEFAULT_VELOCITY;
     for (var prop in opts) self[prop] = self[prop] || opts[prop];
 
-    self.firebaseInterface = new FirebaseAdapter({
+    self.firebaseInterface = FirebaseAdapter({
       onReceive: function(snapshot) {
         if (self.mode == "listening") {
           var val = snapshot.val();
@@ -93,7 +93,7 @@ try {
     });
 
     self.broadcast = function(note, velocity, noteInterval) {
-      if (self.mode == "playing") {
+      if (self.mode == "live") {
         self.firebaseInterface.broadcast({
           note: note,
           velocity: velocity,
