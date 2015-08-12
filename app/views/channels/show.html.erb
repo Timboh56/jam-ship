@@ -22,7 +22,7 @@
   $(document).ready(function() {
     var clips = [];
     <% @channel.clips.each do |clip| %>
-      clip.push({ id: clip.id, url: clip.attachment.url });
+      clips.push({ id: <%= clip.id %>, url: '<%= clip.attachment.url %>' });
     <% end %>
     window.initialize('<%= params[:id] %>', clips);
   });
