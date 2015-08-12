@@ -66,6 +66,7 @@ try {
 
     self.firebaseInterface = FirebaseAdapter({
       onReceive: function(snapshot) {
+        debugger
         if (self.mode == "listening") {
           var val = snapshot.val();
           if(val.velocity == 0)
