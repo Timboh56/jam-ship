@@ -15,6 +15,7 @@
 //= require jquery.knob
 //= require velocity.min
 //= require bootstrap.min
+//= require peer.min
 //= require FileSaver.min
 //= require timbre.dev
 //= require mouse
@@ -23,6 +24,7 @@
 //= require dashboard
 //= require modernizr-2.8.3.min
 //= require app
+//= require rtcAdapter
 //= require constants
 //= require_tree ./models
 //= require MoogFF

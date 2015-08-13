@@ -24,6 +24,13 @@
     <% @channel.clips.each do |clip| %>
       clips.push({ id: <%= clip.id %>, url: '<%= clip.attachment.url %>' });
     <% end %>
-    window.initialize('<%= params[:id] %>', clips);
+    window.initialize({
+      channel: '<%= params[:id] %>',
+      clips: clips,
+      <% if current_user == @channel.user %>
+        owner: true,
+      <% end %>
+      peer_id: '<%= @channel.peer_id %>'
+    });
   });
 </script>

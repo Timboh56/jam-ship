@@ -1,0 +1,68 @@
+(function(App) {
+  App.RtcAdapter = function(opts) {
+    var self = this;
+
+    self.savePeerId = function(id, opts) {
+      $.ajax({
+        type: 'PUT',
+        dataType: 'JSON',
+        url: '/api/channels/' + opts.channel,
+        data: {
+          id: opts.channel,
+          channel: {
+            peer_id: id
+          }
+        },
+
+        success: function(xhr) {
+          console.log('Saved channel source peer_id');
+          opts.peer_id = xhr.channel.peer_id;
+        },
+
+        error: function(xhr) {
+          console.log('Error');
+          console.log(xhr);
+        }
+      });
+    }
+
+    self.establishConnection = function(opts) {
+      var dfd = $.Deferred();
+      if (opts.owner && opts.peer_id)
+        self.peer = window.peer = new Peer(opts.id, {key: '<%= ENV["PEERJS_KEY"] %>'});
+      else {
+        self.peer = window.peer = new Peer({key: '<%= ENV["PEERJS_KEY"] %>'});
+
+        self.peer.on('open', (function(id) {
+          console.log('My peer ID is: ' + id);
+
+          if (opts.owner)
+            self.savePeerId(id, opts);
+          else {
+            var conn = window.peer.connect(opts.peer_id);
+            dfd.resolve();
+            conn.send('Connection with ' + opts.peer_id + ' from ' + id + ' successful!');
+          }
+        }).bind(this));
+      }
+
+      self.peer.on('connection', (function(data) {
+        self.conn = data;
+        dfd.resolve();
+      }).bind(this));
+
+      return dfd.promise();
+    }
+
+    self.establishConnection(opts).done((function() {
+      console.log('connection established')
+      self.conn.on('data', (function(data) {
+        console.log('received');
+      }).bind(this));
+    }).bind(this));
+
+    return self;
+  }
+
+  return App;
+})(App || {});

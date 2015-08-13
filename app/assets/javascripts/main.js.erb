@@ -1,9 +1,11 @@
 window.myDataRef = new Firebase('https://jam-ship.firebaseio.com/');
 
-window.initialize = function(channel, clips) {
+window.initialize = function(opts) {
+  var rtcAdapter = App.RtcAdapter(opts);
+
   var synth = new App.Synth({
-    channel: channel,
-    clips: clips,
+    channel: opts.channel,
+    clips: opts.clips,
     onCreateBuffer: function (id) {
       var rowHtml = $('.record-row-template').html(),
         recordTrackCount = $('.recording-track').length + 1,
