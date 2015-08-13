@@ -68,7 +68,7 @@ window.initialize = function(opts) {
       } else {
         synth.Recorder[action].call(this, recordId);
       }
-});
+  });
 
   $(document).on('keypress', '#messageInput', function (e) {
     if (e.keyCode == 13) {
@@ -77,6 +77,14 @@ window.initialize = function(opts) {
       myDataRef.push({name: name, text: text});
       $('#messageInput').val('');
     }
+  });
+
+  $(document).on('change', 'input[type=checkbox].toggle, select.toggle', function(i, el) {
+    var el = $(this),
+      targetClass = el.data('target'),
+      toggleClass = el.data('toggle-class'),
+      val = el.val();
+    $('.' + targetClass).toggleClass(toggleClass);
   });
 
   $('.knob').each(function(index, el) {

@@ -3,6 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 $primary: #34495e;
+$fontColor: #535456;
 $red: #B12617;
 $silver: #ecf0f1;
 
@@ -16,7 +17,7 @@ label {
 
 h1, h2, h3, h4 {
   margin: 0; 
-  color: $primary;
+  color: $fontColor;
 }
 h2 {
   font-family: 'Roboto', sans-serif;
@@ -27,7 +28,11 @@ h2 {
 h3 {
   font-size: 21px;
   font-weight: bold;
-  color: $primary;
+  color: $fontColor;
+}
+
+a {
+  color: $primary !important;
 }
 
 .no-padding {
@@ -49,6 +54,11 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0; 
 }
 
+select {
+  font-size: 20px;
+  font-weight: bold;
+  color: #bdc3c7;
+}
 .pvsm {
   padding-top: 7px;
   padding-bottom: 7px;
@@ -154,12 +164,12 @@ input[type=number].synth-field {
   color: $silver !important;
 }
 
-.btn {
-    border-color: rgba(44, 62, 80,0.2);
-    background-color: $primary !important;
-    color: $silver !important;
-    transition: .25s all;
-    -webkit-transition: .25s all;
+button.btn, .btn {
+  background-color: $primary !important;
+  color: $silver !important;
+  border: none !important;
+  transition: .25s all;
+  -webkit-transition: .25s all;
 }
 
 .border-bottom {
@@ -255,13 +265,13 @@ a, a:visited, a:focus {
 }
 
 .edit-btn, .delete-btn {
-  padding: 7px;
   border-radius: 3px;
   display: inline-block;
   font-weight: normal;
   font-size: 14px;
   opacity: 0.75;
   transition: 0.5s all;
+  border: none;
   -webkit-transition: 0.5s all;
 
   &:hover {
@@ -270,12 +280,12 @@ a, a:visited, a:focus {
   }
 }
 
-.edit-btn {
+.edit-btn, .edit-btn:hover {
   color: $silver !important;
-  background-color: #16a085;
+  background-color: #16a085 !important;
 }
 
-.delete-btn {
+.delete-btn, .delete-btn:hover {
   color: $silver !important; 
-  background-color: $red;
+  background-color: $red !important;
 }

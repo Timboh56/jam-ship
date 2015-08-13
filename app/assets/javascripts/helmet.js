@@ -7,12 +7,5 @@ $(function() {
     else
       $('.helmet').velocity({ fillOpacity: '0.1', fill: '#ffffee', stroke: '#000000'});
     helmetOn = !helmetOn;
-  }).bind(this), 3150)
-  $('input[type=checkbox].toggle').on('change', function(i, el) {
-    var el = $(this),
-      targetClass = el.data('target'),
-      toggleClass = el.data('toggle-class'),
-      val = el.val();
-    $('.' + targetClass).toggleClass(toggleClass);
-  });
+  }).bind(this), 3150);
 });
