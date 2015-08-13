@@ -13,8 +13,19 @@
 <div class='flash-messages'>
 
 </div>
-<div class='full-width text-center mtl'>
-  <h3> Channel <%= @channel.name %> </h3>
+<div class='full-width mvl'>
+  <h3> Channel <%= @channel.name %>
+    <% if current_user == @channel.user %>
+      <div class='inline pull-right'>
+        <a class='edit-btn'>
+          <%= fa_icon 'edit' %>
+        </a>
+        <a class='delete-btn'>
+          <%= fa_icon 'remove' %>
+        </a>
+      </div>
+    <% end %>
+  </h3>
 </div>
 <%= render partial: 'partials/orig_synth' %>
 <%= render partial: 'partials/templates/alert_templates' %>
