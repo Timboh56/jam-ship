@@ -31,7 +31,8 @@
       if (opts.owner && opts.peer_id)
         self.peer = window.peer = new Peer(opts.id, {
           key: '<%= ENV["PEERJS_KEY"] %>',
-          host: '<%= ENV["PEER_SERVER_HOST"] %>'
+          host: '<%= ENV["PEER_SERVER_HOST"] %>',
+          secure: true
         });
       else {
         self.peer = window.peer = new Peer({key: '<%= ENV["PEERJS_KEY"] %>'});
