@@ -1,25 +1,17 @@
 <script type="template" class="template record-row-template">
-  <div id="recording-track-container-{{ id }}" class='col-xs-12 col-sm-6 col-md-4 mhsm mtl pvmd block clearfix recording-track shadow panel'>
+  <div id="recording-track-container-{{ id }}" class='col-xs-6 col-sm-6 col-md-4 mhsm mtl pvmd block clearfix recording-track shadow panel'>
     <label class='full-width mvmd'>
       Track {{ count }}
     </label>
     <br />
     <div class='row'>
-      <div class='col-xs-3 col-sm-3'>
-        <a data-action="play" data-record-id="{{ id }}" class="btn js-record-action mvmd" id="play-btn-{{ id }}"> <%= fa_icon "play" %> Play </a>
-      </div>
-
-      <div class='col-xs-3 col-sm-3'>
-        <a data-action="stop" class=" btn js-record-action mvmd" data-record-id="{{ id }}" id="stop-btn-{{ id }}"> <%= fa_icon "stop" %> Stop </a>
-      </div>
-      <div class='col-xs-3 col-sm-3'>
-        <a class=' mvmd btn js-record-action' data-record-id="{{ id }}" data-action='saveBuffer'> <%= fa_icon 'save' %> Save </a>
-      </div>
-      <div class='col-xs-3 col-sm-3'>
-        <a class=' mvmd btn js-record-action' data-record-id="{{ id }}" data-action='exportBuffer'> <%= fa_icon 'save' %> Export </a>
-      </div>
-      <div class='col-xs-3 col-sm-3'>
-        <a data-action="deleteBuffer" class="  btn js-record-action mvmd" data-record-id="{{ id }}" id="delete-btn-{{ id }}"> <%= fa_icon "remove" %> Delete <a/>
+      <div class='col-xs-12'>
+        <a alt='play' data-action="play" data-record-id="{{ id }}" class="mhxs btn js-record-action mvmd" id="play-btn-{{ id }}"> <%= fa_icon "play" %> </a>
+        <a alt='stop' data-action="stop" class="mhxs btn js-record-action mvmd" data-record-id="{{ id }}" id="stop-btn-{{ id }}"> <%= fa_icon "stop" %> </a>
+        <a alt='upload' class='mhxs mvmd btn js-record-action' data-record-id="{{ id }}" data-action='saveBuffer'> <%= fa_icon 'cloud-upload' %> </a>
+        <a alt='download' class='mhxs mvmd btn js-record-action' data-record-id="{{ id }}" data-action='exportBuffer'> <%= fa_icon 'save' %> </a>
+        <a alt='edit' data-action="editBuffer" class="mhxs btn js-record-action mvmd" data-record-id="{{ id }}" id="edit-btn-{{ id }}"> <%= fa_icon "edit" %> <a/>
+        <a alt='delete' data-action="deleteBuffer" class="mhxs btn js-record-action mvmd" data-record-id="{{ id }}" id="delete-btn-{{ id }}"> <%= fa_icon "trash" %> <a/>
       </div>
     </div>
   </div>
