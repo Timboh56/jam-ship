@@ -29,7 +29,10 @@
     self.establishConnection = function(opts) {
       var dfd = $.Deferred();
       if (opts.owner && opts.peer_id)
-        self.peer = window.peer = new Peer(opts.id, {key: '<%= ENV["PEERJS_KEY"] %>'});
+        self.peer = window.peer = new Peer(opts.id, {
+          key: '<%= ENV["PEERJS_KEY"] %>',
+          host: '<%= ENV["PEER_SERVER_HOST"] %>'
+        });
       else {
         self.peer = window.peer = new Peer({key: '<%= ENV["PEERJS_KEY"] %>'});
 
