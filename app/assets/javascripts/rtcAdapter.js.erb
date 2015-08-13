@@ -28,14 +28,16 @@
 
     self.establishConnection = function(opts) {
       var dfd = $.Deferred();
+      var peer_opts = {
+        key: '<%= ENV["PEERJS_KEY"] %>',
+        host: '<%= ENV["PEER_SERVER_HOST"] %>',
+        secure: true
+      };
+
       if (opts.owner && opts.peer_id)
-        self.peer = window.peer = new Peer(opts.id, {
-          key: '<%= ENV["PEERJS_KEY"] %>',
-          host: '<%= ENV["PEER_SERVER_HOST"] %>',
-          secure: true
-        });
+        self.peer = window.peer = new Peer(opts.id, peer_opts);
       else {
-        self.peer = window.peer = new Peer({key: '<%= ENV["PEERJS_KEY"] %>'});
+        self.peer = window.peer = new Peer(peer_opts);
 
         self.peer.on('open', (function(id) {
           console.log('My peer ID is: ' + id);
