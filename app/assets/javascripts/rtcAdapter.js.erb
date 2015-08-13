@@ -29,9 +29,10 @@
     self.establishConnection = function(opts) {
       var dfd = $.Deferred();
       var peer_opts = {
-        key: '<%= ENV["PEERJS_KEY"] %>',
         host: '<%= ENV["PEER_SERVER_HOST"] %>',
-        secure: true
+        secure: true,
+        port: 443,
+        path: '/'
       };
 
       if (opts.owner && opts.peer_id)
