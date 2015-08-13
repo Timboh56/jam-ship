@@ -1,3 +1,8 @@
+
+$primary: #34495e;
+$red: #B12617;
+$silver: #E0E0E0;
+
 .onoffswitch {
     position: relative; width: 90px;
     margin: auto !important;
@@ -22,7 +27,7 @@
 .onoffswitch-inner:before {
     content: "ON";
     padding-left: 10px;
-    background-color: #AFAFAF; color: #FFFFFF;
+    background-color: $primary; color: #FFFFFF;
 }
 .onoffswitch-inner:after {
     content: "OFF";

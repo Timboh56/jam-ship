@@ -2,6 +2,10 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+$primary: #34495e;
+$red: #B12617;
+$silver: #ecf0f1;
+
 body {
   font-family: 'Roboto', sans-serif;
 }
@@ -12,7 +16,7 @@ label {
 
 h1, h2, h3, h4 {
   margin: 0; 
-  color: #2c3e50;
+  color: $primary;
 }
 h2 {
   font-family: 'Roboto', sans-serif;
@@ -23,7 +27,7 @@ h2 {
 h3 {
   font-size: 21px;
   font-weight: bold;
-  color: #2c3e50;
+  color: $primary;
 }
 
 .no-padding {
@@ -147,13 +151,13 @@ input[type=number].synth-field {
 
 .btn:hover {
   background-color: #2980b9 !important;
-  color: white !important;
+  color: $silver !important;
 }
 
 .btn {
     border-color: rgba(44, 62, 80,0.2);
-    background-color: #2c3e50 !important;
-    color: white !important;
+    background-color: $primary !important;
+    color: $silver !important;
     transition: .25s all;
     -webkit-transition: .25s all;
 }
@@ -180,7 +184,7 @@ input[type=number].synth-field {
 }
 
 .panel {
-  border-color: #2c3e50;
+  border-color: $primary;
 }
 .red {
     background-color: #FF1744 !important;
@@ -221,8 +225,8 @@ input[type=number].synth-field {
 }
 
 .navbar.navbar-default {
-  background-color: #2c3e50;
-  a.navbar-brand, li a { color: white !important; }
+  background-color: $primary;
+  a.navbar-brand, li a { color: $silver !important; }
 }
 
 .form-control {
@@ -267,11 +271,11 @@ a, a:visited, a:focus {
 }
 
 .edit-btn {
-  color: white !important;
+  color: $silver !important;
   background-color: #16a085;
 }
 
 .delete-btn {
-  color: white !important; 
-  background-color: #c0392b;
+  color: $silver !important; 
+  background-color: $red;
 }
