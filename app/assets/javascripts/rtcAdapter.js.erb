@@ -64,6 +64,14 @@
       return dfd.promise();
     }
 
+    self.initConn = function() {
+      if (self.conn) {
+        self.conn.on('open', function() {
+
+        });
+      }
+    }
+
     self.set = function(prop, val) {
       self[prop] = val;
 
@@ -79,7 +87,7 @@
     }
 
     self.establishConnection(opts).done((function() {
-      if (self.conn) self.conn.on('data', self.onReceive);
+      self.conn.on('data', self.onReceive);
     }).bind(this));
 
     return self;

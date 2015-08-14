@@ -5,6 +5,8 @@
 
     opts = $.extend({}, opts, {
       onReceive: (function(snapshot) {
+        console.log('received:');
+        console.log(snapshot);
         if (self.mode == "listening") {
           var val = snapshot.val();
           if (val.url) {
