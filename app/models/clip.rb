@@ -8,7 +8,8 @@ class Clip < ActiveRecord::Base
     :s3_credentials => "#{Rails.root}/config/s3.yml",
     :path => "sounds/:id/:style.:extension"
 
-  before_validation :convert_to_mp3
+  #before_validation :convert_to_mp3
+  validates_attachment :mp3, content_type: { content_type: ["audio/wav", "audio/mp3"] }
 
   def reconvert_to_mp3
     wavfile = Tempfile.new(".wav")
@@ -25,7 +26,6 @@ class Clip < ActiveRecord::Base
 
   def convert_to_mp3
     tempfile = mp3.queued_for_write[:original]
-
     unless tempfile.nil?
       convert_tempfile(tempfile)
     end
@@ -40,10 +40,6 @@ class Clip < ActiveRecord::Base
     dst.binmode
     io = StringIO.new(dst.read)
     dst.close
-
-    io.original_filename = "sound.mp3"
-    io.content_type = "audio/mpeg"
-
     self.mp3 = io
   end
 end

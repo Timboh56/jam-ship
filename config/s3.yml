@@ -1,0 +1,17 @@
+development:
+  bucket: <%= ENV['S3_BUCKET_NAME'] %>
+  region: <%= ENV['S3_REGION']  %>
+  access_key_id: <%= ENV['S3_KEY'] %>
+  secret_access_key: <%= ENV['S3_SECRET'] %>
+
+test:
+  bucket: <%= ENV['S3_BUCKET_NAME'] %>
+  region: <%= ENV['S3_REGION'] %>
+  access_key_id: <%= ENV['S3_KEY'] %>
+  secret_access_key: <%= ENV['S3_SECRET'] %>
+
+production:
+  bucket: <%= ENV['S3_BUCKET_NAME'] %>
+  region: <%= ENV['S3_REGION'] %>
+  access_key_id: <%= ENV['S3_KEY'] %>
+  secret_access_key: <%= ENV['S3_SECRET'] %>

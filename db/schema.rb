@@ -25,13 +25,16 @@ ActiveRecord::Schema.define(version: 20150814094702) do
   end
 
   create_table "clips", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.string   "attachment"
     t.integer  "user_id"
     t.string   "name"
     t.integer  "channel_id"
-    t.string   "mp3"
+    t.string   "mp3_file_name"
+    t.string   "mp3_content_type"
+    t.integer  "mp3_file_size"
+    t.datetime "mp3_updated_at"
   end
 
   create_table "identities", force: :cascade do |t|
