@@ -6,7 +6,7 @@
 
 # Ignore bundler config.
 /.bundle
-
+.env
 # Ignore all logfiles and tempfiles.
 /log/*
 !/log/.keep
@@ -14,5 +14,3 @@
 /public/uploads/*
 */.DS_Store
 .DS_Store
-.env
-*/.env
