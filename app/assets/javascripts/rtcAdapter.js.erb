@@ -2,6 +2,8 @@
   App.RtcAdapter = function(opts) {
     var self = this;
 
+    self.onReceive = opts['onReceive'];
+
     self.savePeerId = function(id, opts) {
       $.ajax({
         type: 'PUT',
@@ -36,7 +38,7 @@
       };
 
       if (opts.owner && opts.peer_id)
-        self.peer = window.peer = new Peer(opts.id, peer_opts);
+        self.peer = window.peer = new Peer(opts.peer_id, peer_opts);
       else {
         self.peer = window.peer = new Peer(peer_opts);
 
@@ -55,19 +57,29 @@
 
       self.peer.on('connection', (function(data) {
         self.conn = data;
+        console.log('connection');
         dfd.resolve();
       }).bind(this));
 
       return dfd.promise();
     }
 
+    self.set = function(prop, val) {
+      self[prop] = val;
+
+      if (self.conn && prop == 'onReceive')
+        self.conn.on('data', self.onReceive);
+    }
+
+    self.send = function(opts) {
+      console.log('sending');
+      console.log(opts);
+      if (self.conn) self.conn.send(opts);
+      else console.log('No connection to send to');
+    }
+
     self.establishConnection(opts).done((function() {
-      console.log('connection established') 
-      if (self.conn) {
-        self.conn.on('data', (function(data) {
-          console.log('received');
-        }).bind(this));
-      }
+      if (self.conn) self.conn.on('data', self.onReceive);
     }).bind(this));
 
     return self;

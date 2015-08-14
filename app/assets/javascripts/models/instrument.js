@@ -90,29 +90,32 @@ try {
     self.notes = {};
     self.noteInterval = 0; // milliseconds since last note
     self.velocity = App.Constants.DEFAULT_VELOCITY;
-    for (var prop in opts) self[prop] = self[prop] || opts[prop];
 
-    self.firebaseInterface = FirebaseAdapter(opts);
+    function initialize() {
+      for (var prop in opts) self[prop] = self[prop] || opts[prop];
 
-    self.MidiControl = new App.MidiControl({
-      onMidiMessage: self.onMidiMessage
-    });
+      window.RtcAdapter.set('onReceive', opts['onReceive']);
 
-    opts['broadcast'] = self.firebaseInterface.broadcast;
+      self.MidiControl = new App.MidiControl({
+        onMidiMessage: self.onMidiMessage
+      });
 
-    self.Recorder = new App.Recorder(opts);
+      opts['broadcast'] = window.FirebaseInterface.broadcast;
 
-    self.InstrumentControl = new App.InstrumentControl({
-      inputFieldsClass: opts['inputFieldsClass'],
-      onKeyDown: opts['onKeyDown'],
-      onKeyUp: opts['onKeyUp'],
-      onKeyPress: opts['onKeyPress'],
-      onChangeInput: opts['onChangeInput']
-    });
+      self.Recorder = new App.Recorder(opts);
+
+      self.InstrumentControl = new App.InstrumentControl({
+        inputFieldsClass: opts['inputFieldsClass'],
+        onKeyDown: opts['onKeyDown'],
+        onKeyUp: opts['onKeyUp'],
+        onKeyPress: opts['onKeyPress'],
+        onChangeInput: opts['onChangeInput']
+      });
+    }
 
     self.broadcast = function(opts) {
       opts = $.extend({}, opts, { channel: self.channel });
-       self.firebaseInterface.broadcast(opts);
+       window.FirebaseInterface.broadcast(opts);
     };
 
     self.toggleRecording = function() {
@@ -127,6 +130,9 @@ try {
 
       return App.Constants.KEYTONOTE[key] + octave;
     }
+
+    initialize();
+
   }
 
   return App;

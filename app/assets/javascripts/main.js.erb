@@ -1,7 +1,9 @@
 window.myDataRef = new Firebase('https://jam-ship.firebaseio.com/');
 
 window.initialize = function(opts) {
-  var rtcAdapter = App.RtcAdapter(opts);
+
+  window.RtcAdapter = App.RtcAdapter(opts);
+  window.FirebaseInterface = App.FirebaseAdapter(opts);
 
   var synth = new App.Synth({
     channel: opts.channel,
@@ -29,13 +31,14 @@ window.initialize = function(opts) {
     onPlay: function(note, velocity) {
       note = note.replace('#', 'sharp');
       $("#" + note).addClass('active');
-      if (synth.mode == 'live') synth.broadcast({ note: note, velocity: velocity });
+      if (synth.mode == 'live') window.RtcAdapter.send({ note: note, velocity: velocity });
     },
 
     onStop: function(note) {
       note = note.replace('#', 'sharp');
       $("#" + note).removeClass('active');
-      if (synth.mode == 'live') synth.broadcast({ note: note, velocity: 0 });
+      // synth.broadcast(opts)
+      // if (synth.mode == 'live') rtcAdapter.send({ note: note, velocity: 0 });
     },
 
     onPlayRecording: function(val) {

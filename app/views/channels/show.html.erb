@@ -10,25 +10,30 @@
 <div class='flash-messages'>
 
 </div>
-<div id='t2' class='toggle t1 piano-body col-xs-12'>
-  <div class='full-width mvl'>
-    <h3> Channel <%= @channel.name %>
-      <% if current_user == @channel.user %>
-        <div class='inline pull-right'>
-          <a class='btn edit-btn' data-target='#edit-channel-modal' data-toggle='modal'>
-            <%= fa_icon 'edit' %>
-          </a>
-          <a class='btn delete-btn'>
-            <%= fa_icon 'remove' %>
-          </a>
-        </div>
-      <% end %>
-    </h3>
+<div id='t2' class='panel toggle t1 piano-body col-xs-12 no-padding'>
+  <div class='inline-block pbsm'>
+    <div class='full-width mvl'>
+      <h3> Channel <%= @channel.name %>
+        <% if current_user == @channel.user %>
+          <div class='inline pull-right'>
+            <a class='btn edit-btn' data-target='#edit-channel-modal' data-toggle='modal'>
+              <%= fa_icon 'edit' %>
+            </a>
+            <a class='btn delete-btn'>
+              <%= fa_icon 'remove' %>
+            </a>
+          </div>
+        <% end %>
+      </h3>
+    </div>
   </div>
-  <%= render partial: 'partials/orig_synth' %>
+  <div class='col-xs-12'>
+    <%= render partial: 'partials/orig_synth' %>
+  </div>
 </div>
 <%= render partial: 'partials/templates/alert_templates' %>
 <%= render partial: 'partials/edit_channel_modal' %>
+<%= render partial: 'partials/edit_clip_modal' %>
 <script type='text/javascript'>
   $(document).ready(function() {
     var clips = [];

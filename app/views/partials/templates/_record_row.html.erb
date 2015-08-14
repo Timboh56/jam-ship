@@ -10,7 +10,7 @@
         <a alt='stop' data-action="stop" class="mhxs btn js-record-action mvmd" data-record-id="{{ id }}" id="stop-btn-{{ id }}"> <%= fa_icon "stop" %> </a>
         <a alt='upload' class='mhxs mvmd btn js-record-action' data-record-id="{{ id }}" data-action='saveBuffer'> <%= fa_icon 'cloud-upload' %> </a>
         <a alt='download' class='mhxs mvmd btn js-record-action' data-record-id="{{ id }}" data-action='exportBuffer'> <%= fa_icon 'save' %> </a>
-        <a alt='edit' data-action="editBuffer" class="mhxs btn js-record-action mvmd" data-record-id="{{ id }}" id="edit-btn-{{ id }}"> <%= fa_icon "edit" %> <a/>
+        <a alt='edit' data-action="editBuffer" data-target='#editClipModal' data-toggle='modal' class="mhxs btn js-record-action mvmd" data-record-id="{{ id }}" id="edit-btn-{{ id }}"> <%= fa_icon "edit" %> <a/>
         <a alt='delete' data-action="deleteBuffer" class="mhxs btn js-record-action mvmd" data-record-id="{{ id }}" id="delete-btn-{{ id }}"> <%= fa_icon "trash" %> <a/>
       </div>
     </div>
