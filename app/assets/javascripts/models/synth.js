@@ -6,10 +6,13 @@
     opts = $.extend({}, opts, {
       onReceive: (function(val) {
         val = $.extend({}, val, { receiving: true });
-        if (val.url) {
+        if (val.url)
           self.Sequencer.setTrack(val);
-        } else
+        if (val.velocity > 0)
           self.play(val);
+        else
+          self.stop(val);
+
       }).bind(this),
 
       onMidiMessage: opts['onMidiMessage'] || function(note, velocity) {
@@ -178,7 +181,6 @@
         //self.generateLPF(App.Constants.FREQUENCIES[i]); 
         self.notes[i] = T(self.wave, {freq: App.Constants.FREQUENCIES[i] * 1.01, mul: self.mul, phase: Math.PI * 0.25 });
         self.notes[i].noteInterval = 0;
-        self.notes[i].startTime = null;
       }
     }
 
