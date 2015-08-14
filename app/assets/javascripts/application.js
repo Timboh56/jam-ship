@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.knob
+//= require jquery.qtip2.min
 //= require velocity.min
 //= require bootstrap.min
 //= require peer.min
