@@ -58,6 +58,7 @@ select {
   font-size: 20px;
   font-weight: bold;
   color: #bdc3c7;
+  border: 1px solid #eee;
 }
 .pvsm {
   padding-top: 7px;
@@ -257,7 +258,6 @@ button.btn, .btn {
 
 .form-control {
   height: 50px;
-  border: none;
   border-bottom: 1px solid #ddd;
   border-radius: 0px;
   box-shadow: none;

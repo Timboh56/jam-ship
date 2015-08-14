@@ -51,3 +51,7 @@ function renderTemplate(templateSelector, opts) {
 
   return rowHtml;
 }
+
+function renderSpinner() {
+  return $('<i />').addClass('fa fa-spin fa-spinner')
+}

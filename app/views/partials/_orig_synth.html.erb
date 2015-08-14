@@ -16,21 +16,25 @@
     <li><div id="C6" class="anchor"></div></li>
 </div>
 <div class='row center bold'>
-  <div class='col-xs-12 col-sm-10 inline-block mtl'>
-    <select name="mode" id="synth-mode-selector" data-synth-field="synthMode" class="synth-field" >
-      <option name="envelope">envelope</option>
-      <option name="organ">organ</option>
-      <option name="lpf">LPF</option>
-      <option name="pluck">pluck</option>
+  <div class='col-xs-12 col-sm-4 inline-block mtl'>
+    <div class='col-xs-6 no-padding'>
+      <select name="mode" id="synth-mode-selector" data-synth-field="synthMode" class="synth-field form-control" >
+        <option name="envelope">envelope</option>
+        <option name="organ">organ</option>
+        <option name="lpf">LPF</option>
+        <option name="pluck">pluck</option>
 
-    </select>
-    <select name="wave" id="wave-selector" data-synth-field="wave" class="synth-field" >
-      <option name="sin">sin</option>
-      <option name="saw">saw</option>
-      <option name="tri">tri</option>
-    </select>
+      </select>
+    </div>
+    <div class='col-xs-6'>
+      <select name="wave" id="wave-selector" data-synth-field="wave" class="synth-field form-control" >
+        <option name="sin">sin</option>
+        <option name="saw">saw</option>
+        <option name="tri">tri</option>
+      </select>
+    </div>
   </div>
-  <div class='col-xs-12 col-sm-2 inline-block mtl'>
+  <div class='col-xs-12 col-sm-offset-6 col-sm-2 inline-block mtl'>
     <div class='panel'>
       <label> R </label> - <%= fa_icon 'circle', class: 'red-text' %> / <%= fa_icon 'square' %>  Record
       <br />

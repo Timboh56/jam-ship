@@ -28,7 +28,7 @@ try {
         fd = new FormData(),
         id = opts.id,
         blob = opts.blob,
-        icon = $('<i />').addClass('fa fa-spin fa-spinner')
+        icon = renderSpinner();
 
       fd.append('fname', 'test.wav');
       fd.append('channel_id', self.channel_id);
@@ -63,6 +63,8 @@ try {
 
     self.deleteClip = function(id) {
       var dfd = $.Deferred();
+      $('#delete-clip-' + id).html(renderSpinner);
+
       $.ajax({
         type: 'DELETE',
         url: '/api/clips/' + id,
@@ -70,13 +72,17 @@ try {
         processData: false,
         contentType: false,
         success: function(xhr) {
-          var successFlashDiv = $('.alert-info').html('Successfully deleted.').clone();
-          $('.flash-messages').html(successFlashDiv);
+          var rowHtml = renderTemplate('.alert-info-template', {
+            message: 'Successfully deleted!'
+          });
+          $('.flash-messages').html(rowHtml);
           dfd.resolve(xhr);
         },
         error: function(xhr) {
-          var errorFlashDiv = $('.alert-danger').html('Upload was not successful.').clone();
-          $('.flash-messages').html(errorFlashDiv);  
+          var rowHtml = renderTemplate('.alert-danger-template', {
+            message: 'Could not delete this clip!'
+          });
+          $('.flash-messages').html(rowHtml);
           dfd.reject();
         }
       });
