@@ -196,6 +196,13 @@ button.btn, .btn {
   border-bottom: 1px solid #eee;  
 }
 
+.bare-borders {
+  border-top: none !important;
+  border-bottom: 1px solid #eee !important;
+  border-right: none !important;
+  border-left: none !important;
+}
+
 .white {
   background-color: white !important;
 }

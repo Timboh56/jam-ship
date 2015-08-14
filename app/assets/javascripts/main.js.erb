@@ -5,6 +5,12 @@ window.initialize = function(opts) {
   window.RtcAdapter = App.RtcAdapter(opts);
   window.FirebaseInterface = App.FirebaseAdapter(opts);
 
+  $(document).on('click', '.js-toggle', function() {
+    var toggleClass = $(this).data('toggle-class');
+    var target = $(this).data('target');
+    $(target).toggleClass(toggleClass);
+  });
+
   var synth = new App.Synth({
     channel: opts.channel,
     clips: opts.clips,

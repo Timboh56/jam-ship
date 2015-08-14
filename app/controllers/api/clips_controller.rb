@@ -11,7 +11,7 @@ class Api::ClipsController < ApplicationController
 
   def destroy
     Clip.find(params[:id]).destroy!
-    render nothing: true, status: 200
+    render json: { message: 'Success!' }, status: 200
   end
 
   def clip_params

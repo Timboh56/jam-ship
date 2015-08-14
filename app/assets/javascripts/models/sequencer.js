@@ -154,6 +154,11 @@ String.prototype.toUnderscore = function(){
       saveAs(self.blobs[recordId], 'track ' + recordId + '.wav');
     }
 
+    self.editBuffer = function(recordId) {
+      $('#edit-clip-' + recordId).toggleClass('focus');
+      $('#clip-name-' + recordId).toggleClass('focus');
+    }
+
     self.deleteBuffer = function(recordId) {
       self.stop(recordId);
       if (self.buffers[recordId].persists) self.InstrumentCRUD.deleteClip(recordId);

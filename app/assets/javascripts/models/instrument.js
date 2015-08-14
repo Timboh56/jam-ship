@@ -28,9 +28,10 @@ try {
         fd = new FormData(),
         id = opts.id,
         blob = opts.blob,
-        icon = renderSpinner();
+        icon = renderSpinner(),
+        clipName = $('#clip-name-' + id).val();
 
-      fd.append('fname', 'test.wav');
+      fd.append('fname', clipName + '.wav');
       fd.append('channel_id', self.channel_id);
       fd.append('data', blob);
 
