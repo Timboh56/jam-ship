@@ -7,7 +7,7 @@
       onReceive: (function(snapshot) {
         var val = snapshot.val();
         if (val.url) {
-          self.Recorder.setTrack(val);
+          self.Sequencer.setTrack(val);
         } else {
           if(val.velocity == 0)
             self.stop(val.note);
@@ -57,7 +57,7 @@
         if (self.currentOctave < 5 && keyPressed == "X")
           self.incrementCurrentOctave()
         if (keyPressed == 'R') {
-          self.Recorder.toggleRecording({
+          self.Sequencer.toggleRecording({
             instrument: self.getCurrentInstrument()
           });
         }
@@ -186,9 +186,9 @@
     self.play = function(note, velocity) {
       var noteInterval;
       if (self.opts["onPlay"]) self.opts["onPlay"].apply(this, [ note, velocity ]);
-      noteInterval = self.notes[note].noteInterval = self.Recorder.elapsedSince(self.notes[note].startTime)
+      noteInterval = self.notes[note].noteInterval = self.Sequencer.elapsedSince(self.notes[note].startTime)
       self.playNote.apply(this, [note, velocity, noteInterval]);
-      self.notes[note].startTime = self.Recorder.getNow();
+      self.notes[note].startTime = self.Sequencer.getNow();
     }
 
     self.playNote = function(note, velocity, noteInterval) {
@@ -274,7 +274,7 @@
     }
 
     self.setBpm = function(bpm) {
-      self.Recorder.setBPM(bpm);
+      self.Sequencer.setBPM(bpm);
     }
 
     self.setBfs = function(bfs) {
@@ -297,7 +297,7 @@
 
     $(['saveBuffer', 'setBpm', 'setBpl', 'setRecordingTime', 'setMetronomeVol', 'setMetronomeVel']).each((function(index, el) {
       self[el] = function(field) {
-        self.Recorder[el].call(this, field);
+        self.Sequencer[el].call(this, field);
       }
     }).bind(this));
 

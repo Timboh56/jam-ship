@@ -102,7 +102,7 @@ try {
 
       opts['broadcast'] = window.FirebaseInterface.broadcast;
 
-      self.Recorder = new App.Recorder(opts);
+      self.Sequencer = new App.Sequencer(opts);
 
       self.InstrumentControl = new App.InstrumentControl({
         inputFieldsClass: opts['inputFieldsClass'],

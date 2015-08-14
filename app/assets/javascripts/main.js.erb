@@ -42,13 +42,12 @@ window.initialize = function(opts) {
     },
 
     onPlayRecording: function(val) {
+      $('#play-btn-' + val.id).addClass('focus');
       //if (synth.mode == 'live') synth.broadcast({ buffer: stringify(val) });
     },
 
     onStopRecording: function(val) {
-      var secs = parseInt(val/1000);
-      $('#synth-recording-time-input').val(secs);
-      $('#synth-recording-time-input').attr('value', secs).knob();
+      $('#play-btn-' + val.id).removeClass('focus');
     },
 
     onSaveBuffer: function(res) {
@@ -64,12 +63,12 @@ window.initialize = function(opts) {
       action = self.data('action');
 
       if (action == 'startRecording' || action == 'stopRecording') {
-        synth.Recorder[action].call(this, {
+        synth.Sequencer[action].call(this, {
           recordId: recordId,
           instrument: synth.getCurrentInstrument()
         });
       } else {
-        synth.Recorder[action].call(this, recordId);
+        synth.Sequencer[action].call(this, recordId);
       }
   });
 

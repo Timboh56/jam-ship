@@ -96,6 +96,11 @@ select {
   margin-right: 4px;
 }
 
+.mhxxs {
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
 .mlsm { margin-left: 7px; }
 .mlxs { margin-left: 4px; }
 
@@ -159,7 +164,7 @@ input[type=number].synth-field {
     display: none;
 }
 
-.btn:hover {
+.btn:hover, .btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus {
   background-color: #2980b9 !important;
   color: $silver !important;
 }
@@ -170,6 +175,10 @@ button.btn, .btn {
   border: none !important;
   transition: .25s all;
   -webkit-transition: .25s all;
+}
+
+.btn.js-record-action {
+  padding: 6px 11px;  
 }
 
 .border-bottom {
