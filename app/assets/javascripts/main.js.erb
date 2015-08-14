@@ -8,18 +8,13 @@ window.initialize = function(opts) {
   var synth = new App.Synth({
     channel: opts.channel,
     clips: opts.clips,
-    onCreateBuffer: function (id) {
-      var rowHtml = $('.record-row-template').html(),
-        recordTrackCount = $('.recording-track').length + 1,
+    onCreateBuffer: function(id) {
+      var recordTrackCount = $('.recording-track').length + 1,
         opts = {
           'id' : id,
           'count' : recordTrackCount
-        };
-
-      for (var prop in opts){
-        var pattern = '{{\\s*' + prop + '\\s*}}';
-        rowHtml = rowHtml.replace(new RegExp(pattern, 'g'), opts[prop]);
-      }
+        },
+        rowHtml = renderTemplate('.record-row-template', opts);
 
       $('.recordings-container').append(rowHtml);
     },

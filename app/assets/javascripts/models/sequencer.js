@@ -147,7 +147,7 @@ String.prototype.toUnderscore = function(){
       self.InstrumentCRUD.saveBuffer({
         id: recordId,
         blob: self.blobs[recordId]
-      }).then(self.onSaveBuffer);
+      }).then(self.onSaveBuffer, self.onSaveBuffer);
     }
 
     self.exportBuffer = function(recordId) {

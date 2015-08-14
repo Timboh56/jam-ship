@@ -43,13 +43,18 @@ try {
         processData: false,
         contentType: false,
         success: function(xhr) {
-          var successFlashDiv = $('.alert-info').html('Uploaded and saved.').clone();
-          $('.flash-messages').html(successFlashDiv);
+          var rowHtml = renderTemplate('.alert-info-template', {
+            message: 'Uploaded and saved!'
+          });
+          $('.flash-messages').html(rowHtml);
           dfd.resolve({ id: id });
         },
         error: function(xhr) {
-          var errorFlashDiv = $('.alert-danger').html('Upload was not successful.').clone();
-          $('.flash-messages').html(errorFlashDiv);  
+          var rowHtml = renderTemplate('.alert-danger-template', {
+            message: 'Uploaded was not successful!'
+          });
+          console.log(xhr);
+          $('.flash-messages').html(rowHtml);
           dfd.reject({ id: id });
         }
       });

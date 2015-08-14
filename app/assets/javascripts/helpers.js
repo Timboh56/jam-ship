@@ -40,3 +40,14 @@ function serializer(replacer, cycleReplacer) {
     return replacer == null ? value : replacer.call(this, key, value)
   }
 }
+
+function renderTemplate(templateSelector, opts) {
+  var rowHtml = $(templateSelector).html();
+
+  for (var prop in opts){
+    var pattern = '{{\\s*' + prop + '\\s*}}';
+    rowHtml = rowHtml.replace(new RegExp(pattern, 'g'), opts[prop]);
+  }
+
+  return rowHtml;
+}
