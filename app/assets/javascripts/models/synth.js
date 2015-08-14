@@ -5,18 +5,14 @@
 
     opts = $.extend({}, opts, {
       onReceive: (function(snapshot) {
-        console.log('received:');
-        console.log(snapshot);
-        if (self.mode == "listening") {
-          var val = snapshot.val();
-          if (val.url) {
-            self.Recorder.setTrack(val);
-          } else {
-            if(val.velocity == 0)
-              self.stop(val.note);
-            else
-              self.play(val.note, val.velocity, val.noteInterval);
-          }
+        var val = snapshot.val();
+        if (val.url) {
+          self.Recorder.setTrack(val);
+        } else {
+          if(val.velocity == 0)
+            self.stop(val.note);
+          else
+            self.play(val.note, val.velocity, val.noteInterval);
         }
       }).bind(this),
 

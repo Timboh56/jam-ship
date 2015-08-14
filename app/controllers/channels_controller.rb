@@ -1,5 +1,5 @@
 class ChannelsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:show]
 
   def show
     @channel = Channel.find(params[:id])

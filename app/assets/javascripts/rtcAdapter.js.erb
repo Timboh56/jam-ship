@@ -57,19 +57,12 @@
 
       self.peer.on('connection', (function(data) {
         self.conn = data;
+        self.conn.on('data', self.onReceive);
         console.log('connection');
         dfd.resolve();
       }).bind(this));
 
       return dfd.promise();
-    }
-
-    self.initConn = function() {
-      if (self.conn) {
-        self.conn.on('open', function() {
-
-        });
-      }
     }
 
     self.set = function(prop, val) {
