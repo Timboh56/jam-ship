@@ -4,23 +4,19 @@
     var parent, freqSlide, self, opts, notes, onChangeInput;
 
     opts = $.extend({}, opts, {
-      onReceive: (function(snapshot) {
-        var val = snapshot;
+      onReceive: (function(val) {
+        val = $.extend({}, val, { receiving: true });
         if (val.url) {
           self.Sequencer.setTrack(val);
-        } else {
-          if(val.velocity == 0)
-            self.stop(val.note);
-          else
-            self.play(val.note, val.velocity, val.noteInterval);
-        }
+        } else
+          self.play(val);
       }).bind(this),
 
       onMidiMessage: opts['onMidiMessage'] || function(note, velocity) {
         if (velocity > 0 && self.mode == 'live')
           self.play(note, velocity);
         else
-          self.stop(note);
+          self.stop({ note: note });
       },
       inputFieldsClass: opts['inputFieldsClass'],
 
@@ -31,7 +27,10 @@
         if (self.InstrumentControl.keyboardOn && 'live' == self.mode) {
           if (App.Constants.KEYTONOTE[keyPressed] && !self.notes[note].keyDown) {
             self.notes[note].keyDown = true;
-            self.play(note, self.velocity);
+            self.play({
+              note: note,
+              velocity: self.velocity
+            });
           }
         }
       }).bind(this),
@@ -44,7 +43,7 @@
         if (self.InstrumentControl.keyboardOn && 'live' == self.mode) {
           if (App.Constants.KEYTONOTE[keyPressed] && self.notes[note].keyDown) {
             self.notes[note].keyDown = false;
-            self.stop(note);
+            self.stop({ note: note });
           }
         }
       }).bind(this),
@@ -183,10 +182,13 @@
       }
     }
 
-    self.play = function(note, velocity) {
-      var noteInterval;
-      if (self.opts["onPlay"]) self.opts["onPlay"].apply(this, [ note, velocity ]);
-      noteInterval = self.notes[note].noteInterval = self.Sequencer.elapsedSince(self.notes[note].startTime)
+    self.play = function(opts) {
+      var note = opts['note'],
+        velocity = opts['velocity'],
+        receiving = opts['receiving'];
+
+      if (self.opts["onPlay"]) self.opts["onPlay"].apply(this, [opts]);
+      var noteInterval = self.notes[note].noteInterval = self.Sequencer.elapsedSince(self.notes[note].startTime)
       self.playNote.apply(this, [note, velocity, noteInterval]);
       self.notes[note].startTime = self.Sequencer.getNow();
     }
@@ -217,9 +219,10 @@
         self.synth.noteOnWithFreq(freq, velocity);
     }
 
-    self.stop = function(note) {
+    self.stop = function(opts) {
+      var note = opts['note'];
       self.stopNote(note);
-      if (self.opts["onStop"]) self.opts["onStop"].call(this, note);
+      if (self.opts["onStop"]) self.opts["onStop"].apply(this, [opts]);
     }
 
     self.stopNote = function(note) {
