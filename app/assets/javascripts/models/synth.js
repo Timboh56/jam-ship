@@ -5,7 +5,7 @@
 
     opts = $.extend({}, opts, {
       onReceive: (function(snapshot) {
-        var val = snapshot.val();
+        var val = snapshot;
         if (val.url) {
           self.Sequencer.setTrack(val);
         } else {
