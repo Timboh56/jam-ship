@@ -23,12 +23,19 @@ try {
         localStorage.setItem('shape', JSON.stringify(data));
     }
 
-    self.saveBuffer = function(blob) {
-      var dfd = $.Deferred();
-      var fd = new FormData();
+    self.saveBuffer = function(opts) {
+      var dfd = $.Deferred(),
+        fd = new FormData(),
+        id = opts.id,
+        blob = opts.blob,
+        icon = $('<i />').addClass('fa fa-spin fa-spinner')
+
       fd.append('fname', 'test.wav');
       fd.append('channel_id', self.channel_id);
       fd.append('data', blob);
+
+      $('#upload-clip-' + id).html(icon);
+
       $.ajax({
         type: 'POST',
         url: '/api/clips/',
@@ -38,12 +45,12 @@ try {
         success: function(xhr) {
           var successFlashDiv = $('.alert-info').html('Uploaded and saved.').clone();
           $('.flash-messages').html(successFlashDiv);
-          dfd.resolve(xhr);
+          dfd.resolve({ id: id });
         },
         error: function(xhr) {
           var errorFlashDiv = $('.alert-danger').html('Upload was not successful.').clone();
           $('.flash-messages').html(errorFlashDiv);  
-          dfd.reject();
+          dfd.reject({ id: id });
         }
       });
       return dfd.promise();

@@ -80,6 +80,7 @@ Rails.application.configure do
 
   config.paperclip_defaults = {
     :storage => :s3,
+    :s3_protocol => :https,
     :s3_credentials => {
       :bucket => ENV['S3_BUCKET_NAME'],
       :access_key_id => ENV['S3_KEY'],

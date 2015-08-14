@@ -57,8 +57,9 @@ window.initialize = function(opts) {
       $('#play-btn-' + val.id).removeClass('focus');
     },
 
-    onSaveBuffer: function(res) {
-      synth.broadcast(res);
+    onSaveBuffer: function(opts) {
+      var icon = $('<i />').addClass('fa fa-cloud-upload');
+      $('#upload-clip-' + opts.id).html(icon)
     },
 
     inputFieldsClass: 'synth-field'

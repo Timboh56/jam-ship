@@ -10,7 +10,7 @@
           <div class='full-width'>
             <a alt='play' data-action="play" data-record-id="{{ id }}" class=" btn js-record-action mvsm" id="play-btn-{{ id }}"> <%= fa_icon "play" %> </a>
             <a alt='stop' data-action="stop" class=" btn js-record-action mvsm" data-record-id="{{ id }}" id="stop-btn-{{ id }}"> <%= fa_icon "stop" %> </a>
-            <a alt='upload' class=' mvsm btn js-record-action' data-record-id="{{ id }}" data-action='saveBuffer'> <%= fa_icon 'cloud-upload' %> </a>
+            <a alt='upload' id='upload-clip-{{ id }}' class='upload-btn mvsm btn js-record-action' data-record-id="{{ id }}" data-action='saveBuffer'> <%= fa_icon 'cloud-upload' %> </a>
           </div>
           <div class='full-width'>
             <a alt='download' class=' mvsm btn js-record-action' data-record-id="{{ id }}" data-action='exportBuffer'> <%= fa_icon 'save' %> </a>

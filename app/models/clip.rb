@@ -9,7 +9,7 @@ class Clip < ActiveRecord::Base
     :path => "sounds/:id/:style.:extension"
 
   #before_validation :convert_to_mp3
-  validates_attachment :mp3, content_type: { content_type: ["audio/wav", "audio/mp3"] }
+  validates_attachment :mp3, content_type: { content_type: ["audio/wav", "mp3"] }
 
   def reconvert_to_mp3
     wavfile = Tempfile.new(".wav")

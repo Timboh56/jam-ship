@@ -59,6 +59,7 @@ String.prototype.toUnderscore = function(){
       try {
         opts = opts || {};
         opts['id'] = opts['id'] || new Date().getUTCMilliseconds();
+        console.log(opts['url']);
         self.buffers[opts['id']] = T('audio', { load: opts['url'] } ).on('ended', function() {
           this.pause();
         }).play();
@@ -143,7 +144,10 @@ String.prototype.toUnderscore = function(){
     }
 
     self.saveBuffer = function(recordId) {
-      self.InstrumentCRUD.saveBuffer(self.blobs[recordId]).done(self.onSaveBuffer);
+      self.InstrumentCRUD.saveBuffer({
+        id: recordId,
+        blob: self.blobs[recordId]
+      }).then(self.onSaveBuffer);
     }
 
     self.exportBuffer = function(recordId) {

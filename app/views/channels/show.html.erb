@@ -38,7 +38,7 @@
   $(document).ready(function() {
     var clips = [];
     <% @channel.clips.each do |clip| %>
-      clips.push({ id: <%= clip.id %>, url: '<%= clip.attachment.url %>' });
+      clips.push({ id: <%= clip.id %>, url: '<%= clip.mp3.url %>' });
     <% end %>
     window.initialize({
       channel: '<%= params[:id] %>',
