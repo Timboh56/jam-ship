@@ -1,19 +1,22 @@
 <script type="template" class="template record-row-template">
-  <div id="recording-track-container-{{ id }}" class='col-xs-12 col-sm-3'>
+  <div id="recording-track-container-{{ id }}" class='col-xs-6 col-sm-3 col-md-2'>
     <div class='col-xs-12 mtl pvmd block clearfix recording-track shadow panel text-center'>
-      <label class='full-width mvmd'>
+      <label class='full-width mvsm'>
         Track {{ count }}
       </label>
       <br />
       <div class='row'>
         <div class='col-xs-12'>
-          <a alt='play' data-action="play" data-record-id="{{ id }}" class=" btn js-record-action mvmd" id="play-btn-{{ id }}"> <%= fa_icon "play" %> </a>
-          <a alt='stop' data-action="stop" class=" btn js-record-action mvmd" data-record-id="{{ id }}" id="stop-btn-{{ id }}"> <%= fa_icon "stop" %> </a>
-          <a alt='upload' class=' mvmd btn js-record-action' data-record-id="{{ id }}" data-action='saveBuffer'> <%= fa_icon 'cloud-upload' %> </a>
-          <br />
-          <a alt='download' class=' mvmd btn js-record-action' data-record-id="{{ id }}" data-action='exportBuffer'> <%= fa_icon 'save' %> </a>
-          <a alt='edit' data-action="editBuffer" data-target='#edit-clip-modal' data-toggle='modal' class=" btn js-record-action mvmd" data-record-id="{{ id }}" id="edit-btn-{{ id }}"> <%= fa_icon "edit" %> <a/>
-          <a alt='delete' data-action="deleteBuffer" class=" btn js-record-action mvmd" data-record-id="{{ id }}" id="delete-btn-{{ id }}"> <%= fa_icon "trash" %> <a/>
+          <div class='full-width'>
+            <a alt='play' data-action="play" data-record-id="{{ id }}" class=" btn js-record-action mvsm" id="play-btn-{{ id }}"> <%= fa_icon "play" %> </a>
+            <a alt='stop' data-action="stop" class=" btn js-record-action mvsm" data-record-id="{{ id }}" id="stop-btn-{{ id }}"> <%= fa_icon "stop" %> </a>
+            <a alt='upload' class=' mvsm btn js-record-action' data-record-id="{{ id }}" data-action='saveBuffer'> <%= fa_icon 'cloud-upload' %> </a>
+          </div>
+          <div class='full-width'>
+            <a alt='download' class=' mvsm btn js-record-action' data-record-id="{{ id }}" data-action='exportBuffer'> <%= fa_icon 'save' %> </a>
+            <a alt='edit' data-action="editBuffer" data-target='#edit-clip-modal' data-toggle='modal' class=" btn js-record-action mvsm" data-record-id="{{ id }}" id="edit-btn-{{ id }}"> <%= fa_icon "edit" %> <a/>
+            <a alt='delete' data-action="deleteBuffer" class=" btn js-record-action mvsm" data-record-id="{{ id }}" id="delete-btn-{{ id }}"> <%= fa_icon "trash" %> <a/>
+          </div>
         </div>
       </div>
     </div>

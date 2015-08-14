@@ -36,10 +36,12 @@ $silver: #E0E0E0;
     text-align: right;
 }
 .onoffswitch-switch {
-    display: block; width: 18px; margin: 6px;
+    display: block; width: 10px; margin: 7px;
     background: #eee;
-    position: absolute; top: 0; bottom: 0;
-    right: 56px;
+    position: absolute;
+    top: -3px;
+    bottom: 3px;
+    right: 64px;
     border: 2px solid #2c3e50; border-radius: 13px;
     transition: all 0.3s ease-in 0s; 
 }
