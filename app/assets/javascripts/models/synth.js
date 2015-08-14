@@ -188,16 +188,12 @@
         receiving = opts['receiving'];
 
       if (self.opts["onPlay"]) self.opts["onPlay"].apply(this, [opts]);
-      var noteInterval = self.notes[note].noteInterval = self.Sequencer.elapsedSince(self.notes[note].startTime)
-      self.playNote.apply(this, [note, velocity, noteInterval]);
-      self.notes[note].startTime = self.Sequencer.getNow();
+      self.playNote.apply(this, [note, velocity]);
     }
 
     self.playNote = function(note, velocity, noteInterval) {
       var freq = App.Constants.FREQUENCIES[note];
-      if (noteInterval)
-        setTimeout(self.playIndividualNote.apply(this, [note, freq, velocity]), noteInterval);
-      
+
       switch(self.synthMode)
       {
         case 'organ':
