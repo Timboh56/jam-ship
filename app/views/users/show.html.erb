@@ -51,6 +51,8 @@
                     <%= clip.name %>
                   </div>
                   <div class='col-xs-12 col-sm-3 text-right'>
+                    <%= link_to fa_icon('save').html_safe, clip.mp3.url, data: { remote: true }, class: 'btn' %>
+
                     <%= link_to fa_icon('trash').html_safe, { action: :destroy, controller: "api/clips", id: clip.id }, method: :delete, data: { remote: true, confirm: 'Are you sure you want to delete this?' }, class: 'btn delete-btn' %>
                   </div>
                 </li>

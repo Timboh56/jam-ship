@@ -1,0 +1,11 @@
+<div class='container'>
+  <div class='row'>
+    <ul>
+      <% @channels.each do |channel| %>
+        <li>
+          <%= link_to channel.name, channel_path(channel) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
