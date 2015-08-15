@@ -2,6 +2,8 @@ class ClipUploadJob < ActiveJob::Base
   queue_as :default
 
   def perform(*args)
-    Clip.find(args[0]).upload
+    clip = Clip.find(args[0])
+    clip.upload_to_s3
+    clip.local_clip.destroy
   end
 end
