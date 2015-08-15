@@ -1,5 +1,11 @@
 #login-modal {
   .modal-dialog {
-    width: 250px;
+    max-width: 250px;
+  }
+}
+
+#edit-channel-modal {
+  .modal-dialog {
+    max-width: 250px;
   }
 }

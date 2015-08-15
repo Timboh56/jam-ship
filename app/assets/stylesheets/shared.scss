@@ -305,6 +305,11 @@ a, a:visited, a:focus {
   background-color: $blue !important;  
 }
 
+.transition {
+  -webkit-transition: all 0.5s; /* Safari */
+  transition: all 0.5s;
+}
+
 .edit-btn, .delete-btn {
   border-radius: 3px;
   display: inline-block;
@@ -339,12 +344,17 @@ a, a:visited, a:focus {
   border: 1px solid #eee;
 }
 
+.clip-container, .channel-container {
+  a:hover {
+    color: $primary !important;
+  }
+}
+
 .clip-container {
   background-color: $gray !important;
 
   &:hover {
     background-color: #bdc3c7 !important;
-    cursor: pointer;
   }
 }
 
@@ -357,5 +367,5 @@ a, a:visited, a:focus {
 }
 
 .channel-container:hover {
-  background: rgba(52, 152, 219,1.0);
+  background: #83BADE;
 }
