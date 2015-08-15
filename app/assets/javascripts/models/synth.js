@@ -60,7 +60,8 @@
           self.incrementCurrentOctave()
         if (keyPressed == 'R') {
           self.Sequencer.toggleRecording({
-            instrument: self.getCurrentInstrument()
+            instrument: self.getCurrentInstrument(),
+            onTick: opts.onTick
           });
         }
       }).bind(this),

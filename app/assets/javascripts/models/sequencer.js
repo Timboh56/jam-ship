@@ -9,6 +9,8 @@ String.prototype.toUnderscore = function(){
     self.recording = false;
     self.recorder = null;
     self.recordingTime = 32000;
+    self.bpm = 128;
+    self.bpl = opts['bpl'] || 4;
     self.metronomeOn = false;
     self.metronomeObj = null;
     self.currentRecordId = null;
@@ -45,7 +47,7 @@ String.prototype.toUnderscore = function(){
 
       if (self.metronomeOn) {
         var beatLength = 60000/self.bpm;
-        self.metronomeObj = T("interval", {interval: beatLength}, (function(count) {
+        self.metronomeObj = T("interval", { interval: beatLength }, (function(count) {
           self.playMetronomeTick();
           $('.record-time').html(beat);
           if (beat % self.bpl === 0) beat = 1;
@@ -103,7 +105,7 @@ String.prototype.toUnderscore = function(){
         self.onCreateBuffer.call(this, timestamp);
         self.play(timestamp);
 
-        dfd.resolve();
+        dfd.resolve(self);
 
       }).bind(this));
 
@@ -112,17 +114,50 @@ String.prototype.toUnderscore = function(){
 
     self.toggleRecording = function(opts) {
       if (self.recording)
-        self.stopRecording();
-      else
-        self.startRecording(opts);
+        self.stopRecording(opts);
+      else {
+        self.delay.apply(this, [self.startRecording, self.bpl, opts])
+          .done((function(res) {
+            self = res;
+          }).bind(this));
+      }
+    }
+
+    self.delay = function(done, beats, opts) {
+      var beats = beats || 4,
+        i = beats,
+        beatLength = 60000/self.bpm,
+        ms = (self.bpm/60) * beatLength,
+        func = null,
+        dfd = $.Deferred();
+
+        func = function(self, ms, i, done, opts, dfd) {
+          try {
+            if (opts.onTick) opts.onTick(i);
+            if (i == 0) {
+              done.call(this, opts);
+              dfd.resolve(self);
+            } else {
+              setTimeout(function() {
+                self.playMetronomeTick();
+                i = i - 1;
+                func.apply(this, [ self, ms, i, done, opts, dfd]);
+              }, ms);
+            }
+          } catch (err) {
+            dfd.reject(false);
+          }
+        };
+
+        func.apply(this, [ self, ms, i, done, opts, dfd ]);
+
+        return dfd.promise();
     }
 
     self.startRecording = function(opts) {
       var timestamp, recorder;
-
       if (self.onStartRecording) self.onStartRecording();
-      recorder = self.initializeRecorder(opts).then((function() {
-
+      recorder = self.initializeRecorder(opts).then((function(self) {
         $('.recording-status-text').html('');
         $('.record-btn').removeClass('hide');
         $('.stop-btn').addClass('hide');
