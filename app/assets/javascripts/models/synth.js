@@ -17,7 +17,7 @@
 
       onMidiMessage: opts['onMidiMessage'] || function(note, velocity) {
         if (velocity > 0 && self.mode == 'live')
-          self.play(note, velocity);
+          self.play({note: note, velocity: velocity });
         else
           self.stop({ note: note });
       },
