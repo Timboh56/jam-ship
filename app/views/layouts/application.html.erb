@@ -69,16 +69,16 @@
           <%= fa_icon "rocket" %>
           JamShip</a>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
-          <ul class="nav navbar-nav">
+          <ul class="nav navbar-nav pull-right">
             <% if current_user %>
-              <li>
+              <li class='pull-left'>
                 <%= link_to "#{ fa_icon 'th-large' } Dashboard".html_safe, '/me' %>
               </li>
-              <li>
+              <li class='pull-right'>
                 <%= link_to "Logout", destroy_user_session_path  %>
               </li>
             <% else %>
-              <li>
+              <li class='pull-right'>
                 <%= link_to "#{ fa_icon 'twitter' } Login".html_safe, omniauth_authorize_path('user', 'twitter') %><br />
 
               </li>
