@@ -55,3 +55,7 @@ function renderTemplate(templateSelector, opts) {
 function renderSpinner() {
   return $('<i />').addClass('fa fa-spin fa-spinner')
 }
+
+function renderFA(klass) {
+  return $('<i />').addClass('fa ' + klass);
+}

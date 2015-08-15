@@ -297,9 +297,9 @@ a, a:visited, a:focus {
   text-decoration: none !important;
 }
 
-.sm { font-size: 7px; }
-.med { font-size: 14px; }
-.big { font-size: 21px; }
+.sm { font-size: 7px !important; }
+.med { font-size: 14px !important; }
+.big { font-size: 21px !important; }
 .bold { font-weight: bold; }
 .login-btn {
   background-color: $blue !important;  

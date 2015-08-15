@@ -15,6 +15,7 @@ String.prototype.toUnderscore = function(){
     self.buffers = {};
     self.blobs = [];
     self.onSaveBuffer = opts['onSaveBuffer'];
+    self.onStartRecording = opts['onStartRecording'];
     self.onPlayRecording = opts['onPlayRecording'];
     self.onStopRecording = opts['onStopRecording'];
     self.InstrumentCRUD = new App.InstrumentCRUD(opts);
@@ -119,6 +120,7 @@ String.prototype.toUnderscore = function(){
     self.startRecording = function(opts) {
       var timestamp, recorder;
 
+      if (self.onStartRecording) self.onStartRecording();
       recorder = self.initializeRecorder(opts).then((function() {
 
         $('.recording-status-text').html('');

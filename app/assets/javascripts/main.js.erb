@@ -22,6 +22,7 @@ window.initialize = function(opts) {
         },
         rowHtml = renderTemplate('.record-row-template', opts);
 
+      $('.recording-status').html('');
       $('.recordings-container').append(rowHtml);
     },
 
@@ -49,14 +50,20 @@ window.initialize = function(opts) {
       if (synth.mode == 'live' && !receiving) window.RtcAdapter.send({ note: note, velocity: 0 });
     },
 
-    onPlayRecording: function(val) {
-      $('#play-btn-' + val.id).addClass('focus');
-      //if (synth.mode == 'live') synth.broadcast({ buffer: stringify(val) });
+    onStartRecording: function(val) {
+      var icon = renderFA('fa-circle red-text');
+      $('.recording-status').append(icon).append(' recording..');
     },
 
     onStopRecording: function(val) {
       $('#play-btn-' + val.id).removeClass('focus');
     },
+
+    onPlayRecording: function(val) {
+      $('#play-btn-' + val.id).addClass('focus');
+      //if (synth.mode == 'live') synth.broadcast({ buffer: stringify(val) });
+    },
+
 
     onSaveBuffer: function(opts) {
       var icon = $('<i />').addClass('fa fa-cloud-upload');
