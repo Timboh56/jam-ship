@@ -1,11 +1,31 @@
 <div class='container'>
-  <div class='row'>
-    <ul>
-      <% @channels.each do |channel| %>
-        <li>
-          <%= link_to channel.name, channel_path(channel) %>
-        </li>
-      <% end %>
-    </ul>
+  <div class='row mtl pbmd border-bottom'>
+    <div class='col-xs-12'>
+      <h3>
+        Find a channel.
+      </h3>
+    </div>
+  </div>
+  <div class='row mtl'>
+    <div class='col-xs-12'>
+      <ul>
+        <% @channels.each do |channel| %>
+          <li>
+            <li data-href href='channels/<%= channel.id %>' class='block fade-animate col-xs-4 pbmd ptmd'>
+              <div class='transition channel-container border'>
+                <div class='center'>
+                  <span class='big'>
+                    <%= fa_icon 'headphones', { class: 'bold big-'} %>
+                  </span>
+                  <br />
+                  <%= link_to channel.name, channel_path(channel), { class: 'white-text bold' } %>
+                  <div class='full-width small'>Started by <%= channel.user.full_name %></div>
+                </div>
+              </div>
+            </li>
+          </li>
+        <% end %>
+      </ul>
+    </div>
   </div>
 </div>

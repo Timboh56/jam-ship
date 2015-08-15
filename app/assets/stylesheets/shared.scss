@@ -6,6 +6,8 @@ $primary: #34495e;
 $fontColor: #535456;
 $red: #B12617;
 $silver: #ecf0f1;
+$blue: #2980b9;
+$gray: #95a5a6;
 
 body {
   font-family: 'Roboto', sans-serif;
@@ -192,6 +194,10 @@ button.btn, .btn {
   padding: 6px 11px;  
 }
 
+.border {
+  border: 1px solid #eee;
+}
+
 .border-bottom {
   border-bottom: 1px solid #eee;  
 }
@@ -218,6 +224,10 @@ button.btn, .btn {
 
 .gray-text {
   color: #34495e;
+}
+
+.white-text, .white-text a {
+  color: white !important;
 }
 
 .red {
@@ -287,6 +297,14 @@ a, a:visited, a:focus {
   text-decoration: none !important;
 }
 
+.sm { font-size: 7px; }
+.med { font-size: 14px; }
+.big { font-size: 21px; }
+.bold { font-weight: bold; }
+.login-btn {
+  background-color: $blue !important;  
+}
+
 .edit-btn, .delete-btn {
   border-radius: 3px;
   display: inline-block;
@@ -313,6 +331,31 @@ a, a:visited, a:focus {
   background-color: $red !important;
 }
 
+.add-channel-btn {
+  background-color: $blue !important;
+}
+
 .recording-track {
   border: 1px solid #eee;
+}
+
+.clip-container {
+  background-color: $gray !important;
+
+  &:hover {
+    background-color: #bdc3c7 !important;
+    cursor: pointer;
+  }
+}
+
+.channel-container {
+  height: 150px;
+  padding: 25% 20px;
+  background: #2980b9;
+  color: white;
+  border-radius: 5px;
+}
+
+.channel-container:hover {
+  background: rgba(52, 152, 219,1.0);
 }
