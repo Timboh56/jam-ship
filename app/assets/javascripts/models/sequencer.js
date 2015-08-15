@@ -116,6 +116,7 @@ String.prototype.toUnderscore = function(){
       if (self.recording)
         self.stopRecording(opts);
       else {
+        self.recording = true;
         self.delay.apply(this, [self.startRecording, self.bpl, opts])
           .done((function(res) {
             self = res;
@@ -134,7 +135,7 @@ String.prototype.toUnderscore = function(){
         func = function(self, ms, i, done, opts, dfd) {
           try {
             if (opts.onTick) opts.onTick(i);
-            if (i == 0) {
+            if (i == 0 || self.recording == false) {
               done.call(this, opts);
               dfd.resolve(self);
             } else {
@@ -166,8 +167,8 @@ String.prototype.toUnderscore = function(){
       $('.recording-status-text').html('recording..');
       $('.record-btn').addClass('hide');
       $('.stop-btn').removeClass('hide');
-      self.recording = true;
       self.startTime = self.getNow();
+      self.recording = true;
       self.recorder.start();
     }
 
@@ -224,7 +225,7 @@ String.prototype.toUnderscore = function(){
     }
 
     self.stopRecording = function(opts) {
-      self.recorder.stop(); 
+      if (self.recorder) self.recorder.stop(); 
       var now = new Date();
       //self.recordingTime = self.elapsedSince();
       self.recording = false;

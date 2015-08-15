@@ -60,7 +60,8 @@ window.initialize = function(opts) {
 
     onStartRecording: function(val) {
       var icon = renderFA('fa-circle red-text');
-      $('.recording-status').append(icon).append(' recording..');
+      $('.recording-status').html('');
+      $('.recording-status').append(icon).append(' recording.. (R to stop)');
     },
 
     onStopRecording: function(val) {
