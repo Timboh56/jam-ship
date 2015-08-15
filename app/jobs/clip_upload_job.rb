@@ -2,6 +2,6 @@ class ClipUploadJob < ActiveJob::Base
   queue_as :default
 
   def perform(*args)
-    # Do something later
+    Clip.find(args[0]).upload
   end
 end
