@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/tommeier/delayed_paperclip.git
+  revision: 98a8b9e0c24d24c94e2c9c39a704c1b07c5c4d6b
+  ref: 98a8b9e0c24d24c94e2c9c39a704c1b07c5c4d6b
+  specs:
+    delayed_paperclip (2.4.5.1)
+      paperclip (>= 2.4.5)
+
+GIT
   remote: http://github.com/seyhunak/twitter-bootstrap-rails.git
   revision: 935f53bb55ef736260fa2ef04e29da2fc3fb2b3f
   specs:
@@ -80,8 +88,6 @@ GEM
     columnize (0.9.0)
     commonjs (0.2.7)
     debug_inspector (0.0.2)
-    delayed_paperclip (2.9.1)
-      paperclip (>= 3.3)
     devise (3.5.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -384,7 +390,7 @@ DEPENDENCIES
   cancan
   carrierwave
   coffee-rails (~> 4.1.0)
-  delayed_paperclip
+  delayed_paperclip!
   devise
   dotenv-rails
   firebase
