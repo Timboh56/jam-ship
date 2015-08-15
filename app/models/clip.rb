@@ -6,7 +6,9 @@ class Clip < ActiveRecord::Base
   has_attached_file :mp3,
     :storage => :s3,
     :s3_credentials => "#{Rails.root}/config/s3.yml",
-    :path => "sounds/:id/:style.:extension"
+    :path => "sounds/:id/:style.:extension",
+    :url => ":s3_domain_url",
+    :s3_host_name => "s3-website-us-west-1.amazonaws.com"
 
   #before_validation :convert_to_mp3
   validates_attachment :mp3, content_type: { content_type: ["audio/wav", "mp3"] }

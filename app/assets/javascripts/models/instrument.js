@@ -33,7 +33,7 @@ try {
 
       fd.append('fname', clipName + '.wav');
       fd.append('channel_id', self.channel_id);
-      fd.append('data', blob);
+      if (blob) fd.append('data', blob);
 
       $('#upload-clip-' + id).html(icon);
 
