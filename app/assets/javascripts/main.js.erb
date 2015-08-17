@@ -17,7 +17,7 @@ window.initialize = function(opts) {
 
     onTick: function(i) {
       if (i > 0)
-        $('.recording-status').html('recording in ' + i);
+        $('.recording-status').html('recording in ' + i + ' (press R to skip)');
       else
         $('.recording-status').html('');
     },
