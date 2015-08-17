@@ -114,27 +114,22 @@ window.initialize = function(opts) {
     $('.' + targetClass).toggleClass(toggleClass);
   });
 
-  $('.knob').each(function(index, el) {
-    var self = $(el),
-      id = self.attr('id'),
-      min = parseFloat(self.data('min')),
-      max = parseFloat(self.data('max')),
-      dataType = self.data('type'),
-      stepData = parseFloat(self.data('step')),
-      step = stepData || (max < 1.01 ? 0.01 : 0.5);
 
-    $('#' + id).knob({
-      min: min,
-      max: max,
-      step: step,
-      width: 60,
-      height: 60,
-      fontWeight: 'bold',
-      fontFamily: 'Roboto',
-      fgColor: '#222222',
-      thickness: 0.4,
-      release: function(e, v) {
-        synth.InstrumentControl.onChangeInput($('#' + id));
+  $('.knob').each(function(el) {
+    var self = $(this),
+        id = self.attr('id'),
+        min = parseFloat(self.data('min')),
+        max = parseFloat(self.data('max')),
+        dataType = self.data('type'),
+        stepData = parseFloat(self.data('step')),
+        step = stepData || (max < 1.01 ? 0.01 : 0.5);
+      
+    $('#' + id).knobKnob({
+      snap : 10,          // Snap to zero if less than this deg.
+      value: 154,         // Default rotation
+      scale: 0.3,
+      turn : function(ratio) {
+        //synth.InstrumentControl.onChangeInput($('#' + id));
       }
     });
   });

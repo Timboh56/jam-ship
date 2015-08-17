@@ -33,6 +33,11 @@ h3 {
   color: $fontColor;
 }
 
+h4 {
+  font-size: 14px;
+  font-weight: bold;
+}
+
 a {
   color: $primary !important;
 }
@@ -41,8 +46,9 @@ a {
   padding: 0 !important;
 }
 
+.margin-auto { margin: auto !important; }
 .fade-animate {
-  animation: taufik 2s;
+  animation: taufik 1s;
 }
 
 input[type=number].synth-field {
@@ -382,4 +388,11 @@ a, a:visited, a:focus {
 
 .panel {
   background: none !important;
+}
+
+.fixed {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  &.top { z-index: 99999; }
 }

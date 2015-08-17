@@ -14,8 +14,6 @@
   <div class='inline-block pbsm'>
     <div class='full-width mvl'>
       <h3> Channel <%= @channel.name %>
-        <span class='mll med red-text recording-status'>
-        </span>
         <% if current_user == @channel.user %>
           <div class='inline pull-right'>
             <a class='btn edit-btn' data-target='#edit-channel-modal' data-toggle='modal'>

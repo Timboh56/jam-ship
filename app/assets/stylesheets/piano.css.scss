@@ -46,7 +46,6 @@ box-shadow: 10px 10px 5px -6px rgba(196,196,196,1);
   height: auto;
   overflow: auto;
   background-color: #2c3e50;
-  width:100%;
   position:relative;
   -webkit-box-shadow:0 2px 0px #666,0 3px 0px #555,0 4px 0px #444,0 6px 6px #000,inset 0 -1px 1px rgba(255,255,255,0.5),inset 0 -4px 5px #000;
   -moz-box-shadow:0 2px 0px #666,0 3px 0px #555,0 4px 0px #444,0 6px 6px #000,inset 0 -1px 1px rgba(255,255,255,0.5),inset 0 -4px 5px #000;
@@ -496,6 +495,20 @@ border-bottom-right-radius:60px 5px;
   clear:both;
 }
 
+.synth-controls, .recording-controls {
+  position: relative;
+  top: 0px;
+  width: 100%;
+  left: 0px;
+  background-color: rgba(44, 62, 80, 0.90);
+  color: white;
+  z-index: 9999;
+  padding: 10px 30px;
+  label {
+    font-weight: 100 !important;
+    color: rgb(184, 203, 216) !important;
+  }
+}
 
 /* Animation */
 @-webkit-keyframes taufik {

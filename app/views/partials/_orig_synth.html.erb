@@ -1,6 +1,6 @@
 <div class="recordings-container row mvmd">
 </div>
-<div class='mtl' id="p-wrapper">
+<div class='col-xs-12 col-sm-mtl' id="p-wrapper">
   <ul id="piano">
     <% (2..5).each do |octave| %>
       <div class="octave">
@@ -34,24 +34,15 @@
       </select>
     </div>
   </div>
-  <div class='col-xs-12 col-sm-offset-6 col-sm-2 inline-block mtl'>
-    <div class='panel'>
-      <label> R </label> - <%= fa_icon 'circle', class: 'red-text' %> / <%= fa_icon 'square' %>  Record
-      <br />
-      <label> X </label> - <%= fa_icon 'arrow-up' %> octave
-      <br />
-      <label> Z </label> - <%= fa_icon 'arrow-down' %> octave
-    </div>
-  </div>
-</div>
-<div class='row clearfix height-auto border-bottom pbl'>
-  <div class='col-xs-12'>
+  <div class='col-xs-6 col-sm-3 mtl'>
     <div class='row'>
-      <div class='col-sm-12 block mvl'>
-        <h4 class='pull-left'>
-          <%= fa_icon 'gear', { class: "gray-text"} %> Synth Controls
+      <div class='col-xs-12 block'>
+        <h4>
+          <%= fa_icon "gear" %> Synth Controls
         </h4>
-        <div class="pull-right onoffswitch">
+      </div>
+      <div class='col-xs-12 mtl'>
+        <div class="onoffswitch">
           <input data-toggle-class='hide' data-target='t2' class='toggle onoffswitch-checkbox' type="checkbox" name="syn-control-switch" id="syn-control-switch">
           <label class="onoffswitch-label" for="syn-control-switch">
               <span class="onoffswitch-inner"></span>
@@ -59,86 +50,100 @@
           </label>
         </div>
       </div>
-      <div class='hide t2 col-sm-12 block center'>
-        <div class='col-xs-4 col-sm-2 col-md-2'>
-          <div class='col-xs-12'>
-            <label class='full-width text-center'>
-              Attack
-            </label class='full-width text-center'>
-          </div>
-          <div class='col-xs-12 text-center'>
-            <input type="number" id="synth-attack-input" data-synth-field="attack" name="synthAttack" class="knob synth-field synth-attack-input" data-type="seconds" data-min="0" data-max="10" data-step="0.25" placeholder="Attack 0-10s" value="1" ></input>
-          </div>
+    </div>
+  </div>
+  <div class='col-xs-6 col-sm-3 mtl'>
+    <div class='row'>
+      <div class='col-xs-12 block'>
+        <h4>
+          <%= fa_icon "circle", { class: "red-text" } %> Recording Controls
+      </h4>
+      </div>
+      <div class='col-xs-12 mtl'>
+        <div class="onoffswitch">
+          <input data-toggle-class='hide' data-target='t3' class='toggle onoffswitch-checkbox' type="checkbox" name="rec-control-switch" id="rec-control-switch">
+          <label class="onoffswitch-label" for="rec-control-switch">
+              <span class="onoffswitch-inner"></span>
+              <span class="onoffswitch-switch"></span>
+          </label>
         </div>
-        <div class='col-xs-4 col-sm-2 col-md-2'>
-          <div class='col-xs-12'>
-            <label class='full-width text-center'>
-              Decay
-            </label class='full-width text-center'>
-          </div>
-          <div class='col-xs-12 text-center'>
-            <input type="number" id="synth-decay-input" data-synth-field="decay" name="synthDecay" class="knob synth-field synth-Decay-input" data-type="seconds" placeholder="Decay 0-10s" data-step="0.25" data-min="0" data-max="10" value="1" ></input>
-          </div>
-        </div>
-        <div class='col-xs-4 col-sm-2 col-md-2'>
-          <div class='col-xs-12 text-center'>
-            <label class='full-width text-center'>
-              Sustain
-            </label class='full-width text-center'>
-          </div>
-          <div class='col-xs-12 text-center'>
-            <input type="number" id="synth-sustain-input" data-synth-field="sustain" name="synthSustain" data-type="seconds" class="knob synth-field synth-sustain-input" data-min="0" data-max="10" data-step="1"placeholder="sustain (0 - 10s)" value="1" ></input>
-          </div>
-        </div>
-        <div class='col-xs-4 col-sm-2 col-md-2'>
-          <div class='col-xs-12 text-center'>
-            <label class='full-width text-center'>
-              Release
-            </label class='full-width text-center'>
-          </div>
-          <div class='col-xs-12 text-center'>
-            <input type="number" id="synth-release-input" data-synth-field="release" name="synthRelease" data-type="seconds" class="knob synth-field synth-release-input" data-min="0" data-max="10" data-step="1" placeholder="Release (0 - 10s)" value="1" ></input>
-          </div>
-        </div>
-        <div class='col-xs-4 col-sm-2 col-md-2'>
-          <div class='col-xs-12 text-center'>
-            <label class='full-width text-center'>
-              Reverb
-            </label class='full-width text-center'>
-          </div>
-          <div class='col-xs-12 text-center'>
-            <input type="number" id="synth-reverb-input" data-synth-field="reverb" name="synthReverb" class="knob synth-field synth-reverb-input" data-min="0" data-max="1" placeholder="reverb 0-100%" value="100" ></input>
-          </div>
-        </div> 
-        <div class='col-xs-4 col-sm-2 col-md-2'>
-          <div class="col-xs-12 text-center">
-            <label class='full-width text-center'>Volume</label class='full-width text-center'>
-          </div>
-          <div class="col-xs-12 text-center">
-            <input type="number" data-synth-field='volume' id="synth-volume-input" name="synthVolume" class="knob synth-field synth-volume-input" data-step="1"data-min="0" data-max="6" placeholder="Volume 0 - 6" value="1" ></input>
-          </div>
+         <div class='full-width mtl no-padding med red-text recording-status'>
         </div>
       </div>
+    </div>
+  </div>
+  <div class='col-xs-12 col-sm-2 inline-block mtl'>
+    <div class='panel'>
+      <label> R </label> - <%= fa_icon 'circle', class: 'red-text' %> / <%= fa_icon 'square' %>  Record
+      <br class='hidden-xs' />
+      <label> X </label> - <%= fa_icon 'arrow-up' %> octave
+      <br class='hidden-xs' />
+      <label> Z </label> - <%= fa_icon 'arrow-down' %> octave
     </div>
   </div>
 </div>
-<div class='row clearfix height-auto border-bottom pbl'>
-
-  <div class='mvl'>
-    <div class='col-xs-12'>
-      <h4 class='pull-left'>
-        <%= fa_icon "circle", { class: "red-text" } %> Recording Controls
-      </h4>
-      <div class="pull-right onoffswitch">
-        <input data-toggle-class='hide' data-target='t3' class='toggle onoffswitch-checkbox' type="checkbox" name="rec-control-switch" id="rec-control-switch">
-        <label class="onoffswitch-label" for="rec-control-switch">
-            <span class="onoffswitch-inner"></span>
-            <span class="onoffswitch-switch"></span>
-        </label>
+<div class='fixed top full-width block'>
+  <div class='hide t2 animate fade-animate synth-controls col-sm-12 block center'>
+    <div class='col-xs-4 col-sm-2 col-md-2'>
+      <div class='col-xs-12'>
+        <label class='full-width text-center'>
+          Attack
+        </label class='full-width text-center'>
+      </div>
+      <div class='col-xs-12 text-center'>
+        <div type="number" id="synth-attack-input" data-synth-field="attack" name="synthAttack" class="knob synth-field synth-attack-input" data-type="seconds" data-min="0" data-max="10" data-step="0.25" placeholder="Attack 0-10s" value="1" ></div>
+      </div>
+    </div>
+    <div class='col-xs-4 col-sm-2 col-md-2'>
+      <div class='col-xs-12'>
+        <label class='full-width text-center'>
+          Decay
+        </label class='full-width text-center'>
+      </div>
+      <div class='col-xs-12 text-center'>
+        <div type="number" id="synth-decay-input" data-synth-field="decay" name="synthDecay" class="knob synth-field synth-Decay-input" data-type="seconds" placeholder="Decay 0-10s" data-step="0.25" data-min="0" data-max="10" value="1" ></div>
+      </div>
+    </div>
+    <div class='col-xs-4 col-sm-2 col-md-2'>
+      <div class='col-xs-12 text-center'>
+        <label class='full-width text-center'>
+          Sustain
+        </label class='full-width text-center'>
+      </div>
+      <div class='col-xs-12 text-center'>
+        <div type="number" id="synth-sustain-input" data-synth-field="sustain" name="synthSustain" data-type="seconds" class="knob synth-field synth-sustain-input" data-min="0" data-max="10" data-step="1"placeholder="sustain (0 - 10s)" value="1" ></div>
+      </div>
+    </div>
+    <div class='col-xs-4 col-sm-2 col-md-2'>
+      <div class='col-xs-12 text-center'>
+        <label class='full-width text-center'>
+          Release
+        </label class='full-width text-center'>
+      </div>
+      <div class='col-xs-12 text-center'>
+        <div type="number" id="synth-release-input" data-synth-field="release" name="synthRelease" data-type="seconds" class="knob synth-field synth-release-input" data-min="0" data-max="10" data-step="1" placeholder="Release (0 - 10s)" value="1" ></div>
+      </div>
+    </div>
+    <div class='col-xs-4 col-sm-2 col-md-2'>
+      <div class='col-xs-12 text-center'>
+        <label class='full-width text-center'>
+          Reverb
+        </label class='full-width text-center'>
+      </div>
+      <div class='col-xs-12 text-center'>
+        <div type="number" id="synth-reverb-input" data-synth-field="reverb" name="synthReverb" class="knob synth-field synth-reverb-input" data-min="0" data-max="1" placeholder="reverb 0-100%" value="100" ></div>
+      </div>
+    </div> 
+    <div class='col-xs-4 col-sm-2 col-md-2'>
+      <div class="col-xs-12 text-center">
+        <label class='full-width text-center'>Volume</label class='full-width text-center'>
+      </div>
+      <div class="col-xs-12 text-center">
+        <div type="number" data-synth-field='volume' id="synth-volume-input" name="synthVolume" class="knob synth-field synth-volume-input" data-step="1"data-min="0" data-max="6" placeholder="Volume 0 - 6" value="1" ></div>
       </div>
     </div>
   </div>
-  <div class='t3 hide row'>
+  <div class='t3 hide animate fade-animate col-sm-12 recording-controls block'>
     <div class='col-xs-4 col-sm-2 col-md-2'>
       <div class='row'>
         <div class='col-sm-12 text-center'>
@@ -147,7 +152,7 @@
           </label class='full-width text-center'>
         </div>
         <div class='col-sm-12 text-center'>
-          <input type="number" id="synth-bpm-input" data-synth-field="Bpm" name="synthBPM" class="knob synth-field synth-BPM-input" data-step="1" data-min="1" data-max="200" placeholder="BPM (ms)" value="128" ></input>
+          <div type="number" id="synth-bpm-input" data-synth-field="Bpm" name="synthBPM" class="knob synth-field synth-BPM-input" data-step="1" data-min="1" data-max="200" placeholder="BPM (ms)" value="128" ></div>
         </div>
       </div>
     </div>
@@ -159,7 +164,7 @@
           </label class='full-width text-center'>
         </div>
         <div class='col-sm-12 text-center'>
-          <input type="number" id="synth-bpl-input" data-synth-field="Bpl" name="synthBPL" class="knob synth-field synth-BPL-input" data-step="1" data-min="0" data-max="8" placeholder="Beats per record" value="4" ></input>
+          <div type="number" id="synth-bpl-input" data-synth-field="Bpl" name="synthBPL" class="knob synth-field synth-BPL-input" data-step="1" data-min="0" data-max="8" placeholder="Beats per record" value="4" ></div>
         </div>
       </div>
     </div>
@@ -181,7 +186,7 @@
         Metronome
       </label>
       <div class='mtl'>
-        <div class="onoffswitch">
+        <div class="onoffswitch margin-auto">
           <input class='onoffswitch-checkbox js-record-action' data-action='toggleMetronome' type="checkbox" name="onoffswitch" id="myonoffswitch">
           <label class="onoffswitch-label" for="myonoffswitch">
               <span class="onoffswitch-inner"></span>
@@ -200,7 +205,7 @@
           </label>
         </div>
         <div class='col-sm-12 text-center'>
-          <input type="number" id="synth-metronome-vol-input" data-synth-field="MetronomeVol" data-step=".1" name="synthVol" class="knob synth-field synth-vol-input" data-min="0" data-max="1" placeholder="Metronome Volume" value=".25" ></input>
+          <div type="number" id="synth-metronome-vol-input" data-synth-field="MetronomeVol" data-step=".1" name="synthVol" class="knob synth-field synth-vol-input" data-min="0" data-max="1" placeholder="Metronome Volume" value=".25" ></div>
         </div>
       </div>
     </div>
@@ -212,7 +217,7 @@
           </label>
         </div>
         <div class='col-sm-12 text-center'>
-          <input type="number" id="synth-bfs-input" data-synth-field="Bfs" name="synthBFS" class="knob synth-field synth-BFS-input" data-min="1" data-max="4" placeholder="Bars before start" value="1" ></input>
+          <div type="number" id="synth-bfs-input" data-synth-field="Bfs" name="synthBFS" class="knob synth-field synth-BFS-input" data-min="1" data-max="4" placeholder="Bars before start" value="1" ></div>
         </div>
       </div>
     </div>
