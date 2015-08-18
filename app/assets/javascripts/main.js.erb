@@ -126,10 +126,15 @@ window.initialize = function(opts) {
       
     $('#' + id).knobKnob({
       snap : 10,          // Snap to zero if less than this deg.
-      value: 154,         // Default rotation
-      scale: 0.3,
+      value: 1,         // Default rotation
       turn : function(ratio) {
-        //synth.InstrumentControl.onChangeInput($('#' + id));
+
+        // need to multiply ratio by target.data('max')
+        var def = parseFloat($('#' + id).data('default')) || 0;
+        var max = parseFloat($('#' + id).data('max'));
+        var val = ratio * max;
+        $('#' + id).val(def);
+        synth.InstrumentControl.onChangeInput($('#' + id));
       }
     });
   });

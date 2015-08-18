@@ -68,7 +68,7 @@
 
       onChangeInput: (function(el) {
         var target = (el.val ? el : $(el.currentTarget)),
-          val = (parseFloat(target.val()) ?parseFloat(target.val()) : target.val()),
+          val = (parseFloat(target.val()) ? parseFloat(target.val()) : target.val()),
           dataType = target.data('type'),
           max = parseFloat(target.data('max')),
           id = target.attr('id'),

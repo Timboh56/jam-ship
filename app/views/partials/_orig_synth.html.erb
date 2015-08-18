@@ -91,7 +91,7 @@
         </label class='full-width text-center'>
       </div>
       <div class='col-xs-12 text-center'>
-        <div type="number" id="synth-attack-input" data-synth-field="attack" name="synthAttack" class="knob synth-field synth-attack-input" data-type="seconds" data-min="0" data-max="10" data-step="0.25" placeholder="Attack 0-10s" value="1" ></div>
+        <div type="number" id="synth-attack-input" data-synth-field="attack" name="synthAttack" class="knob synth-field synth-attack-input" data-default="1" data-type="seconds" data-min="0" data-max="10" data-step="0.25" placeholder="Attack 0-10s" value="1" ></div>
       </div>
     </div>
     <div class='col-xs-4 col-sm-2 col-md-2'>
@@ -101,7 +101,7 @@
         </label class='full-width text-center'>
       </div>
       <div class='col-xs-12 text-center'>
-        <div type="number" id="synth-decay-input" data-synth-field="decay" name="synthDecay" class="knob synth-field synth-Decay-input" data-type="seconds" placeholder="Decay 0-10s" data-step="0.25" data-min="0" data-max="10" value="1" ></div>
+        <div type="number" id="synth-decay-input" data-synth-field="decay" name="synthDecay" data-default="0" class="knob synth-field synth-Decay-input" data-type="seconds" placeholder="Decay 0-10s" data-step="0.25" data-min="0" data-max="10" value="1" ></div>
       </div>
     </div>
     <div class='col-xs-4 col-sm-2 col-md-2'>
@@ -111,7 +111,7 @@
         </label class='full-width text-center'>
       </div>
       <div class='col-xs-12 text-center'>
-        <div type="number" id="synth-sustain-input" data-synth-field="sustain" name="synthSustain" data-type="seconds" class="knob synth-field synth-sustain-input" data-min="0" data-max="10" data-step="1"placeholder="sustain (0 - 10s)" value="1" ></div>
+        <div type="number" id="synth-sustain-input" data-synth-field="sustain" name="synthSustain" data-default="1" data-type="seconds" class="knob synth-field synth-sustain-input" data-min="0" data-max="10" data-step="1"placeholder="sustain (0 - 10s)" value="1" ></div>
       </div>
     </div>
     <div class='col-xs-4 col-sm-2 col-md-2'>
@@ -121,7 +121,7 @@
         </label class='full-width text-center'>
       </div>
       <div class='col-xs-12 text-center'>
-        <div type="number" id="synth-release-input" data-synth-field="release" name="synthRelease" data-type="seconds" class="knob synth-field synth-release-input" data-min="0" data-max="10" data-step="1" placeholder="Release (0 - 10s)" value="1" ></div>
+        <div type="number" id="synth-release-input" data-synth-field="release" data-default="1" name="synthRelease" data-type="seconds" class="knob synth-field synth-release-input" data-min="0" data-max="10" data-step="1" placeholder="Release (0 - 10s)" value="1" ></div>
       </div>
     </div>
     <div class='col-xs-4 col-sm-2 col-md-2'>
@@ -152,7 +152,7 @@
           </label class='full-width text-center'>
         </div>
         <div class='col-sm-12 text-center'>
-          <div type="number" id="synth-bpm-input" data-synth-field="Bpm" name="synthBPM" class="knob synth-field synth-BPM-input" data-step="1" data-min="1" data-max="200" placeholder="BPM (ms)" value="128" ></div>
+          <div type="number" id="synth-bpm-input" data-synth-field="Bpm" name="synthBPM" class="knob synth-field synth-BPM-input" data-step="1" data-default="128" data-min="1" data-max="200" placeholder="BPM (ms)" value="128" ></div>
         </div>
       </div>
     </div>
@@ -164,7 +164,7 @@
           </label class='full-width text-center'>
         </div>
         <div class='col-sm-12 text-center'>
-          <div type="number" id="synth-bpl-input" data-synth-field="Bpl" name="synthBPL" class="knob synth-field synth-BPL-input" data-step="1" data-min="0" data-max="8" placeholder="Beats per record" value="4" ></div>
+          <div type="number" id="synth-bpl-input" data-synth-field="Bpl" name="synthBPL" class="knob synth-field synth-BPL-input" data-step="1" data-default="4" data-min="4" data-max="8" placeholder="Beats per record" value="4" ></div>
         </div>
       </div>
     </div>
@@ -205,19 +205,7 @@
           </label>
         </div>
         <div class='col-sm-12 text-center'>
-          <div type="number" id="synth-metronome-vol-input" data-synth-field="MetronomeVol" data-step=".1" name="synthVol" class="knob synth-field synth-vol-input" data-min="0" data-max="1" placeholder="Metronome Volume" value=".25" ></div>
-        </div>
-      </div>
-    </div>
-    <div class='col-xs-4 col-sm-2 col-md-2'>
-      <div class='row'>
-        <div class='col-sm-12'>
-          <label class='full-width text-center'>
-            Bars before start
-          </label>
-        </div>
-        <div class='col-sm-12 text-center'>
-          <div type="number" id="synth-bfs-input" data-synth-field="Bfs" name="synthBFS" class="knob synth-field synth-BFS-input" data-min="1" data-max="4" placeholder="Bars before start" value="1" ></div>
+          <div type="number" id="synth-metronome-vol-input" data-synth-field="MetronomeVol" data-step=".1" name="synthVol" class="knob synth-field synth-vol-input" data-min="0" data-default="0.25" data-max="1" placeholder="Metronome Volume" value=".25" ></div>
         </div>
       </div>
     </div>
