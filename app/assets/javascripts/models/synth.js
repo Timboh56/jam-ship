@@ -1,7 +1,7 @@
 (function(App) {
   var self;
   App.Synth = function(opts) {
-    var parent, freqSlide, self, opts, notes, onChangeInput;
+    var parent, self, opts, notes, onChangeInput;
 
     opts = $.extend({}, opts, {
       onReceive: (function(val) {
@@ -97,7 +97,6 @@
     self.opts["stop"] = self.stop;
 
     if (!T) throw "Could not find Timbre JS. Did you include it?";
-    freqSlide = 880;
 
     self.incrementCurrentOctave = function() {
       self.currentOctave = self.currentOctave + 1;
@@ -130,7 +129,7 @@
     }
 
     self.generateAdsfr = function(attack, decay, sustain, fade, release) {
-      return T("ahdsfr", { f: fade, sustained: true, a: attack, d:decay, s: sustain,r: release}, T(self.wave));
+      return T("ahdsfr", { h: 0.1, f: fade, a: attack, d:decay, s: sustain, r: release}, T(self.wave));
     }
 
     self.generateSynthFromSettings = function(opts) {
@@ -144,7 +143,7 @@
       wave = opts['wave'] || self.wave;
 
       // until i can fix the sustain issue, i'll use default
-      env = self.generateEnv(attack, decay, App.Constants.DEFAULT_SUSTAIN, fade, release);
+      env = self.generateAdsfr(attack, decay, sustain, fade, release);
             
       self.synthEnv = env;
 
@@ -246,12 +245,12 @@
     }
 
     self.setDecay = function(decay) {
-      self.decay = parseFloat(decay) || App.Constants.DEFAULT_DECAY;
+      self.decay = parseInt(decay) || App.Constants.DEFAULT_DECAY;
       self.generateSynthFromSettings();
     }
 
     self.setAttack = function(attack) {
-      self.attack = parseFloat(attack) || App.Constants.DEFAULT_ATTACK;
+      self.attack = parseInt(attack) || App.Constants.DEFAULT_ATTACK;
       self.generateSynthFromSettings();
     }
 
@@ -261,7 +260,7 @@
     }
 
     self.setRelease = function(release) {
-      self.release = release;
+      self.release = parseInt(release);
       self.generateSynthFromSettings();
     }
 
@@ -273,14 +272,6 @@
     self.setVolume = function(mul) {
       self.mul = parseFloat(mul);
       self.generateSynthFromSettings();
-    }
-
-    self.setBpm = function(bpm) {
-      self.Sequencer.setBPM(bpm);
-    }
-
-    self.setBfs = function(bfs) {
-      self.BFS = bfs;
     }
 
     self.setReverb = function(reverb) {
@@ -297,8 +288,9 @@
       self.generateSynthFromSettings();
     }
 
-    $(['saveBuffer', 'setBpm', 'setBpl', 'setRecordingTime', 'setMetronomeVol', 'setMetronomeVel']).each((function(index, el) {
+    $(['saveBuffer', 'setBpm', 'setBpl', 'setRecordingTime', 'setMetronomeVol']).each((function(index, el) {
       self[el] = function(field) {
+        if (parseInt(field) != NaN) field = parseInt(field);
         self.Sequencer[el].call(this, field);
       }
     }).bind(this));

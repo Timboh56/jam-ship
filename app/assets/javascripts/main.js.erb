@@ -122,18 +122,20 @@ window.initialize = function(opts) {
         max = parseFloat(self.data('max')),
         dataType = self.data('type'),
         stepData = parseFloat(self.data('step')),
-        step = stepData || (max < 1.01 ? 0.01 : 0.5);
+        step = stepData || (max < 1.01 ? 0.01 : 0.5),
+        synthField = self.data('synthField');
       
     $('#' + id).knobKnob({
-      snap : 10,          // Snap to zero if less than this deg.
-      value: 1,         // Default rotation
+      snap : 10,
+      value: 1,
       turn : function(ratio) {
 
         // need to multiply ratio by target.data('max')
-        var def = parseFloat($('#' + id).data('default')) || 0;
+        var def = parseFloat($('#' + id).data('default'));
+        var min = parseFloat($('#' + id).data('min'));
         var max = parseFloat($('#' + id).data('max'));
-        var val = ratio * max;
-        $('#' + id).val(def);
+        var val = min + (ratio * (max - min));
+        $('#' + id).val(val);
         synth.InstrumentControl.onChangeInput($('#' + id));
       }
     });

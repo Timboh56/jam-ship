@@ -4,7 +4,7 @@ $red: #B12617;
 $silver: #E0E0E0;
 
 .onoffswitch {
-    position: relative; width: 90px;
+    position: relative; width: 60px;
     -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
 }
 .onoffswitch-checkbox {
@@ -35,12 +35,14 @@ $silver: #E0E0E0;
     text-align: right;
 }
 .onoffswitch-switch {
-    display: block; width: 10px; margin: 7px;
+    display: block;
+    width: 8px;
+    margin: 9px 8px;
     background: #eee;
     position: absolute;
-    top: -3px;
-    bottom: 3px;
-    right: 64px;
+    top: -1px;
+    bottom: 1px;
+    right: 37px;
     border: 2px solid #2c3e50; border-radius: 13px;
     transition: all 0.3s ease-in 0s; 
 }

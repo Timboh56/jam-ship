@@ -4,8 +4,8 @@
 
 
 .knob{
-  width:53px;
-  height:53px;
+  width:40px;
+  height:40px;
   position:relative;
   margin: auto;
 }
@@ -14,17 +14,17 @@
   position:absolute;
   top:0;
   left:0;
-  width:53px;
-  height:53px;
+  width:40px;
+  height:40px;
   background:url('knob.png') no-repeat;
-  background-size: 53px 53px;
+  background-size: 40px 40px;
   z-index:10;
   cursor:default !important;
 }
 
 .knob .base{
-  width:53px;
-  height:53px;
+  width:40px;
+  height:40px;
   border-radius:50%;
   box-shadow:0 3px 0 #4a5056,3px 3px 3px #000;
   position:absolute;

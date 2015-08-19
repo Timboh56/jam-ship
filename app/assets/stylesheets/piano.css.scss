@@ -495,15 +495,14 @@ border-bottom-right-radius:60px 5px;
   clear:both;
 }
 
-.synth-controls, .recording-controls {
+.synth-controls{
   position: relative;
-  top: 0px;
   width: 100%;
   left: 0px;
-  background-color: rgba(44, 62, 80, 0.90);
+  background-color: rgba(44, 62, 80, 1);
   color: white;
   z-index: 9999;
-  padding: 10px 30px;
+  padding: 10px 20px;
   label {
     font-weight: 100 !important;
     color: rgb(184, 203, 216) !important;

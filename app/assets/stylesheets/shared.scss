@@ -197,7 +197,7 @@ button.btn, .btn {
 }
 
 .btn.js-record-action {
-  padding: 6px 11px;  
+  padding: 6px 7px;  
 }
 
 .border {
@@ -392,7 +392,13 @@ a, a:visited, a:focus {
 
 .fixed {
   position: fixed;
-  top: 0px;
   left: 0px;
-  &.top { z-index: 99999; }
+}
+
+.bottom {
+  bottom: 0px;  
+}
+
+.height-auto {
+  overflow: auto;
 }

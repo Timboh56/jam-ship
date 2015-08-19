@@ -62,7 +62,7 @@ String.prototype.toUnderscore = function(){
       try {
         opts = opts || {};
         opts['id'] = opts['id'] || new Date().getUTCMilliseconds();
-        console.log(opts['url']);
+
         self.buffers[opts['id']] = T('audio', { load: opts['url'] } ).on('ended', function() {
           this.pause();
         }).play();
@@ -238,11 +238,6 @@ String.prototype.toUnderscore = function(){
       };
 
     }).bind(this));
-
-    // convert BPM into recording Time in milliseconds
-    self.calculateBPM = function(recordingTime, bpl) {
-      return 60000/recordingTime;
-    }
 
     // convert BPM into recording Time in milliseconds
     self.calculateRecordingTime = function(bpm, bpl) {
