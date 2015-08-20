@@ -1,61 +1,67 @@
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
+(function(App) {
 
-function displayChatMessage(name, text) {
-  $('<div/>').text(text).prepend($('<em/>').text(name+': ')).appendTo($('#messagesDiv'));
-  $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
-};
+  var self = App.Helpers = {};
+  self.capitalizeFirstLetter = function(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
 
-function getChar(event) {
-  return String.fromCharCode(event.keyCode || event.charCode).toUpperCase();
-}
+  self.displayChatMessage = function(name, text) {
+    $('<div/>').text(text).prepend($('<em/>').text(name+': ')).appendTo($('#messagesDiv'));
+    $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
+  };
 
-function applyProperties(src, dest) {
-  for (var prop in src) dest[prop] = src[prop];
-  return dest;
-}
+  self.getChar = function(event) {
+    return String.fromCharCode(event.keyCode || event.charCode).toUpperCase();
+  };
 
-function stringify(obj, replacer, spaces, cycleReplacer) {
-  return JSON.stringify(obj, serializer(replacer, cycleReplacer), spaces)
-}
+  self.applyProperties = function(src, dest) {
+    for (var prop in src) dest[prop] = src[prop];
+    return dest;
+  };
 
-function serializer(replacer, cycleReplacer) {
-  var stack = [], keys = []
+  self.stringify = function(obj, replacer, spaces, cycleReplacer) {
+    return JSON.stringify(obj, serializer(replacer, cycleReplacer), spaces)
+  };
 
-  if (cycleReplacer == null) cycleReplacer = function(key, value) {
-    if (stack[0] === value) return "[Circular ~]"
-    return "[Circular ~." + keys.slice(0, stack.indexOf(value)).join(".") + "]"
-  }
+  self.serializer = serializer = function(replacer, cycleReplacer) {
+    var stack = [], keys = []
 
-  return function(key, value) {
-    if (stack.length > 0) {
-      var thisPos = stack.indexOf(this)
-      ~thisPos ? stack.splice(thisPos + 1) : stack.push(this)
-      ~thisPos ? keys.splice(thisPos, Infinity, key) : keys.push(key)
-      if (~stack.indexOf(value)) value = cycleReplacer.call(this, key, value)
+    if (cycleReplacer == null) cycleReplacer = function(key, value) {
+      if (stack[0] === value) return "[Circular ~]"
+      return "[Circular ~." + keys.slice(0, stack.indexOf(value)).join(".") + "]"
     }
-    else stack.push(value)
 
-    return replacer == null ? value : replacer.call(this, key, value)
-  }
-}
+    return function(key, value) {
+      if (stack.length > 0) {
+        var thisPos = stack.indexOf(this)
+        ~thisPos ? stack.splice(thisPos + 1) : stack.push(this)
+        ~thisPos ? keys.splice(thisPos, Infinity, key) : keys.push(key)
+        if (~stack.indexOf(value)) value = cycleReplacer.call(this, key, value)
+      }
+      else stack.push(value)
 
-function renderTemplate(templateSelector, opts) {
-  var rowHtml = $(templateSelector).html();
+      return replacer == null ? value : replacer.call(this, key, value)
+    }
+  };
 
-  for (var prop in opts){
-    var pattern = '{{\\s*' + prop + '\\s*}}';
-    rowHtml = rowHtml.replace(new RegExp(pattern, 'g'), opts[prop]);
-  }
+  self.renderTemplate = function(templateSelector, opts) {
+    var rowHtml = $(templateSelector).html();
 
-  return rowHtml;
-}
+    for (var prop in opts){
+      var pattern = '{{\\s*' + prop + '\\s*}}';
+      rowHtml = rowHtml.replace(new RegExp(pattern, 'g'), opts[prop]);
+    }
 
-function renderSpinner() {
-  return $('<i />').addClass('fa fa-spin fa-spinner')
-}
+    return rowHtml;
+  };
 
-function renderFA(klass) {
-  return $('<i />').addClass('fa ' + klass);
-}
+  self.renderSpinner = function() {
+    return $('<i />').addClass('fa fa-spin fa-spinner')
+  };
+
+  self.renderFA = function(klass) {
+    return $('<i />').addClass('fa ' + klass);
+  };
+
+  return App;
+})(App || {});

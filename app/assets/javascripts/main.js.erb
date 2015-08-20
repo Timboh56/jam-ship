@@ -17,7 +17,7 @@ window.initialize = function(opts) {
 
     onTick: function(i) {
       if (i > 0)
-        $('.recording-status').html('recording in ' + i + ' (press R to skip)');
+        $('.recording-status').html('recording in ' + i + ' (R to skip)');
       else
         $('.recording-status').html('');
     },
@@ -28,7 +28,7 @@ window.initialize = function(opts) {
           'id' : id,
           'count' : recordTrackCount
         },
-        rowHtml = renderTemplate('.record-row-template', opts);
+        rowHtml = App.Helpers.renderTemplate('.record-row-template', opts);
 
       $('.recording-status').html('');
       $('.recordings-container').append(rowHtml);
@@ -59,7 +59,7 @@ window.initialize = function(opts) {
     },
 
     onStartRecording: function(val) {
-      var icon = renderFA('fa-circle red-text');
+      var icon = App.Helpers.renderFA('fa-circle red-text');
       $('.recording-status').html('');
       $('.recording-status').append(icon).append(' recording.. (R to stop)');
     },
@@ -70,7 +70,6 @@ window.initialize = function(opts) {
 
     onPlayRecording: function(val) {
       $('#play-btn-' + val.id).addClass('focus');
-      //if (synth.mode == 'live') synth.broadcast({ buffer: stringify(val) });
     },
 
 

@@ -25,7 +25,7 @@ $silver: #E0E0E0;
 }
 .onoffswitch-inner:before {
     content: "ON";
-    padding-left: 10px;
+    padding-left: 0px;
     background-color: $primary; color: #FFFFFF;
 }
 .onoffswitch-inner:after {

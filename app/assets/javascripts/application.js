@@ -22,11 +22,11 @@
 //= require FileSaver.min
 //= require timbre.dev
 //= require mouse
+//= require app
 //= require helpers
 //= require keyboard
 //= require dashboard
 //= require modernizr-2.8.3.min
-//= require app
 //= require rtcAdapter
 //= require constants
 //= require_tree ./models

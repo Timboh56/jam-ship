@@ -280,7 +280,7 @@ button.btn, .btn {
 }
 
 .form-control {
-  height: 50px;
+  height: 40px;
   border-bottom: 1px solid #ddd;
   border-radius: 0px;
   box-shadow: none;
@@ -401,4 +401,14 @@ a, a:visited, a:focus {
 
 .height-auto {
   overflow: auto;
+}
+
+.t2::before {
+  background-image: url(http://bgfons.com/upload/wood%20_texture3173.jpg);
+  opacity: 0.65;
+  position: absolute;
+  width: 100%;
+  height: 105px;
+  top: 0px;
+  left: 0px;
 }

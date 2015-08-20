@@ -7,7 +7,7 @@
     function createSource(id, opts, buffer) {
       var source = self.audioContext.createBufferSource();
       if (buffer) source.buffer = buffer
-      source = applyProperties(opts, source);
+      source = App.Helpers.applyProperties(opts, source);
       self.buffers[id] = source;
       return source;
     }

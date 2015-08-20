@@ -25,7 +25,7 @@
 
       onKeyDown: (function(event) {
         var keyPressed, note, velocity;
-        keyPressed = getChar(event);
+        keyPressed = App.Helpers.getChar(event);
         note = self.noteLookUp.apply(self, [keyPressed]);
         if (self.InstrumentControl.keyboardOn && 'live' == self.mode) {
           if (App.Constants.KEYTONOTE[keyPressed] && !self.notes[note].keyDown) {
@@ -41,7 +41,7 @@
       onKeyUp: (function(event) {
         var keyPressed, note, velocity;
 
-        keyPressed = getChar(event);
+        keyPressed = App.Helpers.getChar(event);
         note = self.noteLookUp.apply(self, [keyPressed]);
         if (self.InstrumentControl.keyboardOn && 'live' == self.mode) {
           if (App.Constants.KEYTONOTE[keyPressed] && self.notes[note].keyDown) {
@@ -53,7 +53,7 @@
 
       onKeyPress: (function(event) {
         var keyPressed;
-        keyPressed = getChar(event);
+        keyPressed = App.Helpers.getChar(event);
         if (self.currentOctave > 1 && keyPressed == "Z")
           self.decrementCurrentOctave()
         if (self.currentOctave < 5 && keyPressed == "X")
@@ -72,7 +72,7 @@
           dataType = target.data('type'),
           max = parseFloat(target.data('max')),
           id = target.attr('id'),
-          synthField = capitalizeFirstLetter(target.data('synth-field'));
+          synthField = App.Helpers.capitalizeFirstLetter(target.data('synth-field'));
 
         if (dataType == 'seconds')
           val = parseFloat(val) * 1000;
@@ -133,7 +133,7 @@
     }
 
     self.generateSynthFromSettings = function(opts) {
-      var env, osc, wave, opts, attack, decay, sustain, fade, release;
+      var env, clip, osc, oscGen, wave, opts, attack, decay, sustain, fade, release;
       opts = opts || {};
       attack = opts['attack'] || self.attack;
       decay = opts['decay'] || self.decay;
@@ -142,19 +142,27 @@
       release = opts['release'] || self.release;
       wave = opts['wave'] || self.wave;
 
-      // until i can fix the sustain issue, i'll use default
       env = self.generateAdsfr(attack, decay, sustain, fade, release);
             
       self.synthEnv = env;
 
       osc = T(wave);
+
+      oscGen = T('OscGen', { lv: 0.25, osc: osc, env: env, poly: 4, mul: self.mul }).play();
+      self.reverb = self.reverb || App.Constants['DEFAULT_REVERB'];
+
+      if (self.reverbSetting)
+        self.reverbSetting = self.reverbSetting.bang().play()
+      else
+        self.reverbSetting = T("reverb", { room: 0.95, damp: 0.1, mix: self.reverb }, oscGen).play();
+
       //osc = self.attachDelayAndDist(osc);
       self.initializeNoteBank();
 
       switch(self.synthMode)
       {
         case 'envelope':
-          self.synth = T('OscGen', { lv: 0.25, osc: osc, env: env, poly: 4, mul: self.mul }).play();
+          self.synth = oscGen;
           break;
         case 'pluck':
           self.synth = self.generatePluck(self.attack, self.decay, self.sustain, self.release);
@@ -202,7 +210,7 @@
           self.notes[note].play();
           break;
         case 'envelope':
-          self.synth.noteOnWithFreq(freq, velocity);
+          self.synth.noteOnWithFreq(freq, velocity).listen(self.clip);
           break;
         case 'pluck':
           self.synth.noteOnWithFreq(freq, velocity);
@@ -275,7 +283,10 @@
     }
 
     self.setReverb = function(reverb) {
-      self.reverb = reverb;
+      self.reverb = parseFloat(reverb) || App.Constants.DEFAULT_REVERB;
+      self.reverbSetting.set('mix', self.reverb);
+      console.log(self.reverb);
+      self.generateSynthFromSettings();
     }
 
     self.setSynthMode = function(synthMode) {
@@ -298,6 +309,11 @@
     self.initialize();
     return self;
   }
-  self = App.Synth.prototype;
+
+  App.Synth.Field = function(opts) {
+    var self = App.Synth.prototype;
+    App.Helpers.applyProperties()
+  }
+
   return App;
 })(App);

@@ -1,5 +1,3 @@
-<div class="recordings-container row mvmd">
-</div>
 <div class='col-xs-12 col-sm-mtl' id="p-wrapper">
   <ul id="piano">
     <% (2..5).each do |octave| %>
@@ -16,34 +14,16 @@
     <li><div id="C6" class="anchor"></div></li>
 </div>
 <div class='row center bold'>
-  <div class='col-xs-12 col-sm-4 inline-block mtl'>
-    <div class='col-xs-6 no-padding'>
-      <select name="mode" id="synth-mode-selector" data-synth-field="synthMode" class="synth-field form-control" >
-        <option name="envelope">envelope</option>
-        <option name="organ">organ</option>
-        <option name="lpf">LPF</option>
-        <option name="pluck">pluck</option>
-
-      </select>
-    </div>
-    <div class='col-xs-6'>
-      <select name="wave" id="wave-selector" data-synth-field="wave" class="synth-field form-control" >
-        <option name="sin">sin</option>
-        <option name="saw">saw</option>
-        <option name="tri">tri</option>
-      </select>
-    </div>
-  </div>
   <div class='col-xs-6 col-sm-3 mtl'>
     <div class='row'>
       <div class='col-xs-12 block'>
-        <h4 class='margin-auto full-width text-center'>
+        <h4 class='margin-auto inline text-center'>
           <%= fa_icon "gear" %> Synth Controls
         </h4>
       </div>
       <div class='col-xs-12 mtl'>
         <div class="onoffswitch margin-auto">
-          <input data-toggle-class='hide' data-target='t2' class='toggle onoffswitch-checkbox' type="checkbox" name="syn-control-switch" id="syn-control-switch">
+          <input data-toggle-class='hide' data-target='t2' class='toggle onoffswitch-checkbox' type="checkbox" name="syn-control-switch" id="syn-control-switch" checked>
           <label class="onoffswitch-label" for="syn-control-switch">
               <span class="onoffswitch-inner"></span>
               <span class="onoffswitch-switch"></span>
@@ -52,7 +32,7 @@
       </div>
     </div>
   </div>
-  <div class='col-xs-12 col-sm-2 inline-block mtl'>
+  <div class='col-xs-12 col-sm-2 col-sm-offset-7 inline-block mtl'>
     <div class='panel'>
       <label> R </label> - <%= fa_icon 'circle', class: 'red-text' %> / <%= fa_icon 'square' %>  Record
       <br class='hidden-xs' />
@@ -62,63 +42,84 @@
     </div>
   </div>
 </div>
-<div class='fixed bottom full-width hide t2 height-auto clearfix animate fade-animate synth-controls block center'>
+<div class="recordings-container row mvmd">
+</div>
+<div class='fixed bottom full-width t2 height-auto clearfix animate fade-animate synth-controls block center'>
   <div class='container'>
-    <div class='col-xs-3 col-sm-1 col-md-1'>
+    <div class='col-xs-3 col-sm-1 col-md-1 no-padding'>
       <div class='col-xs-12'>
+        <label class='full-width text-center'>
+          Osc
+        </label class='full-width text-center'>
+      </div>
+      <div class='col-xs-12'>
+        <select name="mode" id="synth-mode-selector" data-synth-field="synthMode" class="synth-field form-control" >
+          <option name="envelope">envelope</option>
+          <option name="organ">organ</option>
+          <option name="lpf">LPF</option>
+          <option name="pluck">pluck</option>
+        </select>
+      </div>
+    </div>
+    <div class='col-xs-3 col-sm-1 col-md-1 no-padding'>
+      <div class='col-xs-12'>
+        <label class='full-width text-center'>
+          Wave
+        </label class='full-width text-center'>
+      </div>
+      <div class='col-xs-12'>
+        <select name="wave" id="wave-selector" data-synth-field="wave" class="synth-field form-control" >
+          <option name="sin">sin</option>
+          <option name="saw">saw</option>
+          <option name="tri">tri</option>
+        </select>
+      </div>
+    </div>
+    <div class='col-xs-3 col-sm-1 col-md-1'>
+      <div class='col-xs-12 no-padding'>
         <label class='full-width text-center'>
           Attack
         </label class='full-width text-center'>
       </div>
-      <div class='col-xs-12 text-center'>
+      <div class='col-xs-12 text-center no-padding'>
         <div type="number" id="synth-attack-input" data-synth-field="attack" name="synthAttack" class="knob synth-field synth-attack-input" data-default="0" data-type="seconds" data-min="0" data-max="5" data-step="0.25" placeholder="Attack 0-5s" value="1" ></div>
       </div>
     </div>
     <div class='col-xs-3 col-sm-1 col-md-1'>
-      <div class='col-xs-12'>
+      <div class='col-xs-12 no-padding'>
         <label class='full-width text-center'>
           Decay
         </label class='full-width text-center'>
       </div>
-      <div class='col-xs-12 text-center'>
+      <div class='col-xs-12 text-center no-padding'>
         <div type="number" id="synth-decay-input" data-synth-field="decay" name="synthDecay" data-default="1" class="knob synth-field synth-Decay-input" data-type="seconds" placeholder="Decay 0-3s" data-step="0.25" data-min="0" data-max="3" value="1" ></div>
       </div>
     </div>
     <div class='col-xs-3 col-sm-1 col-md-1'>
-      <div class='col-xs-12 text-center'>
-        <label class='full-width text-center'>
-          Sustain
-        </label class='full-width text-center'>
-      </div>
-      <div class='col-xs-12 text-center'>
-        <div type="number" id="synth-sustain-input" data-synth-field="sustain" name="synthSustain" data-default="1" data-type="seconds" class="knob synth-field synth-sustain-input" data-min="0." data-max="1" data-step="0.25"value="1" ></div>
-      </div>
-    </div>
-    <div class='col-xs-3 col-sm-1 col-md-1'>
-      <div class='col-xs-12 text-center'>
+      <div class='no-padding col-xs-12 text-center'>
         <label class='full-width text-center'>
           Release
-        </label class='full-width text-center'>
+        </label>
       </div>
-      <div class='col-xs-12 text-center'>
+      <div class='no-padding col-xs-12 text-center'>
         <div type="number" id="synth-release-input" data-synth-field="release" data-default="1" name="synthRelease" data-type="seconds" class="knob synth-field synth-release-input" data-min="0" data-max="10" data-step="1" placeholder="Release (0 - 10s)" value="1" ></div>
       </div>
     </div>
     <div class='col-xs-3 col-sm-1 col-md-1'>
-      <div class='col-xs-12 text-center'>
+      <div class='col-xs-12 text-center no-padding'>
         <label class='full-width text-center'>
           Reverb
         </label class='full-width text-center'>
       </div>
-      <div class='col-xs-12 text-center'>
-        <div type="number" id="synth-reverb-input" data-synth-field="reverb" name="synthReverb" class="knob synth-field synth-reverb-input" data-min="0" data-max="1" placeholder="reverb 0-100%" value="100" ></div>
+      <div class='col-xs-12 text-center no-padding'>
+        <div type="number" id="synth-reverb-input" data-synth-field="reverb" name="synthReverb" class="knob synth-field synth-reverb-input" data-min="0" data-max="1" placeholder="reverb 0-100%" data-step="0.1" value="0" ></div>
       </div>
     </div> 
     <div class='col-xs-3 col-sm-1 col-md-1'>
-      <div class="col-xs-12 text-center">
+      <div class="col-xs-12 text-center no-padding">
         <label class='full-width text-center'>Vol</label class='full-width text-center'>
       </div>
-      <div class="col-xs-12 text-center">
+      <div class="col-xs-12 text-center no-padding">
         <div type="number" data-synth-field='volume' id="synth-volume-input" name="synthVolume" class="knob synth-field synth-volume-input" data-default="0.25" data-step="0.25" data-min="0.1" data-max="1" value="1" ></div>
       </div>
     </div>
@@ -129,7 +130,7 @@
             Beats/rec
           </label class='full-width text-center'>
         </div>
-        <div class='col-sm-12 text-center'>
+        <div class='col-sm-12 text-center no-padding'>
           <div type="number" id="synth-bpl-input" data-synth-field="Bpl" name="synthBPL" class="knob synth-field synth-BPL-input" data-step="1" data-default="4" data-min="4" data-max="8" placeholder="Beats per record" value="4" ></div>
         </div>
       </div>
@@ -139,21 +140,24 @@
         <div class='col-sm-12 text-center'>
           <label class='full-width'>Loop</label>
         </div>
-        <div class='col-sm-12 text-center'>
+        <div class='col-sm-12 text-center no-padding'>
           <a class='btn btn-large red-text med-font transition record-btn js-record-action' data-action='startRecording'>
             <%= fa_icon 'circle' %> Rec
           </a>
           <a class='btn btn-large hide med-font stop-btn js-record-action' data-action='stopRecording'>
             <%= fa_icon 'square' %> Stop
           </a>
-          <div class='recording-status-text red-text'>
-          </div>
         </div>
       </div>
     </div>
     <div class='col-xs-3 col-sm-1 col-md-1 text-center'>
       <label class='full-width text-center'>
-        Metronome
+        <span class='hidden-xs'>
+          Metronome
+        </span>
+        <span class='visible-sm visible-xs'>
+          Metr.
+        </span>
       </label>
       <div class=''>
         <div class="onoffswitch margin-auto">
@@ -164,20 +168,10 @@
           </label>
         </div>
       </div>
-      <div class='record-time'>
-      </div>
     </div>
-    <div class='col-xs-3 col-sm-1 col-md-1'>
-      <div class='row'>
-        <div class='col-sm-12'>
-          <label class='full-width text-center'>
-            Metr. Vol
-          </label>
-        </div>
-        <div class='col-sm-12 text-center'>
-          <div type="number" id="synth-metronome-vol-input" data-synth-field="MetronomeVol" data-step=".1" name="synthVol" class="knob synth-field synth-vol-input" data-min="1" data-default="0.25" data-max="3" placeholder="Metronome Volume" value=".25" ></div>
-        </div>
-      </div>
+    <div class='col-xs-3 col-sm-2 col-md-2 text-center'>
+      <label class='recording-status mtl red-text full-width text-center'>
+      </label>
     </div>
   </div>
 </div>

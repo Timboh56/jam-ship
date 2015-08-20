@@ -233,7 +233,7 @@ String.prototype.toUnderscore = function(){
 
     $(['recordingTime', 'metronomeVol', 'metronomeVel', 'bpm', 'bpl']).each((function(i, el) {
 
-      self['set' + capitalizeFirstLetter(el)] = function(field) {
+      self['set' + App.Helpers.capitalizeFirstLetter(el)] = function(field) {
         self[el] = field;
       };
 

@@ -28,7 +28,7 @@ try {
         fd = new FormData(),
         id = opts.id,
         blob = opts.blob,
-        icon = renderSpinner(),
+        icon = App.Helpers.renderSpinner(),
         clipName = $('#clip-name-' + id).val();
 
       fd.append('fname', clipName + '.wav');
@@ -44,14 +44,14 @@ try {
         processData: false,
         contentType: false,
         success: function(xhr) {
-          var rowHtml = renderTemplate('.alert-info-template', {
+          var rowHtml = App.Helpers.renderTemplate('.alert-info-template', {
             message: 'Uploaded and saved!'
           });
           $('.flash-messages').html(rowHtml);
           dfd.resolve({ id: id });
         },
         error: function(xhr) {
-          var rowHtml = renderTemplate('.alert-danger-template', {
+          var rowHtml = App.Helpers.renderTemplate('.alert-danger-template', {
             message: 'Uploaded was not successful!'
           });
           console.log(xhr);
@@ -64,7 +64,7 @@ try {
 
     self.deleteClip = function(id) {
       var dfd = $.Deferred();
-      $('#delete-clip-' + id).html(renderSpinner);
+      $('#delete-clip-' + id).html(App.Helpers.renderSpinner());
 
       $.ajax({
         type: 'DELETE',
@@ -73,14 +73,14 @@ try {
         processData: false,
         contentType: false,
         success: function(xhr) {
-          var rowHtml = renderTemplate('.alert-info-template', {
+          var rowHtml = App.Helpers.renderTemplate('.alert-info-template', {
             message: 'Successfully deleted!'
           });
           $('.flash-messages').html(rowHtml);
           dfd.resolve(xhr);
         },
         error: function(xhr) {
-          var rowHtml = renderTemplate('.alert-danger-template', {
+          var rowHtml = App.Helpers.renderTemplate('.alert-danger-template', {
             message: 'Could not delete this clip!'
           });
           $('.flash-messages').html(rowHtml);
