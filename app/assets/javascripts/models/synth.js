@@ -187,12 +187,6 @@
         return self.synth;
     }
 
-    self.setReverb = function(reverb) {
-      self.reverb = parseFloat(reverb) || App.Constants.DEFAULT_REVERB;
-      self.reverbSetting.set('mix', self.reverb);
-      _generateSynthFromSettings();
-    }
-
     function _generateSynthFromSettings(opts) {
       var env, clip, osc, oscGen, wave, opts, attack, decay, sustain, fade, release, mul, reverb;
 
@@ -206,21 +200,26 @@
       mul = opts['mul'] || self.mul.value;
       reverb = opts['reverb'] || self.reverb.value;
 
-      env = self.generateAdsfr(attack, decay, sustain, fade, release);
-            
-      self.synthEnv = env;
-
+      self.env = self.env || self.generateAdsfr(attack, decay, sustain, fade, release);
+      
       osc = T(wave);
 
-      self.oscGen = self.oscGen ? self.oscGen.bang().play() : T('OscGen', { lv: 0.25, osc: osc, env: env, poly: 4, mul: mul }).play();
+      self.oscGen = self.oscGen ? self.oscGen.bang().play() : T('OscGen', {
+        lv: 0.25,
+        osc: osc,
+        env: env,
+        poly: 4,
+        mul: mul
+      }).play();
       
       // THIS LINE NEEDS TO BE REFACTORED WITH DEBOUNCING OR CACHING OF OSCGEN
       //self.oscGen = T('OscGen', { lv: 0.25, osc: osc, env: env, poly: 4, mul: mul }).play();
-      
 
-      //self.reverb = T("reverb", {room:0.9, damp:0.2, mix:0.45}, this).play();
-
-      self.reverb = self.reverb || App.Constants['DEFAULT_REVERB'];
+      self.reverbSetting = self.reverbSetting ? self.reverbSetting.bang().play() : T("reverb", {
+        room:0.9,
+        damp:0.2,
+        mix: self.reverb.value
+      }, self.oscGen).play();
 
       //osc = self.attachDelayAndDist(osc);
       _initializeNoteBank();
@@ -233,8 +232,16 @@
         case 'pluck':
           self.synth = self.generatePluck(self.attack, self.decay, self.sustain, self.release);
           break;
-      } 
+      }
+    }
 
+    function _initializeNoteBank() {
+      for (var i in App.Constants.FREQUENCIES) {
+
+        //self.generateLPF(App.Constants.FREQUENCIES[i]); 
+        self.notes[i] = T(self.wave.value, {freq: App.Constants.FREQUENCIES[i] * 1.01, mul: self.mul, phase: Math.PI * 0.25 });
+        self.notes[i].noteInterval = 0;
+      }
     }
 
     function _initialize() {
@@ -246,17 +253,33 @@
         self[el] = new App.Field({
           name: el,
           onSet: function(key, val) {
-            var newEnv = self.generateAdsfr(
-              self.attack.value,
-              self.decay.value,
-              self.sustain.value,
-              self.fade.value,
-              self.release.value
-            );
 
-            self.synth.set({ env: newEnv });
-            self.synth.set({ mul: self.mul.value });
+            if (key.toLowerCase() == 'reverb') {
 
+              // NEED TO DEBUG
+              self.reverbSetting = T("reverb", {
+                room:0.9,
+                damp:0.2,
+                mix: self.reverb.value
+              }, self.oscGen).play();
+            } else {
+
+              // inefficient, but timbrejs kinda suckss
+              var newEnv = self.generateAdsfr(
+                self.attack.value,
+                self.decay.value,
+                self.sustain.value,
+                self.fade.value,
+                self.release.value
+              );
+
+              self.synth.set({
+                osc: T(self.wave.value),
+                env: newEnv,
+                mul: self.mul.value
+              });
+            }
+            
             _generateSynthFromSettings();
           }
         });
@@ -264,15 +287,6 @@
 
       _generateSynthFromSettings();
       return dfd.promise();
-    }
-
-    function _initializeNoteBank() {
-      for (var i in App.Constants.FREQUENCIES) {
-
-        //self.generateLPF(App.Constants.FREQUENCIES[i]); 
-        self.notes[i] = T(self.wave.value, {freq: App.Constants.FREQUENCIES[i] * 1.01, mul: self.mul, phase: Math.PI * 0.25 });
-        self.notes[i].noteInterval = 0;
-      }
     }
 
     _initialize();
