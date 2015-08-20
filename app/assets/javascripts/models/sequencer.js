@@ -31,12 +31,6 @@ String.prototype.toUnderscore = function(){
     self.onCreateBuffer = opts['onCreateBuffer'];
     self.onDeleteBuffer = opts['onDeleteBuffer'];
 
-    for(var i = 0; i < App.Constants.Fields.SEQUENCER.length; i++) {
-      var el = App.Constants.Fields.SEQUENCER[i];
-
-      self[el] = new App.Field({ name: el });
-    };
-
     self.playMetronomeTick = function () {
       var osc = T("sin"),
         env = T("perc", {a:10, r:5}),
@@ -100,7 +94,7 @@ String.prototype.toUnderscore = function(){
         buf = buffer.buffer;      // buf = a Float32Array of data
         sr = buffer.samplerate;    //sample rate of the data
 
-        dataview = encodeWAV(buf, sr);
+        dataview = _encodeWAV(buf, sr);
 
         // save blob
         audioBlob = new Blob([dataview], { type: 'audio/wav' });
@@ -123,7 +117,7 @@ String.prototype.toUnderscore = function(){
         self.stopRecording(opts);
       else {
         self.recording = true;
-        self.delay.apply(this, [self.startRecording, self.bpl, opts])
+        self.delay.apply(this, [self.startRecording, self.bpl.value, opts])
           .done((function(res) {
             self = res;
           }).bind(this));
@@ -133,11 +127,10 @@ String.prototype.toUnderscore = function(){
     self.delay = function(done, beats, opts) {
       var beats = beats || 4,
         i = beats,
-        beatLength = 60000/self.bpm,
-        ms = (self.bpm/60) * beatLength,
+        beatLength = 60000/self.bpm.value,
+        ms = (self.bpm.value/60) * beatLength,
         func = null,
         dfd = $.Deferred();
-
         func = function(self, ms, i, done, opts, dfd) {
           try {
             if (opts.onTick) opts.onTick(i);
@@ -237,14 +230,6 @@ String.prototype.toUnderscore = function(){
       self.recording = false;
     }
 
-    $(['recordingTime', 'metronomeVol', 'metronomeVel', 'bpm', 'bpl']).each((function(i, el) {
-
-      self['set' + App.Helpers.capitalizeFirstLetter(el)] = function(field) {
-        self[el] = field;
-      };
-
-    }).bind(this));
-
     // convert BPM into recording Time in milliseconds
     self.calculateRecordingTime = function(bpm, bpl) {
       var beatsPerLoop, loopsPerMinute;
@@ -254,18 +239,18 @@ String.prototype.toUnderscore = function(){
     }
 
     // functions to convert timbre buffer to WAV
-    function encodeWAV(buf, sr) {
+    function _encodeWAV(buf, sr) {
       var buffer = new ArrayBuffer(44 + buf.length * 2);
       var view = new DataView(buffer);
 
       /* RIFF identifier */
-      writeString(view, 0, 'RIFF');
+      _writeString(view, 0, 'RIFF');
       /* file length */
       view.setUint32(4, 32 + buf.length * 2, true);
       /* RIFF type */
-      writeString(view, 8, 'WAVE');
+      _writeString(view, 8, 'WAVE');
       /* format chunk identifier */
-      writeString(view, 12, 'fmt ');
+      _writeString(view, 12, 'fmt ');
       /* format chunk length */
       view.setUint32(16, 16, true);
       /* sample format (raw) */
@@ -281,29 +266,39 @@ String.prototype.toUnderscore = function(){
       /* bits per sample */
       view.setUint16(34, 16, true);
       /* data chunk identifier */
-      writeString(view, 36, 'data');
+      _writeString(view, 36, 'data');
       /* data chunk length */
       view.setUint32(40, buf.length * 2, true);
 
-      floatTo16BitPCM(view, 44, buf);
+      _floatTo16BitPCM(view, 44, buf);
 
       return view;
     }
 
-    for (var clip in opts['clips']) self.setTrack(opts['clips'][clip]);
+    function _initialize() {
+      for (var clip in opts['clips']) self.setTrack(opts['clips'][clip]);
 
-    function floatTo16BitPCM(output, offset, input){
+      for(var i = 0; i < App.Constants.Fields.SEQUENCER.length; i++) {
+        var el = App.Constants.Fields.SEQUENCER[i];
+
+        self[el] = new App.Field({ name: el });
+      };
+    }
+
+    function _floatTo16BitPCM(output, offset, input){
       for (var i = 0; i < input.length; i++, offset+=2){
         var s = Math.max(-1, Math.min(1, input[i]));
         output.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
       }
     }
 
-    function writeString(view, offset, string){
+    function _writeString(view, offset, string){
       for (var i = 0; i < string.length; i++){
         view.setUint8(offset + i, string.charCodeAt(i));
       }
     }
+
+    _initialize();
   }
 
   return App;

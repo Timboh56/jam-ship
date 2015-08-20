@@ -131,7 +131,7 @@
       WAVES: ["sin", "tri", "saw"],
       NOTES: ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"],
       FIELDS: ["fade", "decay", "attack", "release", "sustain", "mul", "reverb", "synthMode", "mode", "wave"],
-      SEQUENCER_ACTIONS: ['saveBuffer', 'setBpm', 'setBpl', 'setRecordingTime', 'setMetronomeVol']
+      SEQUENCER_ACTIONS: ['saveBuffer', 'bpm', 'bpl', 'recordingTime', 'metronomeVol']
     };
 
     return App;

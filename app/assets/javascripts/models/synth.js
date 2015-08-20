@@ -73,10 +73,13 @@
           dataType = target.data('type'),
           max = parseFloat(target.data('max')),
           id = target.attr('id'),
-          synthField = target.data('synth-field');
+          synthField = target.data('synth-field'),
+          dataStep = parseFloat(target.data('step'));
 
         if (dataType == 'seconds')
           val = parseFloat(val) * 1000;
+
+        if (dataStep % 1 == 0) val = parseInt(val);
 
         if (self[synthField]) self[synthField].set.call(this, val);
         else debugger
