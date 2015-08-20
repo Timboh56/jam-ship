@@ -102,7 +102,6 @@ try {
 
   App.Instrument = function(opts) {
     var self = App.Instrument.prototype;
-    self.mode = opts['mode'] || 'live';
     self.InstrumentCRUD = new App.InstrumentCRUD(opts);
     self.currentOctave = opts['currentOctave'] || 3;
     self.inputFieldsClass = opts['inputFieldsClass'];
@@ -111,7 +110,7 @@ try {
     self.velocity = App.Constants.DEFAULT_VELOCITY;
 
     function initialize() {
-      for (var prop in opts) self[prop] = self[prop] || opts[prop];
+      App.Helpers.applyProperties(self, opts);
 
       window.RtcAdapter.set('onReceive', opts['onReceive']);
 
@@ -122,6 +121,8 @@ try {
       opts['broadcast'] = window.FirebaseInterface.broadcast;
 
       self.Sequencer = new App.Sequencer(opts);
+
+      self = App.Helpers.applyProperties(self.Sequencer, self);
 
       self.InstrumentControl = new App.InstrumentControl({
         inputFieldsClass: opts['inputFieldsClass'],

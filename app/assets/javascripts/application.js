@@ -22,15 +22,10 @@
 //= require FileSaver.min
 //= require timbre.dev
 //= require mouse
-//= require app
-//= require helpers
-//= require keyboard
-//= require dashboard
 //= require modernizr-2.8.3.min
-//= require rtcAdapter
-//= require constants
+//= require_tree ./base
 //= require_tree ./models
+//= require dashboard
 //= require MoogFF
-//= require firebaseAdapter
 //= require main
 //= require helmet

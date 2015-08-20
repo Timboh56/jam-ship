@@ -31,6 +31,12 @@ String.prototype.toUnderscore = function(){
     self.onCreateBuffer = opts['onCreateBuffer'];
     self.onDeleteBuffer = opts['onDeleteBuffer'];
 
+    for(var i = 0; i < App.Constants.Fields.SEQUENCER.length; i++) {
+      var el = App.Constants.Fields.SEQUENCER[i];
+
+      self[el] = new App.Field({ name: el });
+    };
+
     self.playMetronomeTick = function () {
       var osc = T("sin"),
         env = T("perc", {a:10, r:5}),
