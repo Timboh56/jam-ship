@@ -258,13 +258,8 @@
           onSet: function(key, val) {
 
             if (key.toLowerCase() == 'reverb') {
-
               // NEED TO DEBUG
-              self.reverbSetting = T("reverb", {
-                room:0.9,
-                damp:0.2,
-                mix: self.reverb.value
-              }, self.oscGen).play();
+              self.reverbSetting.set({ mix: self.reverb });
             } else {
 
               // inefficient, but timbrejs kinda suckss
