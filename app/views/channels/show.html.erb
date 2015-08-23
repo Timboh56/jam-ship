@@ -64,7 +64,7 @@
       clips.push({ id: <%= clip.id %>, url: '<%= clip.mp3.url %>' });
     <% end %>
     window.initialize({
-      channel: '<%= params[:id] %>',
+      channel: '<%= @channel.id %>',
       clips: clips,
       <% if current_user == @channel.user %>
         owner: true,

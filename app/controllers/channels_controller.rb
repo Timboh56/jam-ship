@@ -2,7 +2,7 @@ class ChannelsController < ApplicationController
   before_action :authenticate_user!, except: [:show, :index]
 
   def show
-    @channel = Channel.find(params[:id])
+    @channel = Channel.friendly.find(params[:id])
   end
 
   def index
