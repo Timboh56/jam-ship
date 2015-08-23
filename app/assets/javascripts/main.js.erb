@@ -91,9 +91,8 @@ window.initialize = function(opts) {
           recordId: recordId,
           instrument: synth.getCurrentInstrument()
         });
-      } else {
+      } else
         synth.Sequencer[action].call(this, recordId);
-      }
   });
 
   $(document).on('keypress', '#messageInput', function (e) {

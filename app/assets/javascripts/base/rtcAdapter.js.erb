@@ -3,6 +3,7 @@
     var self = this;
 
     self.onReceive = opts['onReceive'];
+    self.onConnect = opts['onConnect'];
 
     self.savePeerId = function(id, opts) {
       $.ajax({
@@ -58,6 +59,7 @@
         self.conn = data;
         self.conn.on('data', self.onReceive);
         console.log('connection');
+        if (self.onConnect) self.onConnect();
         dfd.resolve();
       }).bind(this));
 

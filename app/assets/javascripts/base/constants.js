@@ -132,7 +132,7 @@
       NOTES: ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"],
       Fields: {
         SYNTH: ["fade", "decay", "attack", "release", "sustain", "mul", "reverb", "synthMode", "mode", "wave"],
-        SEQUENCER: ['saveBuffer', 'bpm', 'bpl', 'recordingTime', 'metronomeVol']
+        SEQUENCER: ['bpm', 'bpl', 'recordingTime', 'metronomeVol']
       }
     };
 
