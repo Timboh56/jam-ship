@@ -8,6 +8,13 @@ window.initialize = function(opts) {
       var template = App.Helpers.renderTemplate('.message-template', snapVal);
       $('.messages-container').append(template);
 
+    },
+
+    onConnect: function() {
+      window.FirebaseInterface.broadcast({
+        message: 'Joined room.',
+        name: $("#current-user-name").val() || 'No name'
+      });
     }
   });
 

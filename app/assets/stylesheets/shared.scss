@@ -404,7 +404,7 @@ a, a:visited, a:focus {
 }
 
 .t2::before {
-  background-image: url(http://bgfons.com/upload/wood%20_texture3173.jpg);
+  background-image: asset-url('wood_texture.jpg');
   opacity: 0.65;
   position: absolute;
   width: 100%;
