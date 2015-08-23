@@ -1,12 +1,12 @@
 (function(App) {
     App.Constants = {
       DEFAULT_WAVE: "sin",
-      DEFAULT_MUL: 0.25,
+      DEFAULT_MUL: 0.35,
       DEFAULT_ATTACK: 50,
       DEFAULT_RELEASE: 500,
       DEFAULT_DECAY: 50,
       DEFAULT_FADE: 50, 
-      DEFAULT_SUSTAIN: 0.35,
+      DEFAULT_SUSTAIN: 0.45,
       DEFAULT_VELOCITY: 60,
       DEFAULT_REVERB: 0.3,
       DEFAULT_FADE: 100,
