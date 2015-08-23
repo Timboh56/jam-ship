@@ -133,6 +133,14 @@ try {
       });
     }
 
+    self.enableKeyboard = function() {
+      self.InstrumentControl.enable();
+    }
+
+    self.disableKeyboard = function() {
+      self.InstrumentControl.disable();
+    }
+
     self.broadcast = function(opts) {
       opts = $.extend({}, opts, { channel: self.channel });
        window.FirebaseInterface.broadcast(opts);

@@ -2,6 +2,15 @@ window.myDataRef = new Firebase('https://jam-ship.firebaseio.com/');
 
 window.initialize = function(opts) {
 
+  opts = $.extend({}, opts, {
+    onReceive: function(snapshot) {
+      var snapVal = snapshot.val();
+      var template = App.Helpers.renderTemplate('.message-template', snapVal);
+      $('.messages-container').append(template);
+
+    }
+  });
+
   window.RtcAdapter = App.RtcAdapter(opts);
   window.FirebaseInterface = App.FirebaseAdapter(opts);
 
@@ -95,13 +104,35 @@ window.initialize = function(opts) {
         synth.Sequencer[action].call(this, recordId);
   });
 
-  $(document).on('keypress', '#messageInput', function (e) {
-    if (e.keyCode == 13) {
-      var name = $('#nameInput').val();
-      var text = $('#messageInput').val();
-      myDataRef.push({name: name, text: text});
-      $('#messageInput').val('');
-    }
+  var chatSubmit = function(e) {
+    var val = $('#message-text-field').val();
+    val['align'] = 'text-right';
+    window.FirebaseInterface.broadcast({
+      message: val,
+      name: $("#current-user-name").val() || 'No name'
+    });
+    $('#message-text-field').val('');
+
+    m = $('#messages-container');
+    m.scrollTop(m[0].scrollHeight);
+
+    e.preventDefault();    
+  };
+
+  $('#message-text-field').on('focus', function(){
+    synth.disableKeyboard();
+  });
+
+  $('#message-text-field').on('blur', function(){
+    synth.enableKeyboard();
+  });
+
+  $('form#chat-room-form').find('#message-text-field').on('keypress', function(e) {
+    if (e.keyCode == 13) chatSubmit(e);
+  });
+
+  $('form#chat-room-form').on('submit', function(e) {
+    chatSubmit(e);
   });
 
   $(document).on('change', 'input[type=checkbox].toggle, select.toggle', function(i, el) {

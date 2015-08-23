@@ -3,15 +3,11 @@
     Nothing here yet. Come back soon.
   </h3>
 </div>
-<select name="mode" data-target="t1" data-toggle-class='hide' id="mode-selector" data-synth-field="mode" class="form-control synth-field toggle" >
-  <option name="live">live</option>
-  <option name="listening">listening</option>
-</select>
 <div class='flash-messages'>
 
 </div>
 <div id='t2' class='panel toggle t1 piano-body col-xs-12 no-padding'>
-  <div class='inline-block pbsm'>
+  <div class='row inline-block pbsm'>
     <div class='full-width mvl'>
       <h3> Channel <%= @channel.name %>
         <% if current_user == @channel.user %>
@@ -27,11 +23,36 @@
       </h3>
     </div>
   </div>
-  <div class='col-xs-12'>
-    <%= render partial: 'partials/orig_synth' %>
+  <div class='row'>
+    <div class='inline-block col-xs-12 col-sm-9'>
+      <select name="mode" data-target="t1" data-toggle-class='hide' id="mode-selector" data-synth-field="mode" class="form-control synth-field toggle" >
+        <option name="live">live</option>
+        <option name="listening">listening</option>
+      </select>
+      <div class='mvl'>
+        <%= render partial: 'partials/orig_synth' %>
+      </div>
+    </div>
+    <div class='inline-block col-xs-12 col-sm-3'>
+      <h3 class='pbl'> Chat </h3>
+      <div class='panel'>
+        <form data-remote='true' id='chat-room-form'>
+          <div class='chat-room-container'>
+            <div id='messages-container' class='messages-container'>
+            </div>
+          </div>
+          <textarea id='message-text-field' class='form-control'></textarea>
+          <div class='mtl'>
+            <input value='Submit' type='submit' class='btn btn-primary' id='submit-chat-btn'></input>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
+<input type='hidden' id='current-user-name' value='<%= current_user.name if current_user %>' />
 <%= render partial: 'partials/templates/alert_templates' %>
+<%= render partial: 'partials/templates/message_template' %>
 <%= render partial: 'partials/edit_channel_modal' %>
 <%= render partial: 'partials/edit_clip_modal' %>
 <script type='text/javascript'>

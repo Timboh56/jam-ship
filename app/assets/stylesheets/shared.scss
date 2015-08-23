@@ -417,3 +417,13 @@ a, a:visited, a:focus {
   top: 50px;
   position: relative;
 }
+
+.messages-container {
+  height: 200px;
+  overflow: scroll;
+  padding: 15px;
+  border: 1px solid #eee;
+  display: block;
+  height: 250px;
+  border-radius: 3px;
+}

@@ -11,17 +11,26 @@
     self.keyDown = false;
     self.prevKey = null;
 
-    for (var prop in opts) self[prop] = opts[prop];
-
-    window.document.onkeydown = opts['onKeyDown'];
+    self = App.Helpers.applyProperties(opts, self);
 
     self.onChangeInput = opts['onChangeInput'];
 
     $('.' + self.inputFieldsClass).on('change', opts['onChangeInput']);
 
-    window.document.onkeyup = opts['onKeyUp'];
+    self.disable = function() {
+      window.document.onkeydown = null;
+      window.document.onkeyup = null;
+      window.document.onkeypress = null;
+    }
 
-    window.document.onkeypress = opts['onKeyPress'];
+    self.enable = function() {
+      window.document.onkeydown = self['onKeyDown'];
+      window.document.onkeyup = self['onKeyUp'];
+      window.document.onkeypress = self['onKeyPress']; 
+    }
+
+    self.enable();
+    return self;
   };
 
   return App;
