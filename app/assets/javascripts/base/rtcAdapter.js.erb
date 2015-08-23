@@ -58,7 +58,6 @@
       self.peer.on('connection', (function(data) {
         self.conn = data;
         self.conn.on('data', self.onReceive);
-        console.log('connection');
         if (self.onConnect) self.onConnect();
         dfd.resolve();
       }).bind(this));
