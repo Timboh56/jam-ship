@@ -106,15 +106,18 @@ window.initialize = function(opts) {
 
   var chatSubmit = function(e) {
     var val = $('#message-text-field').val();
-    val['align'] = 'text-right';
-    window.FirebaseInterface.broadcast({
-      message: val,
-      name: $("#current-user-name").val() || 'No name'
-    });
-    $('#message-text-field').val('');
+  
+    if (val.replace(' ', '') != '') {
+      val['align'] = 'text-right';
+      window.FirebaseInterface.broadcast({
+        message: val,
+        name: $("#current-user-name").val() || 'No name'
+      });
+      $('#message-text-field').val('');
 
-    m = $('#messages-container');
-    m.scrollTop(m[0].scrollHeight);
+      m = $('#messages-container');
+      m.scrollTop(m[0].scrollHeight);
+    }
 
     e.preventDefault();    
   };

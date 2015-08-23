@@ -14,7 +14,7 @@
  *= require main
  *= require piano
  *= require modal
- *= require knobknob
+ *= require knob
  *= require_self
  *= require main
  *= require shared

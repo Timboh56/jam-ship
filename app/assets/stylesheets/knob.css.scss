@@ -12,7 +12,6 @@
   top:0;
   left:0;
   background:url('knob.png') no-repeat;
-  background-size: 40px 40px;
   z-index:10;
   cursor:default !important;
 }
@@ -26,32 +25,39 @@
   z-index:1;
 }
 
-.knob, .knob .top, .knob .base{
-  width: 40px;
-  height: 40px;
-}
 @media screen and (min-width: 480px) {
-
   .knob, .knob .top, .knob .base{
     width: 40px;
     height: 40px;
+    background-size: 40px 40px;
+  }
+  .knob .top:after{
+    content:'';
+    width:10px;
+    height:10px;
+    left: 4px;
   }
 }
 @media screen and (max-width: 480px) {
   .knob, .knob .top, .knob .base{
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
+    background-size: 30px 30px;
+  }
+
+  .knob .top:after{
+    content:'';
+    width:5px;
+    height:5px;
+    left: 1px;
   }
 }
 
 .knob .top:after{
   content:'';
-  width:10px;
-  height:10px;
   background-color:#666;
   position:absolute;
   top:50%;
-  left: 4px;
   margin-top:-5px;
   border-radius: 50%;
   cursor:default !important;
