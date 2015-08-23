@@ -32,6 +32,7 @@ window.initialize = function(opts) {
     clips: opts.clips,
 
     onTick: function(i) {
+      if (!$('.t2').hasClass('active')) $('.t2').addClass('active');
       if (i > 0)
         $('.recording-status').html('recording in ' + i + ' (R to skip)');
       else
@@ -81,6 +82,7 @@ window.initialize = function(opts) {
     },
 
     onStopRecording: function(val) {
+      if ($('.t2').hasClass('active')) $('.t2').removeClass('active');
       $('#play-btn-' + val.id).removeClass('focus');
     },
 

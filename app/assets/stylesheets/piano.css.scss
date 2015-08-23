@@ -496,20 +496,6 @@ border-bottom-right-radius:60px 5px;
   clear:both;
 }
 
-.synth-controls {
-  position: relative;
-  width: 100%;
-  left: 0px;
-  background-color: #191919;
-  color: white;
-  z-index: 9999;
-  padding: 10px 20px;
-  label {
-    font-weight: 100 !important;
-    color: rgb(184, 203, 216) !important;
-  }
-}
-
 /* Animation */
 @-webkit-keyframes taufik {
   from {opacity:0;}
