@@ -133,7 +133,8 @@
       Fields: {
         SYNTH: ["fade", "decay", "attack", "release", "sustain", "mul", "reverb", "synthMode", "mode", "wave"],
         SEQUENCER: ['bpm', 'bpl', 'recordingTime', 'metronomeVol']
-      }
+      },
+      DEBOUNCE_TIMEOUT: 1000
     };
 
     return App;

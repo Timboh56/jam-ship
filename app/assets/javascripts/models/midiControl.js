@@ -1,7 +1,7 @@
 (function(App) {
   App.MidiControl = function(opts) {
     var self = this;
-    for (var prop in opts) self[prop] = opts[prop];
+    self = App.Helpers.applyProperties(opts, self)
 
     if (navigator.requestMIDIAccess) {
         navigator.requestMIDIAccess({

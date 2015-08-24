@@ -45,6 +45,7 @@ gem 'paperclip'
 gem 'delayed_paperclip', :git => 'git://github.com/tommeier/delayed_paperclip.git', :ref => '98a8b9e0c24d24c94e2c9c39a704c1b07c5c4d6b'
 gem 'aws-sdk', '< 2.0'
 gem 'friendly_id', '~> 5.1.0'
+gem 'activerecord-session_store'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

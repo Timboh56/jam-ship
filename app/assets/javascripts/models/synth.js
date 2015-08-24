@@ -2,6 +2,7 @@
   var self;
   App.Synth = function(opts) {
     var parent, self, opts, notes, onChangeInput;
+    var debounce = true;
 
       /**onReceive: (function(val) {
         val = $.extend({}, val, { receiving: true });
@@ -55,16 +56,22 @@
       onKeyPress: function(event) {
         var keyPressed;
         keyPressed = App.Helpers.getChar(event);
-        if (self.currentOctave > 1 && keyPressed == "Z")
-          self.decrementCurrentOctave()
-        if (self.currentOctave < 5 && keyPressed == "X")
-          self.incrementCurrentOctave()
-        if (keyPressed == 'R') {
-          self.Sequencer.toggleRecording({
-            instrument: self.getCurrentInstrument(),
-            onTick: opts.onTick
-          });
-        }
+
+        /**if (debounce) {
+          debounce = false;
+          App.Helpers.debounce(debounce, 3000).then((function(debounce) {**/
+            if (self.currentOctave > 1 && keyPressed == "Z")
+              self.decrementCurrentOctave()
+            if (self.currentOctave < 5 && keyPressed == "X")
+              self.incrementCurrentOctave()
+            if (keyPressed == 'R') {
+              self.Sequencer.toggleRecording({
+                instrument: self.getCurrentInstrument(),
+                onTick: opts.onTick
+              });
+            }
+        /**  }).bind(this));
+        }**/
       },
 
       onChangeInput: (function(el) {

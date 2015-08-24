@@ -1,9 +1,11 @@
 class User < ActiveRecord::Base
+  require "open-uri"
   extend FriendlyId
 
-  has_many :channels
-  has_many :clips
-
+  has_many :channels, dependent: :destroy
+  has_many :clips, dependent: :destroy
+  has_many :likes, as: :likable, dependent: :destroy
+  friendly_id :name, use: :slugged
   TEMP_EMAIL_PREFIX = 'change@me'
   TEMP_EMAIL_REGEX = /\Achange@me/
 
@@ -13,9 +15,26 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :validatable, :omniauthable, omniauth_providers: [ :facebook, :twitter ]
 
   validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
+  has_attached_file :avatar, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
+  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
 
   def full_name
     name || 'No name'
+  end
+
+  def likes_channel(channel_id)
+    like_ids.include? channel_id
+  end
+
+  def download_profile_pic(url)
+    begin
+      io = open(URI.parse(url))
+      test = url.path.split('/').last.blank?
+      self.avatar = test ? nil : url  
+    rescue Exception => e
+      Rails.logger.error e.message
+      self.avatar = nil
+    end
   end
 
   def self.find_for_oauth(auth, signed_in_resource = nil)
@@ -23,18 +42,11 @@ class User < ActiveRecord::Base
     # Get the identity and user if they exist
     identity = Identity.find_for_oauth(auth)
 
-    # If a signed_in_resource is provided it always overrides the existing user
-    # to prevent the identity being locked with accidentally created accounts.
-    # Note that this may leave zombie accounts (with no associated identity) which
-    # can be cleaned up at a later date.
     user = signed_in_resource ? signed_in_resource : identity.user
 
     # Create the user if needed
     if user.nil?
 
-      # Get the existing user by email if the provider gives us a verified email.
-      # If no verified email was provided we assign a temporary email and ask the
-      # user to verify it on the next step via UsersController.finish_signup
       email_is_verified = auth.info.email && (auth.info.verified || auth.info.verified_email)
       email = auth.info.email if email_is_verified
       user = User.where(:email => email).first if email
@@ -45,13 +57,13 @@ class User < ActiveRecord::Base
           name: auth.extra.raw_info.name,
           #username: auth.info.nickname || auth.uid,
           email: email ? email : "#{TEMP_EMAIL_PREFIX}-#{auth.uid}-#{auth.provider}.com",
-          password: Devise.friendly_token[0,20]
+          password: Devise.friendly_token[0,20],
         )
+        user.download_profile_pic(auth.info.image)
         user.save!
       end
     end
 
-    # Associate the identity with the user if needed
     if identity.user != user
       identity.user = user
       identity.save!

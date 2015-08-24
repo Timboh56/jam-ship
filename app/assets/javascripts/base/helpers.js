@@ -63,5 +63,14 @@
     return $('<i />').addClass('fa ' + klass);
   };
 
+  self.debounce = function(debounce, debounceTime) {
+    var dfd = $.Deferred();
+    setTimeout(function() {
+      debounce = !debounce;
+      dfd.resolve(debounce);
+    }, debounceTime || App.Constants.DEBOUNCE_TIMEOUT );
+    return dfd.promise();
+  };
+
   return App;
 })(App || {});

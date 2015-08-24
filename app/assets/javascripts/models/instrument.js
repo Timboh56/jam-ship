@@ -110,7 +110,7 @@ try {
     self.velocity = App.Constants.DEFAULT_VELOCITY;
 
     function initialize() {
-      App.Helpers.applyProperties(self, opts);
+      self = App.Helpers.applyProperties(opts, self);
 
       window.RtcAdapter.set('onReceive', opts['onReceive']);
 

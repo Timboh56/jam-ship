@@ -155,6 +155,7 @@ select {
   margin-left: 14px;
 }
 
+.mrsm { margin-right: 7px; }
 .mrmd {
   margin-right: 14px;
 }
@@ -473,4 +474,11 @@ a, a:visited, a:focus {
   height: 250px;
   border-radius: 3px;
   font-size: 12px;
+}
+
+.errors {
+  h2 {
+    font-size: 14px !important;
+    color: #d14233;
+  }
 }

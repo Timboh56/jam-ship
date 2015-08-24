@@ -5,22 +5,29 @@
     </h3>
   </div>
   <div class='flash-messages'>
-
   </div>
   <div id='t2' class='panel toggle t1 piano-body col-xs-12'>
     <div class='row inline-block pbsm'>
-      <div class='full-width mvl'>
+      <div class='col-xs-12 col-sm-9 mvl no-padding'>
         <h3> Channel <%= @channel.name %>
-          <% if current_user == @channel.user %>
-            <div class='inline pull-right'>
-              <a class='btn edit-btn' data-target='#edit-channel-modal' data-toggle='modal'>
-                <%= fa_icon 'edit' %>
+            <% if current_user == @channel.user %>
+              <div class='inline pull-right'>
+                <a class='btn edit-btn' data-target='#edit-channel-modal' data-toggle='modal'>
+                  <%= fa_icon 'edit' %>
+                </a>
+                <a class='btn delete-btn'>
+                  <%= fa_icon 'remove' %>
+                </a>
+              </div>
+            <% end %>
+            <div class='pull-right'>
+              <a data-action='dislike' data-channel-id='<%= @channel.id %>' class='btn btn-primary'>
+                <%= fa_icon 'thumbs-down' %>
               </a>
-              <a class='btn delete-btn'>
-                <%= fa_icon 'remove' %>
+              <a data-action='like' data-channel-id='<%= @channel.id %>' class='btn btn-primary'>
+                <%= fa_icon 'thumbs-up' %>
               </a>
             </div>
-          <% end %>
         </h3>
       </div>
     </div>
