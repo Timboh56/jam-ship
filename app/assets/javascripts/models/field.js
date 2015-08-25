@@ -5,6 +5,7 @@
     var self = this,
       fieldName = self.name = App.Helpers.capitalizeFirstLetter(opts['name']);
 
+    self.value = opts['value'] || App.Constants['DEFAULT_' + fieldName.toUpperCase()];
     self.onSet = opts['onSet'];
 
     self.set = function(val) {
@@ -16,8 +17,6 @@
       self.value = val;
       if (self.onSet) self.onSet(self.name, val);
     }
-
-    self.value = App.Constants['DEFAULT_' + fieldName.toUpperCase()]
   };
 
   return App;

@@ -14,6 +14,13 @@ class ChannelsController < ApplicationController
     redirect_to channel_path(channel)
   end
 
+  def destroy
+    @channel = Channel.friendly_id.find(params[:id])
+    authorize! :destroy, @channel
+    @channel.destroy
+    redirect_to channels_path
+  end
+
   def channel_params
     params.require(:channel).permit(:name)
   end

@@ -3,5 +3,5 @@ class Channel < ActiveRecord::Base
 
   belongs_to :user
   has_many :clips
-  friendly_id :name, use: :slugged
+  friendly_id :name, use: [:slugged, :finders]
 end

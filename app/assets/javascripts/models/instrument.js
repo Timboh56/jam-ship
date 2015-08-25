@@ -54,7 +54,6 @@ try {
           var rowHtml = App.Helpers.renderTemplate('.alert-danger-template', {
             message: 'Uploaded was not successful!'
           });
-          console.log(xhr);
           $('.flash-messages').html(rowHtml);
           dfd.reject({ id: id });
         }

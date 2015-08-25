@@ -8,7 +8,7 @@ String.prototype.toUnderscore = function(){
     var self = this;
     self.recording = false;
     self.recorder = null;
-    self.recordingTime = 32000;
+    self.recordingTime = 120000;
     self.bpm = 128;
     self.bpl = opts['bpl'] || 4;
     self.metronomeOn = false;
@@ -22,10 +22,6 @@ String.prototype.toUnderscore = function(){
     self.onStopRecording = opts['onStopRecording'];
     self.InstrumentCRUD = new App.InstrumentCRUD(opts);
     if(!saveAs) throw "FileSaver.js not included!";
-    $(['bpl', 'bpm', 'metronomeVel', 'metronomeFreq']).each((function(index, el) {
-      var constantKey = el.toUnderscore().toUpperCase();
-      self[el] = App.Constants['DEFAULT_' + constantKey];
-    }).bind(this));
 
     self.broadcast = opts['broadcast'];
     self.onCreateBuffer = opts['onCreateBuffer'];
@@ -82,30 +78,33 @@ String.prototype.toUnderscore = function(){
         instrument = recOpts['instrument'];
       else throw 'Please include an instrument to record';
 
-      self.recorder = T('rec', { timeout: self.recordingTime || recOpts['recordingTime']}, instrument).on('ended', (function(buffer) {
+      self.recorder = T('rec', { timeout: self.recordingTime || opts['recordingTIme']}, instrument).on('ended', (function(buffer) {
         var t, timestamp, buf, sr, dataview, audioBlob;
- 
-        timestamp = new Date().getUTCMilliseconds();
+        if (buffer.buffer.length != 0) {
+          timestamp = new Date().getUTCMilliseconds();
 
-        t = T('buffer', {buffer: buffer, loop:true}); // create buffer object
-        t.buffer = buffer;
-        self.recording = false;
+          t = T('buffer', {buffer: buffer, loop:true}); // create buffer object
+          t.buffer = buffer;
+          self.recording = false;
 
-        buf = buffer.buffer;      // buf = a Float32Array of data
-        sr = buffer.samplerate;    //sample rate of the data
+          buf = buffer.buffer;      // buf = a Float32Array of data
+          sr = buffer.samplerate;    //sample rate of the data
 
-        dataview = _encodeWAV(buf, sr);
+          dataview = _encodeWAV(buf, sr);
 
-        // save blob
-        audioBlob = new Blob([dataview], { type: 'audio/wav' });
-        self.blobs[timestamp] = audioBlob;
-        self.currentRecordId = timestamp;
+          // save blob
+          audioBlob = new Blob([dataview], { type: 'audio/wav' });
+          self.blobs[timestamp] = audioBlob;
+          self.currentRecordId = timestamp;
 
-        self.buffers[timestamp] = t;
-        self.onCreateBuffer.call(this, timestamp);
-        self.play(timestamp);
+          self.buffers[timestamp] = t;
+          self.onCreateBuffer.call(this, timestamp);
+          self.play(timestamp);
 
-        dfd.resolve(self);
+          dfd.resolve(self);
+        } else {
+          dfd.reject(self);
+        }
 
       }).bind(this));
 
@@ -279,9 +278,10 @@ String.prototype.toUnderscore = function(){
       for (var clip in opts['clips']) self.setTrack(opts['clips'][clip]);
 
       for(var i = 0; i < App.Constants.Fields.SEQUENCER.length; i++) {
-        var el = App.Constants.Fields.SEQUENCER[i];
-
-        self[el] = new App.Field({ name: el });
+        var el = App.Constants.Fields.SEQUENCER[i],
+          constantKey = el.toUnderscore().toUpperCase(),
+          val  = App.Constants['DEFAULT_' + constantKey];
+        self[el] = new App.Field({ name: el, value: val });
       };
     }
 

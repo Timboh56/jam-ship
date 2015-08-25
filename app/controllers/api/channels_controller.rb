@@ -8,7 +8,7 @@ class Api::ChannelsController < ApplicationController
   end
 
   def update
-    @channel = Channel.friendly.find(params[:id])
+    @channel = Channel.find(params[:id])
     @channel.update_attributes!(channel_params)
     render json: { channel: @channel }, status: 200
   end

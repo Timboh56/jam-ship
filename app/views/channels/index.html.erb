@@ -11,24 +11,38 @@
       <ul>
         <% @channels.each do |channel| %>
           <li>
-            <li data-href href='channels/<%= channel.id %>' class='block fade-animate col-xs-4 pbmd ptmd'>
-              <div class='transition channel-container border'>
-                <div class='center'>
-                  <span class='big'>
-                    <%= fa_icon 'headphones', { class: 'bold big-'} %>
-                  </span>
-                  <br />
-                  <%= link_to channel.name, channel_path(channel), { class: 'white-text bold' } %>
-                  <div class='full-width small'>
-                    Started by <%= channel.user.full_name %>
-                    <%= image_tag current_user.avatar.url, { class: 'profile-image mrmd' } %>
+            <%= link_to "channel/#{ channel.slug }" do %>
+              <div class='block fade-animate col-xs-4 col-sm-3 pbmd ptmd'>
+                <div class='transition channel-container border'>
+                  <div class='center'>
+                    <span class='med'>
+                      <%= fa_icon 'headphones', { class: 'md-icon bold mrsm'} %>
+                      <%= link_to channel.name, channel_path(channel), { class: 'white-text bold' } %>
+                    </span>
+                    <br />
+                    <div class='mvsm full-width small'>
+                      <%= image_tag current_user.avatar.url, { class: 'profile-image small mrsm' } %> By
+                       <span class='bold'> <%= channel.user.full_name %> </span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </li>
+            <% end %>
           </li>
         <% end %>
+          <li>
+            <a data-toggle='modal' data-target='#new-channel-modal' class='pointer block fade-animate col-xs-4 col-sm-3 no-padding'>
+              <div class='transition channel-container border'>
+                <div class='center'>
+                  <span class='med bold'>
+                    <%= fa_icon 'plus' %> Channel
+                  </span>
+                </div>
+              </div>
+            </a>
+          </li>
       </ul>
     </div>
   </div>
 </div>
+<%= render partial: 'partials/new_channel_modal' %>

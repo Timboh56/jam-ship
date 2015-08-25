@@ -156,6 +156,8 @@ select {
 }
 
 .mrsm { margin-right: 7px; }
+
+.mrxs { margin-right: 3px; }
 .mrmd {
   margin-right: 14px;
 }
@@ -381,6 +383,10 @@ a, a:visited, a:focus {
   a:hover {
     color: $primary !important;
   }
+  .center {
+    bottom: 24px;
+    position: absolute;
+  }
 }
 
 .clip-container {
@@ -497,4 +503,17 @@ a, a:visited, a:focus {
 .profile-image {
   height: 40px;
   border-radius: 40px;
+
+  &.small {
+    height: 20px !important;
+    border-radius: 20px !important;
+  }
+}
+
+.cursor, .pointer {
+  cursor: pointer;
+}
+
+.md-icon {
+  font-size: 20px;
 }

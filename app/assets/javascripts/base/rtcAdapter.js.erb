@@ -43,8 +43,6 @@
         self.peer = window.peer = new Peer(peer_opts);
 
         self.peer.on('open', (function(id) {
-          console.log('My peer ID is: ' + id);
-
           if (opts.owner)
             self.savePeerId(id, opts);
           else {

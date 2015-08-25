@@ -15,9 +15,7 @@
                 <a class='btn edit-btn' data-target='#edit-channel-modal' data-toggle='modal'>
                   <%= fa_icon 'edit' %>
                 </a>
-                <a class='btn delete-btn'>
-                  <%= fa_icon 'remove' %>
-                </a>
+                <%= link_to fa_icon('remove').html_safe, channel_path(@channel), { method: :delete, class: 'btn delete-btn' } %>
               </div>
             <% end %>
             <% if current_user && current_user != @channel.user %>

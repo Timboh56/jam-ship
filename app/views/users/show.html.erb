@@ -30,7 +30,7 @@
                         <br />
                         <span class='big'>
                            <%= link_to fa_icon('headphones').html_safe, channel_path(channel), { class: 'transition white-text bold' } %>
-                          <%= link_to  fa_icon('trash').html_safe, { action: :destroy, controller: 'api/channels', id: channel.id }, method: :delete, data: { confirm: 'Are you sure you want to delete this?' }, class: 'transition white-text bold big'  %>
+                          <%= link_to  fa_icon('trash').html_safe, { action: :destroy, controller: 'channels', id: channel.id }, method: :delete, data: { confirm: 'Are you sure you want to delete this?' }, class: 'transition white-text bold big'  %>
                         </span>
                       </div>
                     </div>
