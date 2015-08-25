@@ -12,7 +12,7 @@
         <% @channels.each do |channel| %>
           <li>
             <%= link_to "channel/#{ channel.slug }" do %>
-              <div class='block fade-animate col-xs-4 col-sm-3 pbmd ptmd'>
+              <div class='block fade-animate col-xs-6 col-sm-3 pbmd ptmd'>
                 <div class='transition channel-container border'>
                   <div class='center'>
                     <span class='med'>
@@ -31,12 +31,14 @@
           </li>
         <% end %>
           <li>
-            <a data-toggle='modal' data-target='#new-channel-modal' class='pointer block fade-animate col-xs-4 col-sm-3 no-padding'>
+            <a data-toggle='modal' data-target='#new-channel-modal' class='pointer block fade-animate col-xs-6 col-sm-3 pbmd ptmd'>
               <div class='transition channel-container border'>
                 <div class='center'>
                   <span class='med bold'>
                     <%= fa_icon 'plus' %> Channel
+                    <br />
                   </span>
+                   <span class='small'> Create a channel </span>
                 </div>
               </div>
             </a>

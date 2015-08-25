@@ -8,9 +8,6 @@ String.prototype.toUnderscore = function(){
     var self = this;
     self.recording = false;
     self.recorder = null;
-    self.recordingTime = 120000;
-    self.bpm = 128;
-    self.bpl = opts['bpl'] || 4;
     self.metronomeOn = false;
     self.metronomeObj = null;
     self.currentRecordId = null;
@@ -30,10 +27,10 @@ String.prototype.toUnderscore = function(){
     self.playMetronomeTick = function () {
       var osc = T("sin"),
         env = T("perc", {a:10, r:5}),
-        oscenv = T("OscGen", {osc:osc, env:env, mul: self.metronomeVol}).play();
+        oscenv = T("OscGen", {osc:osc, env:env, mul: self.metronomeVol.value}).play();
 
       oscenv.play();
-      oscenv.noteOnWithFreq(600, self.metronomeVel);
+      oscenv.noteOnWithFreq(600, self.metronomeVel.value);
     }
 
     self.toggleMetronome = function() {
@@ -42,11 +39,11 @@ String.prototype.toUnderscore = function(){
       beat = 1
 
       if (self.metronomeOn) {
-        var beatLength = 60000/self.bpm;
+        var beatLength = 60000/self.bpm.value;
         self.metronomeObj = T("interval", { interval: beatLength }, (function(count) {
           self.playMetronomeTick();
           $('.record-time').html(beat);
-          if (beat % self.bpl === 0) beat = 1;
+          if (beat % self.bpl.value === 0) beat = 1;
           else beat = beat + 1;
         }).bind(this));
         self.metronomeObj.start();
