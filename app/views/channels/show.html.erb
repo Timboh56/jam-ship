@@ -20,14 +20,16 @@
                 </a>
               </div>
             <% end %>
-            <div class='pull-right'>
-              <a data-action='dislike' data-channel-id='<%= @channel.id %>' class='btn btn-primary'>
-                <%= fa_icon 'thumbs-down' %>
-              </a>
-              <a data-action='like' data-channel-id='<%= @channel.id %>' class='btn btn-primary'>
-                <%= fa_icon 'thumbs-up' %>
-              </a>
-            </div>
+            <% if current_user && current_user != @channel.user %>
+              <div class='pull-right'>
+                <a data-action='dislike' data-channel-id='<%= @channel.id %>' class='btn btn-primary'>
+                  <%= fa_icon 'thumbs-down' %>
+                </a>
+                <a data-action='like' data-channel-id='<%= @channel.id %>' class='btn btn-primary'>
+                  <%= fa_icon 'thumbs-up' %>
+                </a>
+              </div>
+            <% end %>
         </h3>
       </div>
     </div>

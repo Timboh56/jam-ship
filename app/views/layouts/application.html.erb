@@ -72,6 +72,7 @@
           <ul class="nav navbar-nav pull-right">
             <% if current_user %>
               <li class='pull-left'>
+                <%= image_tag current_user.avatar.url, { class: 'profile-image' } %>
                 <%= link_to "#{ fa_icon 'th-large' } Dashboard".html_safe, '/me' %>
               </li>
               <li class='pull-right'>

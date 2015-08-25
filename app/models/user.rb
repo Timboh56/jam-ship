@@ -29,8 +29,8 @@ class User < ActiveRecord::Base
   def download_profile_pic(url)
     begin
       io = open(URI.parse(url))
-      test = url.path.split('/').last.blank?
-      self.avatar = test ? nil : url  
+      test = url.split('/').last.blank?
+      self.avatar = test ? nil : io  
     rescue Exception => e
       Rails.logger.error e.message
       self.avatar = nil
