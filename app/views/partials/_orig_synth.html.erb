@@ -14,7 +14,7 @@
     <li><div id="C6" class="anchor"></div></li>
 </div>
 <div class='row center bold'>
-  <div class='col-xs-6 col-sm-3 mtl'>
+  <div class='visible-xs col-xs-6 mtl'>
     <div class='row'>
       <div class='col-xs-12 block'>
         <h4 class='margin-auto inline text-center'>
@@ -32,12 +32,16 @@
       </div>
     </div>
   </div>
-  <div class='col-xs-12 col-sm-2 col-sm-offset-7 inline-block mtl'>
-    <label> R </label> - <%= fa_icon 'circle', class: 'red-text' %> / <%= fa_icon 'square' %>
-    <br class='hidden-xs' />
-    <label> X </label> - <%= fa_icon 'arrow-up' %> octave
-    <br class='hidden-xs' />
-    <label> Z </label> - <%= fa_icon 'arrow-down' %> octave
+  <div class='col-xs-12 col-sm-12 text-right inline-block mtl'>
+    <span class='mrl'>
+      <label class='bold med'> R </label>: <%= fa_icon 'circle', class: 'red-text' %> / <%= fa_icon 'square' %>
+    </span>
+    <span class='mrl'>
+      <label class='bold med'> X </label>: <%= fa_icon 'arrow-up' %> octave
+    </span>
+    <span class='mrl'>
+      <label class='bold med'> Z </label>: <%= fa_icon 'arrow-down' %> octave
+    </span>
   </div>
 </div>
 <div class="recordings-container row mvmd">
