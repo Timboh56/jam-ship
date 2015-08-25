@@ -69,22 +69,17 @@
           <%= fa_icon "rocket" %>
           JamShip</a>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
-          <ul class="nav navbar-nav pull-right">
+          <div class="nav navbar-nav col-sm-3 pull-right text-right no-padding">
             <% if current_user %>
-              <li class='pull-left'>
-                <%= image_tag current_user.avatar.url, { class: 'profile-image' } %>
-                <%= link_to "#{ fa_icon 'th-large' } Dashboard".html_safe, '/me' %>
-              </li>
-              <li class='pull-right'>
-                <%= link_to "Logout", destroy_user_session_path  %>
-              </li>
+                <%= link_to "#{ fa_icon 'th-large' } Dashboard".html_safe, '/me', { class: 'mrmd'} %>
+                <a href='/me'>
+                  <%= image_tag current_user.avatar.url, { class: 'profile-image mrmd' } %>
+                </a>
+                <%= link_to "Logout", destroy_user_session_path %>
             <% else %>
-              <li class='pull-right'>
-                <%= link_to "#{ fa_icon 'twitter' } Login".html_safe, omniauth_authorize_path('user', 'twitter') %><br />
-
-              </li>
+                <%= link_to "#{ fa_icon 'twitter' } Login".html_safe, omniauth_authorize_path('user', 'twitter') %>
             <% end %>
-          </ul>
+          </div>
         </div>
       </div>
     </div>
