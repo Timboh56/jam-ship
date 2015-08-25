@@ -59,26 +59,28 @@
   <body>
 
     <div class="navbar navbar-default navbar-static-top fixed full-width">
-      <div class="container">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/">
-          <%= fa_icon "rocket" %>
-          JamShip</a>
-        <div class="navbar-collapse collapse navbar-responsive-collapse">
-          <div class="nav navbar-nav col-sm-3 pull-right text-right no-padding">
-            <% if current_user %>
-                <%= link_to "#{ fa_icon 'th-large' } Dashboard".html_safe, '/me', { class: 'mrmd'} %>
-                <a href='/me'>
-                  <%= image_tag current_user.avatar.url, { class: 'profile-image mrmd' } %>
-                </a>
-                <%= link_to "Logout", destroy_user_session_path %>
-            <% else %>
-                <%= link_to "#{ fa_icon 'twitter' } Login".html_safe, omniauth_authorize_path('user', 'twitter') %>
-            <% end %>
+      <div class="full-width">
+        <div class='col-xs-12'>
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+            <%= fa_icon "rocket" %>
+            JamShip</a>
+          <div class="navbar-collapse collapse navbar-responsive-collapse">
+            <div class="nav navbar-nav col-sm-3 pull-right text-right no-padding">
+              <% if current_user %>
+                  <%= link_to "#{ fa_icon 'th-large' } Dashboard".html_safe, '/me', { class: 'mrmd'} %>
+                  <a href='/me'>
+                    <%= image_tag current_user.avatar.url, { class: 'profile-image mrmd' } %>
+                  </a>
+                  <%= link_to "Logout", destroy_user_session_path %>
+              <% else %>
+                  <%= link_to "#{ fa_icon 'twitter' } Login".html_safe, omniauth_authorize_path('user', 'twitter') %>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>
