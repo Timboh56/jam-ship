@@ -19,7 +19,10 @@
                   </span>
                   <br />
                   <%= link_to channel.name, channel_path(channel), { class: 'white-text bold' } %>
-                  <div class='full-width small'>Started by <%= channel.user.full_name %></div>
+                  <div class='full-width small'>
+                    Started by <%= channel.user.full_name %>
+                    <%= image_tag current_user.avatar.url, { class: 'profile-image mrmd' } %>
+                  </div>
                 </div>
               </div>
             </li>
