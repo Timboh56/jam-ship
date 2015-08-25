@@ -36,7 +36,7 @@ window.initialize = function(opts) {
     onTick: function(i) {
       if (!$('.t2').hasClass('active')) $('.t2').addClass('active');
       if (i > 0)
-        $('.recording-status').html('recording in ' + i + ' (R to skip)');
+        $('.recording-status').html('recording in ' + i + '</br > (R to skip)');
       else
         $('.recording-status').html('');
     },
@@ -80,7 +80,7 @@ window.initialize = function(opts) {
     onStartRecording: function(val) {
       var icon = App.Helpers.renderFA('fa-circle red-text');
       $('.recording-status').html('');
-      $('.recording-status').append(icon).append(' recording.. (R to stop)');
+      $('.recording-status').append(icon).append(' recording..').append('<br />').append('(R to stop)');
     },
 
     onStopRecording: function(val) {

@@ -8,7 +8,7 @@
   </div>
   <div id='t2' class='panel toggle t1 piano-body col-xs-12'>
     <div class='row inline-block pbsm'>
-      <div class='col-xs-12 col-sm-9 mvl no-padding'>
+      <div class='col-xs-12 col-sm-12 mvl no-padding'>
         <h3> Channel <%= @channel.name %>
             <% if current_user == @channel.user %>
               <div class='inline pull-right'>
@@ -31,8 +31,8 @@
         </h3>
       </div>
     </div>
-    <div class='row'>
-      <div class='inline-block col-xs-12 col-sm-9 no-padding'>
+    <div class='row mtl'>
+      <div class='inline-block col-xs-12 col-sm-9 npl'>
         <select name="mode" data-target="t1" data-toggle-class='hide' id="mode-selector" data-synth-field="mode" class="form-control synth-field toggle" >
           <option name="live">live</option>
           <option name="listening">listening</option>
@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class='inline-block col-xs-12 col-sm-3'>
-        <h3 class='pbl'> Chat </h3>
+        <div class='big bold full-width text-center pbmd'> Chat </div>
         <div class='panel'>
           <form data-remote='true' id='chat-room-form'>
             <div class='chat-room-container'>

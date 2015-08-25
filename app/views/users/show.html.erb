@@ -49,26 +49,32 @@
       <div class='row mtl'>
         <div class='col-xs-12'>
           <div class='row'>
-            <ul>
-              <% @user.clips.each do |clip| %>
-               <li class='mvl col-xs-3 col-md-4 inline-block clearfix'>
-                  <div class='pbmd ptmd fade-animate'>
-                    <div class='transition clip-container channel-container border'>
-                      <div class='center'>
-                        <span class='bold full-width'>
-                          <%= clip.name %>
-                          <br />
-                        </span>
-                        <span class='big white-text'>
-                          <%= link_to fa_icon('save').html_safe, clip.mp3.url, { target: '_blank', class: 'transition'} %>
-                          <%= link_to fa_icon('trash').html_safe, { action: :destroy, controller: "api/clips", id: clip.id }, method: :delete, data: { remote: true, confirm: 'Are you sure you want to delete this?' }, class: 'transition' %>
-                          <div>
+            <% if @user.clips.length != 0 %>
+              <ul>
+                <% @user.clips.each do |clip| %>
+                 <li class='mvl col-xs-3 col-md-4 inline-block clearfix'>
+                    <div class='pbmd ptmd fade-animate'>
+                      <div class='transition clip-container channel-container border'>
+                        <div class='center'>
+                          <span class='bold full-width'>
+                            <%= clip.name %>
+                            <br />
+                          </span>
+                          <span class='big white-text'>
+                            <%= link_to fa_icon('save').html_safe, clip.mp3.url, { target: '_blank', class: 'transition'} %>
+                            <%= link_to fa_icon('trash').html_safe, { action: :destroy, controller: "api/clips", id: clip.id }, method: :delete, data: { remote: true, confirm: 'Are you sure you want to delete this?' }, class: 'transition' %>
+                            <div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </li>
-              <% end %>
-            </ul>
+                  </li>
+                <% end %>
+              </ul>
+            <% else %>
+              <div class='col-xs-12'>
+                No files to show.
+              </div>
+            <% end %>
           </div>
         </div>
       </div>

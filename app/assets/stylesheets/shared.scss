@@ -48,9 +48,9 @@ a {
   overflow: hidden;
 }
 
-.no-padding {
-  padding: 0 !important;
-}
+.no-padding { padding: 0 !important; }
+.no-padding-left, .npl{ padding-left: 0 !important; }
+.no-padding-right, .npr { padding-right: 0 !important; }
 
 .margin-auto { margin: auto !important; }
 .fade-animate {
@@ -437,8 +437,8 @@ a, a:visited, a:focus {
 @media screen and (max-width: 480px) {
   .t2 {
     background-color: #191919;
-    opacity: 0.99;
-    bottom: 0px;
+    opacity: 0.45;
+    bottom: -190px;
   }
 }
 
