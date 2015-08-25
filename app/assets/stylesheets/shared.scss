@@ -429,20 +429,15 @@ a, a:visited, a:focus {
   background: none !important;
 }
 
-.fixed {
-  position: fixed;
-}
+.fixed { position: fixed; }
 
-.right {
-  right: 0px;
-}
+.right { right: 0px; }
 
-.top {
-  top: 0px;
-}
-.bottom {
-  bottom: 0px;  
-}
+.left { left: 0px; }
+
+.top { top: 0px; }
+
+.bottom { bottom: 0px; }
 
 .height-auto {
   overflow: auto;
