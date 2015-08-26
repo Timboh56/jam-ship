@@ -8,6 +8,7 @@ $red: #B12617;
 $silver: #ecf0f1;
 $blue: #2980b9;
 $gray: #95a5a6;
+$lightgray: rgba(189, 195, 199, 0.3);
 $green: #16a085;
 
 body {
@@ -297,6 +298,11 @@ button.btn, .btn {
 
 .gray-bg {
   background: $gray !important;
+}
+
+.light-gray-bg {
+  background: $lightgray !important;
+  color: white !important;
 }
 
 .green-bg {
