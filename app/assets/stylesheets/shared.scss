@@ -300,6 +300,10 @@ button.btn, .btn {
   background: #1abc9c !important;
 }
 
+.primary-bg {
+  background: $primary;
+}
+
 .purple-bg {
   background: #2c3e50;
   color: white !important;  
@@ -566,4 +570,8 @@ a, a:visited, a:focus {
 
 .chat-room-container {
   margin-top: 15px;
+}
+
+.about-container {
+  height: 500px;
 }

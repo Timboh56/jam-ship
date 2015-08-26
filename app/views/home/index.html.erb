@@ -1,37 +1,55 @@
-<div class="col-lg-7 col-sm-7 col-xs-12 mtxl">
-  <div class='hidden-xs visible-lg-block'>
-    <%= inline_svg('spacemonkey.svg', { preserve_aspect_ratio: 'xMaxYMax meet'}) %>
-  </div>
-  <div class='visible-sm-block visible-md-block hidden-xs-block'>
-    <%= inline_svg('spacemonkey-md.svg', { preserve_aspect_ratio: 'xMaxYMax meet'}) %>
-  </div>
-  <div class='visible-xs-block'>
-    <%= inline_svg('spacemonkey-xs.svg', { preserve_aspect_ratio: 'xMaxYMax meet'}) %>
-  </div>
-</div>
-<div class="col-lg-3 col-sm-4 col-xs-12 mtl">
-  <div class="sidebar-nav mtxl">
-    <div class='welcome-container mvxl'>
-      <h2 class='mvl'>Make music. Anywhere.</h2>
+<div class='row'>
+  <div class="col-lg-7 col-sm-7 col-xs-12 mtxl">
+    <div class='hidden-xs visible-lg-block'>
+      <%= inline_svg('spacemonkey.svg', { preserve_aspect_ratio: 'xMaxYMax meet'}) %>
     </div>
-    <ul class="nav nav-list mtxl">
-      <% if current_user %>
-        <li>
-          <a class='btn btn-primary' id='show-create-channel-form'>
-            <%= fa_icon 'plus' %> Channel
-          </a>
+    <div class='visible-sm-block visible-md-block hidden-xs-block'>
+      <%= inline_svg('spacemonkey-md.svg', { preserve_aspect_ratio: 'xMaxYMax meet'}) %>
+    </div>
+    <div class='visible-xs-block'>
+      <%= inline_svg('spacemonkey-xs.svg', { preserve_aspect_ratio: 'xMaxYMax meet'}) %>
+    </div>
+  </div>
+  <div class="col-lg-3 col-sm-4 col-xs-12 mtl">
+    <div class="sidebar-nav mtxl">
+      <div class='welcome-container mvxl'>
+        <h2 class='mvl'>Make music. Anywhere.</h2>
+      </div>
+      <ul class="nav nav-list mtxl">
+        <% if current_user %>
+          <li>
+            <a class='btn btn-primary' id='show-create-channel-form'>
+              <%= fa_icon 'plus' %> Channel
+            </a>
+          </li>
+        <% else %>
+          <li>
+            <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#login-modal">
+              <%= fa_icon 'plus' %> Create Channel
+            </a>
+          </li>
+        <% end %>
+        <li class='mtmd'>
+          <%= link_to "#{ fa_icon 'headphones' } Join channel".html_safe,  "/channels", { class: 'btn btn-primary' }   %>
         </li>
-      <% else %>
-        <li>
-          <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#login-modal">
-            <%= fa_icon 'plus' %> Create Channel
-          </a>
+        <li class='mtmd'>
+          <%= link_to "#{ fa_icon 'question' } About".html_safe,  "/channels", { class: 'btn btn-primary' }   %>
         </li>
-      <% end %>
-      <li class='mtmd'><%= link_to "#{ fa_icon 'headphones' } Join channel".html_safe,  "/channels", { class: 'btn btn-primary' }   %>
-      <li class='mtmd'><%= link_to "#{ fa_icon 'question' } About".html_safe,  "/channels", { class: 'btn btn-primary' }   %>
-    </ul>
-  </div><!--/.well -->
-</div><!--/span-->
+      </ul>
+    </div><!--/.well -->
+  </div><!--/span-->
+</div>
+<div class='mtxl about-container full-width primary-bg white-text pvl text-center'> 
+  <div class='center margin-auto'>
+    <h2 class='white-text mtl'> Play music live with your friends</h2>
+    <div class='row mtl'>
+      <div class='col-xs-12'>
+        With Jamship, you can create music while streaming it online with your friends. Use the keyboard or plug in a MIDI controller to get started.
+      </div>
+    </div>
+  </div>
+
+</div>
+
 <%= render partial: 'partials/login' %>
 <%= render partial: 'partials/new_channel_modal' if current_user %>
