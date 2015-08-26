@@ -25,6 +25,7 @@
 //= require modernizr-2.8.3.min
 //= require_tree ./base
 //= require_tree ./models
+//= require chatroom
 //= require dashboard
 //= require MoogFF
 //= require main

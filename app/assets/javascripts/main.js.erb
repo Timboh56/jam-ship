@@ -115,38 +115,12 @@ window.initialize = function(opts) {
         synth.Sequencer[action].call(this, recordId);
   });
 
-  var chatSubmit = function(e) {
-    var val = $('#message-text-field').val();
-  
-    if (val.replace(' ', '') != '') {
-      val['align'] = 'text-right';
-      window.FirebaseInterface.broadcast({
-        message: val,
-        name: $("#current-user-name").val() || 'Guest'
-      });
-      $('#message-text-field').val('');
-
-      m = $('#messages-container');
-      m.scrollTop(m[0].scrollHeight);
-    }
-
-    e.preventDefault();    
-  };
-
-  $('#message-text-field').on('focus', function(){
-    synth.disableKeyboard();
-  });
-
-  $('#message-text-field').on('blur', function(){
-    synth.enableKeyboard();
-  });
-
-  $('form#chat-room-form').find('#message-text-field').on('keypress', function(e) {
-    if (e.keyCode == 13) chatSubmit(e);
-  });
-
-  $('form#chat-room-form').on('submit', function(e) {
-    chatSubmit(e);
+  var chatRoom = new App.Chatroom({
+    firebaseAdapter: window.FirebaseInterface,
+    messageFieldSelector: '#message-text-field',
+    chatFormSelector: 'form#chat-room-form',
+    onFocus: synth.disableKeyboard.bind(this),
+    onBlur: synth.enableKeyboard.bind(this),
   });
 
   $(document).on('change', 'input[type=checkbox].toggle, select.toggle', function(i, el) {

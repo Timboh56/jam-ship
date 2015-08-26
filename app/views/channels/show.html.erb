@@ -23,10 +23,10 @@
                   <% end %>
                   <% if current_user && current_user != @channel.user %>
                     <div class='pull-right'>
-                      <a data-action='dislike' data-channel-id='<%= @channel.id %>' class='btn btn-primary'>
+                      <a id='thumbs-up'data-action='dislike' data-channel-id='<%= @channel.id %>' class='btn btn-primary'>
                         <%= fa_icon 'thumbs-down' %>
                       </a>
-                      <a data-action='like' data-channel-id='<%= @channel.id %>' class='btn btn-primary'>
+                      <a id='thumbs-down' data-action='like' data-channel-id='<%= @channel.id %>' class='btn btn-primary'>
                         <%= fa_icon 'thumbs-up' %>
                       </a>
                     </div>
