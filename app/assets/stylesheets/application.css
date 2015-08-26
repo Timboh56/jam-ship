@@ -18,6 +18,7 @@
  *= require_self
  *= require main
  *= require shared
+ *= require responsive
  *= require instruments
  *= require components
  */

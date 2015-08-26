@@ -1,0 +1,22 @@
+
+@media screen and (min-width: 480px) {
+  .t2 {
+    background-color: #191919;
+    opacity: 0.99;
+    bottom: -45px;
+  }
+  .fixed-sm {
+    position: fixed;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .t2 {
+    background-color: #191919;
+    opacity: 0.45;
+    bottom: -190px;
+  }
+  .fixed-sm {
+    position: inherit;
+  }
+}

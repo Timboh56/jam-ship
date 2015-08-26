@@ -1,4 +1,6 @@
 class Api::ClipsController < ApplicationController
+  before_action :authenticate_user!
+
   def create
     @clip = Clip.create!(
       user: current_user,
