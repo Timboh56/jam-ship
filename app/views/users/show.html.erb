@@ -3,11 +3,6 @@
     <div class='col-xs-12'>
       <h2>
         <%= fa_icon 'th-large' %> Dashboard
-        <span class='pull-right'>
-          <a class='btn btn-primary add-channel-btn' id='show-create-channel-form'>
-            <%= fa_icon 'plus' %> Channel
-          </a>
-        </span>
       </h2>
     </div>
   </div>
@@ -20,6 +15,13 @@
         <div class='col-xs-12'>
           <div class='row'>
             <ul>
+              <li class='mvl col-xs-3 col-md-4 inline-block clearfix'>
+                <a class='full-width channel-container transition border btn btn-primary add-channel-btn green-bg' id='show-create-channel-form'>
+                  <div class='center bold'>
+                    <%= fa_icon 'plus' %> Channel
+                  </div>
+                </a>
+              </li>
               <% if @user.channels.length > 0 %>
                 <% @user.channels.each do |channel| %>
                   <li class='mvl col-xs-3 col-md-4 inline-block clearfix'>

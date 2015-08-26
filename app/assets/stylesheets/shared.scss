@@ -8,6 +8,7 @@ $red: #B12617;
 $silver: #ecf0f1;
 $blue: #2980b9;
 $gray: #95a5a6;
+$green: #16a085;
 
 body {
   font-family: 'Roboto', sans-serif;
@@ -290,6 +291,15 @@ button.btn, .btn {
     color: #FF5252 !important;
 }
 
+.green-bg {
+  background: $green !important;
+  color: white !important;
+}
+
+.green-bg:hover {
+  background: #1abc9c !important;
+}
+
 .purple-bg {
   background: #2c3e50;
   color: white !important;  
@@ -399,10 +409,6 @@ a, a:visited, a:focus {
     background-color: red !important;
     color: white !important;
   }
-}
-
-.add-channel-btn {
-  background-color: $blue !important;
 }
 
 .recording-track {
