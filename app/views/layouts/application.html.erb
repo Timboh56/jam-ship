@@ -76,9 +76,13 @@
                   <a href='/me'>
                     <%= image_tag current_user.avatar.url, { class: 'profile-image mrmd' } %>
                   </a>
-                  <%= link_to "Logout", destroy_user_session_path %>
+                  <%= link_to "Logout", destroy_user_session_path, { class: 'white-text'} %>
               <% else %>
-                  <%= link_to "#{ fa_icon 'twitter' } Login".html_safe, omniauth_authorize_path('user', 'twitter') %>
+                <a href='/users/sign_in' class='white-text mrmd'>
+                  Login
+                </a>
+                <%= link_to fa_icon('facebook').html_safe, omniauth_authorize_path('user', 'facebook'), { class: 'btn-social facebook mrmd'} %>
+                <%= link_to fa_icon('twitter').html_safe, omniauth_authorize_path('user', 'twitter'), { class: 'btn-social twitter' } %>
               <% end %>
             </div>
           </div>

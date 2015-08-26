@@ -212,6 +212,20 @@ input[type=number].synth-field {
   background-color: #6B7E92 !important
 }
 
+.btn-social {
+  height: 50px;
+  border-radius: 50px;
+  background-color: #bdc3c7;
+  color: #2c3e50;
+  &.facebook {
+    padding: 6px 10px;
+  }
+
+  &.twitter {
+    padding: 6px 8px;
+  }
+}
+
 button.btn, .btn {
   background-color: $primary !important;
   color: $silver !important;
@@ -304,7 +318,7 @@ button.btn, .btn {
     height: 50px;
   }
   a {
-    color: white !important;
+    color: white;
     line-height: 50px;
   }
 }
