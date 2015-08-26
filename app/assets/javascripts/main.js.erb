@@ -15,7 +15,7 @@ window.initialize = function(opts) {
     onConnect: function() {
       window.FirebaseInterface.broadcast({
         message: 'Joined room.',
-        name: $("#current-user-name").val() || 'No name'
+        name: $("#current-user-name").val() || 'Guest'
       });
     }
   });
@@ -122,7 +122,7 @@ window.initialize = function(opts) {
       val['align'] = 'text-right';
       window.FirebaseInterface.broadcast({
         message: val,
-        name: $("#current-user-name").val() || 'No name'
+        name: $("#current-user-name").val() || 'Guest'
       });
       $('#message-text-field').val('');
 
