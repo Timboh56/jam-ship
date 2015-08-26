@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
 
   def full_name
-    name || 'No name'
+    name || "Guest #{ rand(1000) }"
   end
 
   def likes_channel(channel_id)
