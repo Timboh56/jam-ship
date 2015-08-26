@@ -57,7 +57,23 @@
     <%= javascript_include_tag "application" %>
   </head>
   <body>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '912281025503594',
+          xfbml      : true,
+          version    : 'v2.4'
+        });
+      };
 
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
     <div class="navbar navbar-default navbar-static-top fixed full-width">
       <div class="full-width">
         <div class='col-xs-12'>

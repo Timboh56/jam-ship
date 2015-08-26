@@ -44,6 +44,10 @@ a {
   color: $primary !important;
 }
 
+footer {
+  height: 30px;
+}
+
 .no-wrap {
   white-space: nowrap;
   overflow: hidden;
@@ -291,6 +295,10 @@ button.btn, .btn {
     color: #FF5252 !important;
 }
 
+.gray-bg {
+  background: $gray !important;
+}
+
 .green-bg {
   background: $green !important;
   color: white !important;
@@ -455,6 +463,8 @@ a, a:visited, a:focus {
 
 .fixed { position: fixed; }
 
+.absolute { position: absolute; }
+
 .right { right: 0px; }
 
 .left { left: 0px; }
@@ -575,3 +585,5 @@ a, a:visited, a:focus {
 .about-container {
   height: 500px;
 }
+
+#u_0_3 { color: white !important; }
