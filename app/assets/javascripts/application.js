@@ -22,6 +22,7 @@
 //= require FileSaver.min
 //= require timbre.dev
 //= require mouse
+//= jquery.datatables.min
 //= require modernizr-2.8.3.min
 //= require_tree ./base
 //= require_tree ./models
