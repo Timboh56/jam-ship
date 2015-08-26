@@ -72,7 +72,7 @@
           <div class="navbar-collapse collapse navbar-responsive-collapse">
             <div class="nav navbar-nav col-sm-3 pull-right text-right no-padding">
               <% if current_user %>
-                  <%= link_to "#{ fa_icon 'th-large' } Dashboard".html_safe, '/me', { class: 'mrmd'} %>
+                  <%= link_to "#{ fa_icon 'th-large' } Dashboard".html_safe, '/me', { class: 'mrmd white-text'} %>
                   <a href='/me'>
                     <%= image_tag current_user.avatar.url, { class: 'profile-image mrmd' } %>
                   </a>
