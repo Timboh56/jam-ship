@@ -1,0 +1,25 @@
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <div class="row mtmd field">
+      <div class='col-xs-12 col-sm-3 text-left'>
+        <%= f.label :email %>
+      </div>
+      <div class='col-xs-12 col-sm-9 text-left'>
+        <%= f.email_field :email, { class: 'form-control', autofocus: true } %>
+      </div>
+    </div>
+
+    <div class="row mtmd field">
+      <div class='col-xs-12 col-sm-3 text-left'>
+        <%= f.label :password %>
+      </div>
+      <div class='col-xs-12 col-sm-9 text-left'>
+        <%= f.password_field :password, { class: 'form-control', autocomplete: "off" } %>
+      </div>
+    </div>
+
+    <div class="row mvl actions">
+      <div class='col-xs-12 text-left'>
+        <%= f.submit "Log in", { class: 'btn btn-primary'} %>
+      </div>
+    </div>
+  <% end %>

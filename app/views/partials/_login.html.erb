@@ -9,12 +9,16 @@
         <div class='bold mtl'>
           You must login to continue.
         </div>
-        <div class='mtl'>
-          <button type="button" class="btn btn-default btn-delete" data-dismiss="modal">
+        <div class='mtl text-left'>
+          <%= render partial: 'partials/login_form', locals: { resource: User.new, resource_name: 'user' } %>
+        </div>
+        <div class='mtl text-left'>
+          <button type="button" class="btn btn-default delete-btn btn-delete mrmd mtmd" data-dismiss="modal">
             <%= fa_icon 'remove' %>
             Cancel
           </button>
-          <%= link_to "#{ fa_icon 'twitter' } Login".html_safe, omniauth_authorize_path('user', 'twitter'), { class: 'btn btn-primary login-btn'} %>
+          <%= link_to "#{ fa_icon 'facebook' } Connect w/ Facebook".html_safe, omniauth_authorize_path('user', 'facebook'), { class: 'mtmd btn btn-primary login-btn mrmd'} %>
+          <%= link_to "#{ fa_icon 'twitter' } Connect w/ Twitter".html_safe, omniauth_authorize_path('user', 'twitter'), { class: 'mtmd btn btn-primary login-btn'} %>
         </div>
       </div>
     </div><!-- /.modal-content -->

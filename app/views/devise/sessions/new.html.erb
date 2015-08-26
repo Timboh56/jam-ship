@@ -4,43 +4,6 @@
       <h2>Log in</h2>
     </div>
   </div>
-  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-    <div class="row mtmd field">
-      <div class='col-xs-12 col-sm-3'>
-        <%= f.label :email %>
-      </div>
-      <div class='col-xs-12 col-sm-9'>
-        <%= f.email_field :email, { class: 'form-control', autofocus: true } %>
-      </div>
-    </div>
-
-    <div class="row mtmd field">
-      <div class='col-xs-12 col-sm-3'>
-        <%= f.label :password %>
-      </div>
-      <div class='col-xs-12 col-sm-9'>
-        <%= f.password_field :password, { class: 'form-control', autocomplete: "off" } %>
-      </div>
-    </div>
-
-    <% if devise_mapping.rememberable? -%>
-      <div class="row mvl field">
-        <div class='col-xs-3'>
-          <%= f.label :remember_me %>
-        </div>
-        <div class='col-xs-9'>
-          <%= f.check_box :remember_me, { class: 'form-control' } %>
-        </div>
-      </div>
-    <% end -%>
-
-    <div class="row mvl actions">
-      <div class='col-xs-12'>
-        <%= f.submit "Log in", { class: 'btn btn-primary'} %>
-      </div>
-    </div>
-  <% end %>
-
+  <%= render partial: 'partials/login_form', locals: { resource: resource } %>
   <%= render "devise/shared/links" %>
-
 </div>
