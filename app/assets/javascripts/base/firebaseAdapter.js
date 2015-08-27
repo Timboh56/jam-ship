@@ -16,7 +16,7 @@
     }
 
     this.onReceive = function(snapshot) {
-      if (self.opts["onReceive"])
+      if (self.opts["onReceiveFirebase"])
         self.opts["onReceiveFirebase"](snapshot);
     }
 

@@ -8,6 +8,10 @@
     self.value = opts['value'] || App.Constants['DEFAULT_' + fieldName.toUpperCase()];
     self.onSet = opts['onSet'];
 
+    self.toString = function() {
+      return self.value.toString();
+    }
+
     self.set = function(val) {
       if (parseFloat(val)) {
         if(parseFloat(val) % 1 < 0.1) val = parseInt(val);
