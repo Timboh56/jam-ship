@@ -1,19 +1,21 @@
 <div id='edit-channel-modal' class='edit-clip-modal modal fade'>
   <div class='modal-dialog'>
     <div class='modal-content'>
-      <div class='modal-header'>
-        Edit
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><%= fa_icon 'times' %></span></button>
-      </div>
-      <div class='modal-body'>
-        <div class='mtl'>
-          <input type='text' class='form-control full-width' name='channel[name]' value='<%= @channel.name %>' placeholder='name' />
+      <%= form_for @channel, url: "/api/channels/#{ @channel.id }", action: :update, method: :put, remote: :true do %>
+        <div class='modal-header'>
+          Edit
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><%= fa_icon 'times' %></span></button>
         </div>
-        <div class='mtl'>
-          <a type="button" class="btn delete-btn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Cancel</span></a>
-          <input type='submit' value='Save' class='btn btn-primary'/>
+        <div class='modal-body'>
+          <div class='mtl'>
+            <input type='text' class='form-control full-width' name='channel[name]' value='<%= @channel.name %>' placeholder='name' />
+          </div>
+          <div class='mtl'>
+            <a type="button" class="btn delete-btn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Cancel</span></a>
+            <input type='submit' value='Save' class='btn btn-primary'/>
+          </div>
         </div>
-      </div>
+      <% end %>
     </div>
   </div>
 </div>

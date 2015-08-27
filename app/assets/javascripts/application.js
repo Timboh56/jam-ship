@@ -20,6 +20,7 @@
 //= require bootstrap.min
 //= require peer.min
 //= require FileSaver.min
+//= require midiFile
 //= require timbre.dev
 //= require mouse
 //= jquery.datatables.min

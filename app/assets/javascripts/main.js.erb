@@ -123,6 +123,9 @@ window.initialize = function(opts) {
     onBlur: synth.enableKeyboard.bind(this),
   });
 
+  $('textarea, input[type=text]').on('focus', synth.disableKeyboard.bind(this));
+  $('textarea, input[type=text]').on('blur', synth.enableKeyboard.bind(this));
+
   $(document).on('change', 'input[type=checkbox].toggle, select.toggle', function(i, el) {
     var el = $(this),
       targetClass = el.data('target'),
@@ -131,6 +134,13 @@ window.initialize = function(opts) {
     $('.' + targetClass).toggleClass(toggleClass);
   });
 
+  $('form.edit_channel').on('ajax:success', function() {
+    var rowHtml = App.Helpers.renderTemplate('.alert-info-template', {
+      message: 'Saved!'
+    });
+    $('#edit-channel-modal').modal('hide');
+    $('.flash-messages').html(rowHtml);
+  });
 
   $('.knob').each(function(el) {
     var self = $(this),
@@ -148,10 +158,11 @@ window.initialize = function(opts) {
       turn : function(ratio) {
 
         // need to multiply ratio by target.data('max')
-        var def = parseFloat($('#' + id).data('default'));
-        var min = parseFloat($('#' + id).data('min'));
-        var max = parseFloat($('#' + id).data('max'));
-        var val = min + (ratio * (max - min));
+        var def = parseFloat($('#' + id).data('default')),
+          min = parseFloat($('#' + id).data('min')),
+          max = parseFloat($('#' + id).data('max')),
+          val = min + (ratio * (max - min));
+
         $('#' + id).val(val);
         synth.InstrumentControl.onChangeInput($('#' + id));
       }

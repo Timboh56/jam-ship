@@ -19,6 +19,29 @@
     return dest;
   };
 
+  self.str2Bytes = function(str, finalBytes) {
+      if (finalBytes) {
+          while ((str.length / 2) < finalBytes) { str = "0" + str; }
+      }
+
+      var bytes = [];
+      for (var i=str.length-1; i>=0; i = i-2) {
+          var chars = i === 0 ? str[i] : str[i-1] + str[i];
+          bytes.unshift(parseInt(chars, 16));
+      }
+
+      return bytes;
+  }
+
+  self.isArray = function(obj) {
+      return !!(obj && obj.concat && obj.unshift && !obj.callee);
+  }
+
+  // converts array of bytes to hexadecimal chars
+  self.codes2Str = function(byteArray) {
+    return String.fromCharCode.apply(null, byteArray);
+  }
+
   self.stringify = function(obj, replacer, spaces, cycleReplacer) {
     return JSON.stringify(obj, serializer(replacer, cycleReplacer), spaces)
   };

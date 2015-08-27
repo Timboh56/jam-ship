@@ -11,6 +11,7 @@
             <a alt='play' data-action="play" data-record-id="{{ id }}" class="btn js-record-action mvsm" id="play-btn-{{ id }}"> <%= fa_icon "play" %> </a>
             <a alt='stop' data-action="stop" class=" btn js-record-action mvsm" data-record-id="{{ id }}" id="stop-btn-{{ id }}"> <%= fa_icon "stop" %> </a>
             <a alt='upload' id='upload-clip-{{ id }}' class='upload-btn mvsm btn js-record-action' data-record-id="{{ id }}" data-action='saveBuffer'> <%= fa_icon 'cloud-upload' %> </a>
+            <br class='visible-xs' />
             <a alt='download' class=' mvsm btn js-record-action' data-record-id="{{ id }}" data-action='exportBuffer'> <%= fa_icon 'download' %> </a>
             <a alt='edit' data-target='#clip-name-{{ id }}' id='edit-clip-{{ id }}' data-toggle-class='focus' class="js-toggle btn js-record-action mvsm" data-action='editBuffer' data-record-id="{{ id }}" id="edit-btn-{{ id }}"> <%= fa_icon "edit" %> <a/>
             <a alt='delete' data-action="deleteBuffer" class=" btn js-record-action mvsm" data-record-id="{{ id }}" id="delete-clip-{{ id }}"> <%= fa_icon "trash" %> <a/>

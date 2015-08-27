@@ -88,6 +88,13 @@ String.prototype.toUnderscore = function(){
           sr = buffer.samplerate;    //sample rate of the data
 
           dataview = _encodeWAV(buf, sr);
+          // Your variable with a ArrayBuffer instance containing your MIDI file
+          var anyBuffer;
+
+          debugger
+
+          // Creating the MIDIFile instance
+          var midiFile= new MIDIFile(buf);
 
           // save blob
           audioBlob = new Blob([dataview], { type: 'audio/wav' });
