@@ -59,19 +59,19 @@ window.initialize = function(opts) {
       var note = opts['note'],
         velocity = opts['velocity'],
         receiving = opts['receiving'];
-
+        keyId = note.replace('#', 'sharp');
       receiving = receiving || false;
-      note = note.replace('#', 'sharp');
-      $("#" + note).addClass('active');
+
+      $("#" + keyId).addClass('active');
       if (synth.mode.value == 'live' && !receiving) window.RtcAdapter.send({ note: note, velocity: velocity });
     },
 
     onStop: function(opts) {
       var note = opts['note'],
         receiving = opts['receiving'];
+        keyId = note.replace('#', 'sharp');
 
-      note = note.replace('#', 'sharp');
-      $("#" + note).removeClass('active');
+      $("#" + keyId).removeClass('active');
       if (synth.mode.value == 'live' && !receiving) window.RtcAdapter.send({ note: note, velocity: 0 });
     },
 
