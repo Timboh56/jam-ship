@@ -63,7 +63,7 @@ Rails.application.routes.draw do
     resources :likes
     get 'channels/like' => 'channels#like'
     get 'channels/dislike' => 'channels#dislike'
-    put 'channels' => 'channels#update'
+    put 'channels/:id' => 'channels#update'
     delete 'destroy' => 'channels#destroy'
   end
 
