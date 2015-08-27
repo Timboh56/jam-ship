@@ -91,10 +91,8 @@ String.prototype.toUnderscore = function(){
           // Your variable with a ArrayBuffer instance containing your MIDI file
           var anyBuffer;
 
-          debugger
-
           // Creating the MIDIFile instance
-          var midiFile= new MIDIFile(buf);
+          //var midiFile= new MIDIFile(buf);
 
           // save blob
           audioBlob = new Blob([dataview], { type: 'audio/wav' });
