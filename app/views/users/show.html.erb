@@ -31,10 +31,13 @@
                         <div class='center'>
                           <%= link_to channel.name, channel_path(channel), { class: 'white-text bold transition' } %>
                           <br />
-                          <span class='big'>
+                          <div class='pull-left inline big'>
                              <%= link_to fa_icon('headphones').html_safe, channel_path(channel), { class: 'transition white-text bold' } %>
                             <%= link_to  fa_icon('trash').html_safe, { action: :destroy, controller: 'channels', id: channel.id }, method: :delete, data: { confirm: 'Are you sure you want to delete this?' }, class: 'transition white-text bold big'  %>
-                          </span>
+                          </div>
+                          <div class='mvsm pull-right inline small'>
+                            <%= fa_icon 'thumbs-up', { class: 'bold' } %> <%= channel.likes.count %>
+                          </div>
                         </div>
                       </div>
                     </div>
