@@ -31,10 +31,10 @@
         note = self.noteLookUp.apply(self, [keyPressed]);
         if (self.InstrumentControl.keyboardOn && 'live' == self.mode.value) {
           if (App.Constants.KEYTONOTE[keyPressed] && !self.notes[note].keyDown) {
-            self.MidiControl.noteEvents.push(MidiEvent.createNote(note, false));
-            console.log(self.MidiControl.noteEvents);
-            console.log('elolwhut');
-            self.notes[note].keyDown = true;
+            //self.MidiControl.noteEvents.push(MidiEvent.createNote(note, false));
+            //console.log(self.MidiControl.noteEvents);
+            //console.log('elolwhut');
+            //self.notes[note].keyDown = true;
             self.play({
               note: note,
               velocity: self.velocity

@@ -8,6 +8,8 @@ class Ability
     can :update, Channel do |channel|
       channel.try(:user) == user
     end
+    can :like, :all
+    can :dislike, :all
     can :destroy, Channel do |channel|
       channel.try(:user) == user
     end

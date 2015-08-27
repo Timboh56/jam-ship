@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 
   has_many :channels, dependent: :destroy
   has_many :clips, dependent: :destroy
-  has_many :likes, as: :likable, dependent: :destroy
+  has_many :likes, dependent: :destroy
   friendly_id :name, use: :slugged
   TEMP_EMAIL_PREFIX = 'change@me'
   TEMP_EMAIL_REGEX = /\Achange@me/
@@ -24,6 +24,10 @@ class User < ActiveRecord::Base
 
   def likes_channel(channel_id)
     like_ids.include? channel_id
+  end
+
+  def liked(channel)
+    likes.where(likable: channel).present?
   end
 
   def download_profile_pic(url)

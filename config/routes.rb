@@ -60,7 +60,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :clips
-    resources :channels
+    resources :likes
+    get 'channels/like' => 'channels#like'
+    get 'channels/dislike' => 'channels#dislike'
+    put 'channels' => 'channels#update'
+    delete 'destroy' => 'channels#destroy'
   end
 
   resources :channels

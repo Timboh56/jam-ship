@@ -168,4 +168,36 @@ window.initialize = function(opts) {
       }
     });
   });
+
+  $('.like-btn').on('click', function(e) {
+    $.ajax({
+      type: 'GET',
+      dataType: 'json',
+      data: { id: opts.channel },
+      url: '/api/channels/like',
+      success: function(response) {
+        var rowHtml = App.Helpers.renderTemplate('.alert-info-template', {
+          message: 'Liked!'
+        });
+        $('.dislike-btn').toggleClass('selected');
+        $('.like-btn').toggleClass('selected');
+      }
+    });
+  });
+
+  $('.dislike-btn').on('click', function(e) {
+    $.ajax({
+      type: 'GET',
+      dataType: 'json',
+      data: { id: opts.channel },
+      url: '/api/channels/dislike',
+      success: function(response) {
+        var rowHtml = App.Helpers.renderTemplate('.alert-info-template', {
+          message: 'Disliked!'
+        });
+        $('.dislike-btn').toggleClass('selected');
+        $('.like-btn').toggleClass('selected');
+      }
+    });
+  });
 };
