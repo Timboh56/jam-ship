@@ -7,6 +7,7 @@
     opts = $.extend({}, opts, {
 
       onReceive: (function(val) {
+        console.log(val);
         val = $.extend({}, val, { receiving: true });
         if (val.url)
           self.Sequencer.setTrack(val);
