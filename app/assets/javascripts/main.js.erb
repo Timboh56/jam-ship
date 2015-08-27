@@ -1,9 +1,7 @@
-window.myDataRef = new Firebase('https://jam-ship.firebaseio.com/');
-
 window.initialize = function(opts) {
 
   opts = $.extend({}, opts, {
-    onReceive: function(snapshot) {
+    onReceiveFirebase: function(snapshot) {
       var snapVal, template;
       snapVal = snapshot.val();
       if(snapVal) {

@@ -17,7 +17,7 @@
 
     this.onReceive = function(snapshot) {
       if (self.opts["onReceive"])
-        self.opts["onReceive"](snapshot);
+        self.opts["onReceiveFirebase"](snapshot);
     }
 
     self.myDataRef.on('value', this.onReceive);

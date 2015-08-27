@@ -4,7 +4,9 @@
     var parent, self, opts, notes, onChangeInput;
     var debounce = true;
 
-      /**onReceive: (function(val) {
+    opts = $.extend({}, opts, {
+
+      onReceive: (function(val) {
         val = $.extend({}, val, { receiving: true });
         if (val.url)
           self.Sequencer.setTrack(val);
@@ -13,9 +15,8 @@
         else
           self.stop(val);
 
-      }).bind(this),**/
+      }).bind(this),
 
-    opts = $.extend({}, opts, {
       onMidiMessage: opts['onMidiMessage'] || function(note, velocity) {
         if (velocity > 0 && self.mode.value == 'live')
           self.play({note: note, velocity: velocity });
