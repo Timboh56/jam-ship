@@ -4,11 +4,13 @@
 
     self.channel = opts['channel'] || "test_channel";
     self.myDataRef = null;
-    self.opts = opts;
+
     if (Firebase)
       self.myDataRef = new Firebase('https://pftxxze6h6m.firebaseio-demo.com/channels/' + self.channel);
     else
       throw "Did you forget to include Firebase?";
+
+    self = App.Helpers.applyProperties(opts, self);
 
     this.broadcast = function(opts) {
       //opts = stringify(opts);
@@ -16,8 +18,8 @@
     }
 
     this.onReceive = function(snapshot) {
-      if (self.opts["onReceiveFirebase"])
-        self.opts["onReceiveFirebase"](snapshot);
+      if (self["onReceiveFirebase"])
+        self["onReceiveFirebase"](snapshot);
     }
 
     self.myDataRef.on('value', this.onReceive);
