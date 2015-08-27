@@ -63,7 +63,7 @@ window.initialize = function(opts) {
       receiving = receiving || false;
       note = note.replace('#', 'sharp');
       $("#" + note).addClass('active');
-      if (synth.mode == 'live' && !receiving) window.RtcAdapter.send({ note: note, velocity: velocity });
+      if (synth.mode.value == 'live' && !receiving) window.RtcAdapter.send({ note: note, velocity: velocity });
     },
 
     onStop: function(opts) {
@@ -72,7 +72,7 @@ window.initialize = function(opts) {
 
       note = note.replace('#', 'sharp');
       $("#" + note).removeClass('active');
-      if (synth.mode == 'live' && !receiving) window.RtcAdapter.send({ note: note, velocity: 0 });
+      if (synth.mode.value == 'live' && !receiving) window.RtcAdapter.send({ note: note, velocity: 0 });
     },
 
     onStartRecording: function(val) {
