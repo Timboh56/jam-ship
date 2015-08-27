@@ -35,7 +35,7 @@
             //self.MidiControl.noteEvents.push(MidiEvent.createNote(note, false));
             //console.log(self.MidiControl.noteEvents);
             //console.log('elolwhut');
-            //self.notes[note].keyDown = true;
+            self.notes[note].keyDown = true;
             self.play({
               note: note,
               velocity: self.velocity
@@ -47,7 +47,6 @@
 
       onKeyUp: function(event) {
         var keyPressed, note, velocity;
-
         keyPressed = App.Helpers.getChar(event);
         note = self.noteLookUp.apply(self, [keyPressed]);
         if (self.InstrumentControl.keyboardOn && 'live' == self.mode.value) {
