@@ -440,6 +440,7 @@ a, a:visited, a:focus {
   .center {
     bottom: 24px;
     position: absolute;
+    width: calc(100% - 65px);
   }
 }
 

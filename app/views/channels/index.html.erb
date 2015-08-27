@@ -33,9 +33,14 @@
                       <%= link_to channel.name, channel_path(channel), { class: 'white-text bold' } %>
                     </span>
                     <br />
-                    <div class='mvsm full-width small'>
-                      <%= image_tag channel.avatar.url, { class: 'profile-image small mrsm' } %> By
-                       <span class='bold'> <%= channel.user.full_name %> </span>
+                    <div class='full-width height-auto clearfix'>
+                      <div class='mvsm pull-left small'>
+                        <%= image_tag channel.avatar.url, { class: 'profile-image small mrsm' } %> By
+                         <span class='bold'> <%= channel.user.full_name %> </span>
+                      </div>
+                      <div class='mvsm right absolute small'>
+                        <%= fa_icon 'thumbs-up' %> <%= channel.likes.count %>
+                      </div>
                     </div>
                   </div>
                 </div>
