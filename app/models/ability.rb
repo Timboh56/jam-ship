@@ -5,9 +5,7 @@ class Ability
     user ||= User.new # guest user
     can :read, :all
     can :create, Channel
-    can :update, Channel do |channel|
-      channel.try(:user) == user
-    end
+    can :update, Channel
     can :like, :all
     can :dislike, :all
     can :destroy, Channel do |channel|

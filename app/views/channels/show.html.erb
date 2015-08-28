@@ -86,10 +86,14 @@
     window.initialize({
       channel: '<%= @channel.id %>',
       clips: clips,
-      <% if current_user == @channel.user %>
-        owner: true,
+      owner: <%= current_user == @channel.user ? true : false %>,
+      <% if @connection_id %>
+        connection_id: '<%= @connection_id %>',
       <% end %>
-      peer_id: '<%= @channel.peer_id %>'
+        peer_id: '<%= @channel.peer_id %>',
+        connections: [
+          <%= @channel.connections.map { |conn| "\'#{ conn }\'" }.join(',').html_safe %>
+        ]
     });
   });
 </script>

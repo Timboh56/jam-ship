@@ -2,62 +2,84 @@
   App.RtcAdapter = function(opts) {
     var self = this;
 
-    self.onReceive = opts['onReceive'];
-    self.onConnect = opts['onConnect'];
+    self = App.Helpers.applyProperties(opts, self);
+    self.establishedConnections = {};
 
     self.savePeerId = function(id, opts) {
+      var channelOpts = {},
+        dfd = $.Deferred();
+
       $.ajax({
         type: 'PUT',
         dataType: 'JSON',
         url: '/api/channels/' + opts.channel,
         data: {
           id: opts.channel,
-          channel: {
-            peer_id: id
-          }
+          connection_id: id
         },
 
         success: function(xhr) {
           opts.peer_id = xhr.channel.peer_id;
+          dfd.resolve(opts);
         },
 
         error: function(xhr) {
           console.log('Error');
           console.log(xhr);
+          dfd.reject(opts);
         }
       });
+
+      return dfd.promise();
+    }
+
+    self.initializeConnection = function(opts) {
+      var dfd = $.Deferred(),
+        peer_opts = {
+          host: '<%= ENV["PEER_SERVER_HOST"] %>',
+          secure: true,
+          port: 443,
+          path: '/'
+        };
+
+      // if connection_id is given, connect to Peer server with that id
+      // else, open a new connection on Peer server and save the id.
+      if (opts.connection_id) {
+        self.peer = window.peer = new Peer(opts.connection_id, peer_opts);
+        dfd.resolve(opts.connection_id);
+      } else {
+        self.peer = window.peer = new Peer(peer_opts);
+
+        self.peer.on('open', (function(id) {
+          self.savePeerId(id, opts);
+          self.connection_id = id;
+          dfd.resolve(self.connection_id);
+        }).bind(this));
+      }
+      return dfd.promise();
     }
 
     self.establishConnection = function(opts) {
       var dfd = $.Deferred();
-      var peer_opts = {
-        host: '<%= ENV["PEER_SERVER_HOST"] %>',
-        secure: true,
-        port: 443,
-        path: '/'
-      };
 
-      if (opts.owner && opts.peer_id)
-        self.peer = window.peer = new Peer(opts.peer_id, peer_opts);
-      else {
-        self.peer = window.peer = new Peer(peer_opts);
-
-        self.peer.on('open', (function(id) {
-          if (opts.owner)
-            self.savePeerId(id, opts);
-          else {
-            self.conn = window.peer.connect(opts.peer_id);
-            dfd.resolve();
-            self.conn.send('Connection with ' + opts.peer_id + ' from ' + id + ' successful!');
-          }
+      self.initializeConnection(opts).then((function() {
+        self.peer.on('connection', (function(data) {
+          self.establishedConnections[data.peer] = data;
+          self.establishedConnections[data.peer].on('data', self.onReceive);
+          if (self.onConnect) self.onConnect();
+          dfd.resolve();
         }).bind(this));
-      }
 
-      self.peer.on('connection', (function(data) {
-        self.conn = data;
-        self.conn.on('data', self.onReceive);
-        if (self.onConnect) self.onConnect();
-        dfd.resolve();
+        // connect to all given connection ids.
+        for(var i = 0; i < self.connections.length; i++) {
+          if (self.connections[i] != self.connection_id) {
+            var key = self.connections[i];
+            console.log('Connecting to ' + key);
+            self.establishedConnections[key] = window.peer.connect(key);
+            self.establishedConnections[key].send('Connection with ' + key + ' from ' + self.connection_id + ' successful!');
+            dfd.resolve(opts);
+          }
+        }
       }).bind(this));
 
       return dfd.promise();
@@ -66,19 +88,26 @@
     self.set = function(prop, val) {
       self[prop] = val;
 
-      if (self.conn && prop == 'onReceive')
-        self.conn.on('data', self.onReceive);
+      if (self.establishedConnections && prop == 'onReceive') {
+        for(var i in self.establishedConnections)
+          self.establishedConnections[i].on('data', self.onReceive);
+      }
     }
 
     self.send = function(opts) {
-      console.log('sending');
-      console.log(opts);
-      if (self.conn) self.conn.send(opts);
-      else console.log('No connection to send to');
+      if (!$.isEmptyObject(self.establishedConnections)){
+        for(var i in self.establishedConnections) {
+          if (self.establishedConnections[i].open)
+            self.establishedConnections[i].send(opts);
+        }
+      } else console.log('No connection to send to');
     }
 
     self.establishConnection(opts).done((function() {
-      self.conn.on('data', self.onReceive);
+      for(var i in self.establishedConnections) {
+        if (self.establishedConnections[i].open)
+          self.establishedConnections[i].on('data', self.onReceive);
+      }
     }).bind(this));
 
     return self;

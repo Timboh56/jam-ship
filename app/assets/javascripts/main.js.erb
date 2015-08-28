@@ -1,5 +1,5 @@
 window.initialize = function(opts) {
-
+  console.log(opts.connections);
   opts = $.extend({}, opts, {
     onReceiveFirebase: function(snapshot) {
       var snapVal, template;

@@ -3,6 +3,7 @@ class ChannelsController < ApplicationController
 
   def show
     @channel = Channel.friendly.find(params[:id])
+    @connection_id = session['connection_id'] if session['connection_id']
   end
 
   def index

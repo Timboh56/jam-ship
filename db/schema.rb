@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150823233651) do
+ActiveRecord::Schema.define(version: 20150828060931) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,11 +19,12 @@ ActiveRecord::Schema.define(version: 20150823233651) do
   create_table "channels", force: :cascade do |t|
     t.string   "name"
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.string   "peer_id"
-    t.string   "peer_ids",                array: true
+    t.string   "peer_ids",                 array: true
     t.string   "slug"
+    t.string   "connections",              array: true
   end
 
   create_table "clips", force: :cascade do |t|
