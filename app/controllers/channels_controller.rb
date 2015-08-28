@@ -3,7 +3,10 @@ class ChannelsController < ApplicationController
 
   def show
     @channel = Channel.friendly.find(params[:id])
-    @connection_id = @channel.connections.where(user: current_user).first.peer_id rescue session['connection_id']
+    @connection_id = @channel.connections.where(user: current_user).first.peer_id rescue nil
+
+    # need to write algorithm to clear 
+    # guest connection ids after certain amount of time
   end
 
   def index

@@ -15,7 +15,6 @@ class Api::ChannelsController < ApplicationController
         peer_id: params[:connection_id],
         user: current_user
       })
-      session['connection_id'] = params[:connection_id] unless current_user
     end
 
     @channel.update_attributes!(channel_params)

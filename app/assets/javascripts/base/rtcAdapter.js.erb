@@ -46,6 +46,7 @@
       // else, open a new connection on Peer server and save the id.
       if (opts.connection_id) {
         self.peer = window.peer = new Peer(opts.connection_id, peer_opts);
+        self.connection_id = opts.connection_id;
         dfd.resolve(opts.connection_id);
       } else {
         self.peer = window.peer = new Peer(peer_opts);
