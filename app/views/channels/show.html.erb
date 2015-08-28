@@ -86,7 +86,6 @@
     window.initialize({
       channel: '<%= @channel.id %>',
       clips: clips,
-      owner: <%= current_user == @channel.user ? true : false %>,
       <% if @connection_id %>
         connection_id: '<%= @connection_id %>',
       <% end %>
