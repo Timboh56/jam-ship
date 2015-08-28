@@ -16,7 +16,7 @@ class Api::ChannelsController < ApplicationController
   def like
     @channel = Channel.find(params[:id])
     @channel.like!(current_user)
-    render json: { message: 'Success!' }, status: 200
+    render json: { message: 'Success!', like_count: @channel.likes.count }, status: 200
   rescue Exception => e
     Rails.logger.warn e.message
     render json: { message: 'Success!' }, status: 420
@@ -25,7 +25,7 @@ class Api::ChannelsController < ApplicationController
   def dislike
     @channel = Channel.find(params[:id])
     @channel.dislike!(current_user)
-    render json: { message: 'Success!' }, status: 200
+    render json: { message: 'Success!', like_count: @channel.likes.count }, status: 200
   rescue Exception => e
     Rails.logger.warn e.message
     render json: { message: 'Success!' }, status: 420

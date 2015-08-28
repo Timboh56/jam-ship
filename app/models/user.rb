@@ -22,12 +22,8 @@ class User < ActiveRecord::Base
     name || "Guest #{ rand(1000) }"
   end
 
-  def likes_channel(channel_id)
-    like_ids.include? channel_id
-  end
-
   def liked(channel)
-    likes.where(likable: channel).present?
+    likes.where(likable_id: channel.id).exists?
   end
 
   def download_profile_pic(url)

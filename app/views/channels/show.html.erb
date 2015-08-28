@@ -15,24 +15,29 @@
           <div class='row'>
             <div class='col-xs-12'>
               <h3> Channel <%= @channel.name %>
-                  <% if current_user == @channel.user %>
-                    <div class='inline pull-right'>
-                      <a class='btn edit-btn' data-target='#edit-channel-modal' data-toggle='modal'>
-                        <%= fa_icon 'edit' %>
-                      </a>
-                      <%= link_to fa_icon('remove').html_safe, channel_path(@channel), { method: :delete, class: 'btn delete-btn' } %>
-                    </div>
-                  <% end %>
-                  <% if current_user && current_user != @channel.user %>
-                    <div class='pull-right'>
-                      <a id='thumbs-up'data-action='dislike' data-channel-id='<%= @channel.id %>' class='btn btn-primary dislike-btn <%= 'selected' unless current_user.liked(@channel) %>'>
-                        <%= fa_icon 'thumbs-down' %>
-                      </a>
-                      <a id='thumbs-down' data-action='like' data-channel-id='<%= @channel.id %>' class='btn btn-primary like-btn  <%= 'selected' if current_user.liked(@channel) %>'>
-                        <%= fa_icon 'thumbs-up' %>
-                      </a>
-                    </div>
-                  <% end %>
+                <% if current_user == @channel.user %>
+                  <div class='inline pull-right'>
+                    <a class='btn edit-btn' data-target='#edit-channel-modal' data-toggle='modal'>
+                      <%= fa_icon 'edit' %>
+                    </a>
+                    <%= link_to fa_icon('remove').html_safe, channel_path(@channel), { method: :delete, class: 'btn delete-btn' } %>
+                  </div>
+                <% end %>
+                <div class='inline pull-right'>
+                  <div class='pull-left mrmd mtsm small'>
+                    <span class='like-count'><%= @channel.likes.count %></span> Likes
+                  </div>
+                  <div class='pull-right inline'>
+                    <% if current_user && current_user != @channel.user %>
+                        <a id='thumbs-up'data-action='dislike' data-channel-id='<%= @channel.id %>' class='btn btn-primary dislike-btn'>
+                          <%= fa_icon 'thumbs-down' %>
+                        </a>
+                        <a id='thumbs-down' data-action='like' data-channel-id='<%= @channel.id %>' class='btn btn-primary like-btn  <%= 'selected' if current_user.liked(@channel) %>'>
+                          <%= fa_icon 'thumbs-up' %>
+                        </a>
+                    <% end %>
+                  </div>
+                </div>
               </h3>
             </div>
           </div>

@@ -177,7 +177,7 @@ window.initialize = function(opts) {
         var rowHtml = App.Helpers.renderTemplate('.alert-info-template', {
           message: 'Liked!'
         });
-        $('.dislike-btn').toggleClass('selected');
+        $('.like-count').html(response.like_count);
         $('.like-btn').toggleClass('selected');
       }
     });
@@ -193,7 +193,7 @@ window.initialize = function(opts) {
         var rowHtml = App.Helpers.renderTemplate('.alert-info-template', {
           message: 'Disliked!'
         });
-        $('.dislike-btn').toggleClass('selected');
+        $('.like-count').html(response.like_count);
         $('.like-btn').toggleClass('selected');
       }
     });
