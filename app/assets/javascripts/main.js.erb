@@ -4,7 +4,7 @@ window.initialize = function(opts) {
     onReceiveFirebase: function(snapshot) {
       var snapVal, template;
       snapVal = snapshot.val();
-      if(snapVal) {
+      if(snapVal && snapVal.message && snapVal.name) {
         template = App.Helpers.renderTemplate('.message-template', snapVal);
         $('.messages-container').append(template);
       }

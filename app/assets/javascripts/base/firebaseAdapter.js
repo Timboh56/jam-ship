@@ -13,8 +13,8 @@
     self = App.Helpers.applyProperties(opts, self);
 
     this.broadcast = function(opts) {
-      //opts = stringify(opts);
-      self.myDataRef.set(opts);
+      opts['timestamp'] = new Date().getUTCMilliseconds();
+      self.myDataRef.push(opts);
     }
 
     this.onReceive = function(snapshot) {
@@ -22,8 +22,7 @@
         self["onReceiveFirebase"](snapshot);
     }
 
-    self.myDataRef.on('value', this.onReceive);
-    self.myDataRef.child(self.channel).on('child_added', this.onReceive);
+    self.myDataRef.limitToLast(10).on('child_added', this.onReceive);
 
     return self;
   }
