@@ -92,7 +92,7 @@
       <% end %>
         peer_id: '<%= @channel.peer_id %>',
         connections: [
-          <%= @channel.connections.map { |conn| "\'#{ conn }\'" }.join(',').html_safe %>
+          <%= (@channel.connections.present? ? @channel.connections.map { |conn| "\'#{ conn }\'" }.join(',').html_safe : nil) %>
         ]
     });
   });
