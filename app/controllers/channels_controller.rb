@@ -3,10 +3,11 @@ class ChannelsController < ApplicationController
 
   def show
     @channel = Channel.friendly.find(params[:id])
-    @connection_id = @channel.connections.where(user: current_user).first.peer_id rescue nil
 
-    # need to write algorithm to clear 
-    # guest connection ids after certain amount of time
+    # get connection_id in channel
+    # if user is not logged in, current_user is nil
+    # it will use the first connection with nil user - guest
+    @connection_id = @channel.connections.where(user: current_user).first.peer_id rescue nil
   end
 
   def index

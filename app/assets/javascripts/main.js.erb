@@ -1,6 +1,8 @@
 window.initialize = function(opts) {
-  console.log(opts.connections);
+  var guestId = parseInt((Math.random() * 1000));
+
   opts = $.extend({}, opts, {
+    guestId: guestId,
     onReceiveFirebase: function(snapshot) {
       var snapVal, template;
       snapVal = snapshot.val();
@@ -13,7 +15,7 @@ window.initialize = function(opts) {
     onConnect: function() {
       window.FirebaseInterface.broadcast({
         message: 'Joined room.',
-        name: $("#current-user-name").val() || 'Guest'
+        name: $("#current-user-name").val() || 'Guest ' + guestId
       });
     }
   });
@@ -114,6 +116,7 @@ window.initialize = function(opts) {
   });
 
   var chatRoom = new App.Chatroom({
+    guestId: guestId,
     firebaseAdapter: window.FirebaseInterface,
     messageFieldSelector: '#message-text-field',
     chatFormSelector: 'form#chat-room-form',

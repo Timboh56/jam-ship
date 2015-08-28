@@ -11,7 +11,7 @@
         val['align'] = 'text-right';
         self.firebaseAdapter.broadcast({
           message: val,
-          name: $("#current-user-name").val() || 'Guest ' + Math.random()
+          name: $("#current-user-name").val() || 'Guest ' + self.guestId
         });
         $('#message-text-field').val('');
 
