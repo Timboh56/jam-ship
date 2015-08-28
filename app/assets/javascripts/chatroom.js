@@ -2,6 +2,7 @@
   App.Chatroom = function(opts) {
     var self = this;
     self = App.Helpers.applyProperties(opts, self);
+    if (self.onConnect) self.onConnect();
 
     if(!self.firebaseAdapter) throw 'Did you forget to include firebaseAdapter?';
     function onSubmit(e) {

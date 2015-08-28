@@ -12,12 +12,6 @@ window.initialize = function(opts) {
       }
     },
 
-    onConnect: function() {
-      window.FirebaseInterface.broadcast({
-        message: 'Joined room.',
-        name: $("#current-user-name").val() || 'Guest ' + guestId
-      });
-    }
   });
 
   window.RtcAdapter = App.RtcAdapter(opts);
@@ -117,6 +111,12 @@ window.initialize = function(opts) {
 
   var chatRoom = new App.Chatroom({
     guestId: guestId,
+    onConnect: function() {
+      window.FirebaseInterface.broadcast({
+        message: 'Joined room.',
+        name: $("#current-user-name").val() || 'Guest ' + guestId
+      });
+    },
     firebaseAdapter: window.FirebaseInterface,
     messageFieldSelector: '#message-text-field',
     chatFormSelector: 'form#chat-room-form',

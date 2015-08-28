@@ -68,8 +68,6 @@
           var key = data.peer;
           self.establishedConnections[key] = data;
           self.establishedConnections[key].on('data', self.onReceive);
-
-          if (self.onConnect) self.onConnect();
           dfd.resolve();
         }).bind(this));
 
