@@ -45,6 +45,7 @@
       // if connection_id is given, connect to Peer server with that id
       // else, open a new connection on Peer server and save the id.
       if (opts.connection_id) {
+        debugger
         self.peer = window.peer = new Peer(opts.connection_id, peer_opts);
         dfd.resolve(opts.connection_id);
       } else {

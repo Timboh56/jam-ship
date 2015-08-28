@@ -1,22 +1,21 @@
 class Api::ChannelsController < ApplicationController
-  before_action :authenticate_user!
-  load_and_authorize_resource
+  before_action :authenticate_user!, except: [ :update ]
+  load_and_authorize_resource except: [:update]
 
   def destroy
     current_user.channels.find(params[:id]).destroy
+    session['connection_id'] = nil
     render nothing: true, status: 200
   end
 
   def update
     @channel = Channel.find(params[:id])
     if params[:connection_id]
-
-      @channel.connections  = if @channel.connections
-                                @channel.connections << params[:connection_id]
-                              else
-                                [params[:connection_id]]
-                              end
-      session['connection_id'] = params[:connection_id]
+      @channel.connections.create!({
+        peer_id: params[:connection_id],
+        user: current_user
+      })
+      session['connection_id'] = params[:connection_id] unless current_user
       channel_params[:peer_id] = params[:connection_id] if current_user == @channel.user
     end
 

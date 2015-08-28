@@ -90,9 +90,8 @@
       <% if @connection_id %>
         connection_id: '<%= @connection_id %>',
       <% end %>
-        peer_id: '<%= @channel.peer_id %>',
         connections: [
-          <%= (@channel.connections.present? ? @channel.connections.map { |conn| "\'#{ conn }\'" }.join(',').html_safe : nil) %>
+          <%= (@channel.connections.present? ? @channel.connections.map { |conn| "\'#{ conn.peer_id }\'" }.join(',').html_safe : nil) %>
         ]
     });
   });

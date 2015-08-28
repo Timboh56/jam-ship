@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
   has_many :channels, dependent: :destroy
   has_many :clips, dependent: :destroy
   has_many :likes, dependent: :destroy
+  has_many :connections, dependent: :destroy
+
   friendly_id :name, use: :slugged
   TEMP_EMAIL_PREFIX = 'change@me'
   TEMP_EMAIL_REGEX = /\Achange@me/
