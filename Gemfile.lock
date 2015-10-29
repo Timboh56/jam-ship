@@ -59,6 +59,10 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    angular-rails-templates (0.1.4)
+      railties (>= 3.1)
+      sprockets
+      tilt
     arel (6.0.2)
     aws-sdk (1.64.0)
       aws-sdk-v1 (= 1.64.0)
@@ -68,6 +72,7 @@ GEM
     bcrypt (3.1.10)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bower-rails (0.10.0)
     builder (3.2.2)
     byebug (5.0.0)
       columnize (= 0.9.0)
@@ -393,7 +398,9 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-session_store
+  angular-rails-templates
   aws-sdk (< 2.0)
+  bower-rails
   byebug
   cancan
   carrierwave

@@ -8,7 +8,6 @@
   App.MidiControl = function(opts) {
     var self = this;
     self = App.Helpers.applyProperties(opts, self)
-    self.noteEvents = [];
 
     if (navigator.requestMIDIAccess) {
         navigator.requestMIDIAccess({
@@ -37,7 +36,6 @@
           note = data[1],
           velocity = data[2];
       note = noteFromNoteNumber(note);
-      //self.noteEvents.push(MidiEvent.createNote(note, false));
       self.onMidiMessage.call(this, note, velocity);
     }
 

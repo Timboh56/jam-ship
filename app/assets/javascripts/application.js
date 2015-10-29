@@ -20,7 +20,7 @@
 //= require bootstrap.min
 //= require peer.min
 //= require FileSaver.min
-//= require midiFile
+//= require synth/midi
 //= require timbre.dev
 //= require mouse
 //= jquery.datatables.min
@@ -32,3 +32,14 @@
 //= require MoogFF
 //= require main
 //= require helmet
+//= require MIDI
+//= require angular.min
+//= require angular-rails-templates
+//= require angular/app
+//= require_tree ./angular/templates
+//= require_tree ./angular/modules
+//= require_tree ./angular/filters
+//= require_tree ./angular/directives
+//= require_tree ./angular/models
+//= require_tree ./angular/services
+//= require_tree ./angular/controllers

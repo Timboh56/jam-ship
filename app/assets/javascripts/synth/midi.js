@@ -1,101 +1,481 @@
-function midiMessageReceived( ev ) {
-  var cmd = ev.data[0] >> 4;
-  var channel = ev.data[0] & 0xf;
-  var noteNumber = ev.data[1];
-  var velocity = ev.data[2];
+/*jslint es5: true, laxbreak: true */
 
-  if (channel == 9)
-    return
-  if ( cmd==8 || ((cmd==9)&&(velocity==0)) ) { // with MIDI, note on with velocity zero is the same as note off
-    // note off
-    noteOff( noteNumber );
-  } else if (cmd == 9) {
-    // note on
-    noteOn( noteNumber, velocity/127.0);
-  } else if (cmd == 11) {
-    controller( noteNumber, velocity/127.0);
-  } else if (cmd == 14) {
-    // pitch wheel
-    pitchWheel( ((velocity * 128.0 + noteNumber)-8192)/8192.0 );
-  } else if ( cmd == 10 ) {  // poly aftertouch
-    polyPressure(noteNumber,velocity/127)
-  } else
-  console.log( "" + ev.data[0] + " " + ev.data[1] + " " + ev.data[2])
-}
+(function (window) {
 
-var selectMIDI = null;
-var midiAccess = null;
-var midiIn = null;
+var AP = Array.prototype;
 
-function selectMIDIIn( ev ) {
-  if (midiIn)
-    midiIn.onmidimessage = null;
-  var id = ev.target[ev.target.selectedIndex].value;
-  if ((typeof(midiAccess.inputs) == "function"))   //Old Skool MIDI inputs() code
-    midiIn = midiAccess.inputs()[ev.target.selectedIndex];
-  else
-    midiIn = midiAccess.inputs.get(id);
-  if (midiIn)
-    midiIn.onmidimessage = midiMessageReceived;
-}
+// Create a mock console object to void undefined errors if the console object
+// is not defined.
+if (!window.console || !console.firebug) {
+    var names = ["log", "debug", "info", "warn", "error"];
 
-function populateMIDIInSelect() {
-  // clear the MIDI input select
-  selectMIDI.options.length = 0;
-  if (midiIn && midiIn.state=="disconnected")
-    midiIn=null;
-  var firstInput = null;
-
-  var inputs=midiAccess.inputs.values();
-  for ( var input = inputs.next(); input && !input.done; input = inputs.next()){
-    input = input.value;
-    if (!firstInput)
-      firstInput=input;
-    var str=input.name.toString();
-    var preferred = !midiIn && ((str.indexOf("MPK") != -1)||(str.indexOf("Keyboard") != -1)||(str.indexOf("keyboard") != -1)||(str.indexOf("KEYBOARD") != -1));
-
-    // if we're rebuilding the list, but we already had this port open, reselect it.
-    if (midiIn && midiIn==input)
-      preferred = true;
-
-    selectMIDI.appendChild(new Option(input.name,input.id,preferred,preferred));
-    if (preferred) {
-      midiIn = input;
-      midiIn.onmidimessage = midiMessageReceived;
+    window.console = {};
+    for (var i = 0; i < names.length; ++i) {
+        window.console[names[i]] = function() {};
     }
-  }
-  if (!midiIn) {
-      midiIn = firstInput;
-      if (midiIn)
-        midiIn.onmidimessage = midiMessageReceived;
-  }
 }
 
-function midiConnectionStateChange( e ) {
-  console.log("connection: " + e.port.name + " " + e.port.connection + " " + e.port.state );
-  populateMIDIInSelect();
+var DEFAULT_VOLUME   = 90;
+var DEFAULT_DURATION = 128;
+var DEFAULT_CHANNEL  = 0;
+
+// These are the different values that compose a MID header. They are already
+// expressed in their string form, so no useless conversion has to take place
+// since they are constants.
+
+var HDR_CHUNKID     = "MThd";
+var HDR_CHUNK_SIZE  = "\x00\x00\x00\x06"; // Header size for SMF
+var HDR_TYPE0       = "\x00\x00"; // Midi Type 0 id
+var HDR_TYPE1       = "\x00\x01"; // Midi Type 1 id
+var HDR_SPEED       = "\x00\x80"; // Defaults to 128 ticks per beat
+
+// Midi event codes
+var EVT_NOTE_OFF           = 0x8;
+var EVT_NOTE_ON            = 0x9;
+var EVT_AFTER_TOUCH        = 0xA;
+var EVT_CONTROLLER         = 0xB;
+var EVT_PROGRAM_CHANGE     = 0xC;
+var EVT_CHANNEL_AFTERTOUCH = 0xD;
+var EVT_PITCH_BEND         = 0xE;
+
+var META_SEQUENCE   = 0x00;
+var META_TEXT       = 0x01;
+var META_COPYRIGHT  = 0x02;
+var META_TRACK_NAME = 0x03;
+var META_INSTRUMENT = 0x04;
+var META_LYRIC      = 0x05;
+var META_MARKER     = 0x06;
+var META_CUE_POINT  = 0x07;
+var META_CHANNEL_PREFIX = 0x20;
+var META_END_OF_TRACK   = 0x2f;
+var META_TEMPO      = 0x51;
+var META_SMPTE      = 0x54;
+var META_TIME_SIG   = 0x58;
+var META_KEY_SIG    = 0x59;
+var META_SEQ_EVENT  = 0x7f;
+// Helper functions
+
+/*
+ * Converts a string into an array of ASCII char codes for every character of
+ * the string.
+ *
+ * @param str {String} String to be converted
+ * @returns array with the charcode values of the string
+ */
+function StringToNumArray(str) {
+    return AP.map.call(str, function(char) {
+        return char.charCodeAt(0);
+    });
 }
 
-function onMIDIStarted( midi ) {
-  var preferredIndex = 0;
-
-  midiAccess = midi;
-
-  document.getElementById("synthbox").className = "loaded";
-  selectMIDI=document.getElementById("midiIn");
-  midi.onstatechange = midiConnectionStateChange;
-  populateMIDIInSelect();
-  selectMIDI.onchange = selectMIDIIn;
+/*
+ * Converts an array of bytes to a string of hexadecimal characters. Prepares
+ * it to be converted into a base64 string.
+ *
+ * @param byteArray {Array} array of bytes that will be converted to a string
+ * @returns hexadecimal string
+ */
+function codes2Str(byteArray) {
+    return String.fromCharCode.apply(null, byteArray);
 }
 
-function onMIDISystemError( err ) {
-  document.getElementById("synthbox").className = "error";
-  console.log( "MIDI not initialized - error encountered:" + err.code );
+/*
+ * Converts a String of hexadecimal values to an array of bytes. It can also
+ * add remaining "0" nibbles in order to have enough bytes in the array as the
+ * |finalBytes| parameter.
+ *
+ * @param str {String} string of hexadecimal values e.g. "097B8A"
+ * @param finalBytes {Integer} Optional. The desired number of bytes that the returned array should contain
+ * @returns array of nibbles.
+ */
+
+function str2Bytes(str, finalBytes) {
+    if (finalBytes) {
+        while ((str.length / 2) < finalBytes) { str = "0" + str; }
+    }
+
+    var bytes = [];
+    for (var i=str.length-1; i>=0; i = i-2) {
+        var chars = i === 0 ? str[i] : str[i-1] + str[i];
+        bytes.unshift(parseInt(chars, 16));
+    }
+
+    return bytes;
 }
 
-//init: start up MIDI
-window.addEventListener('load', function() {   
-  if (navigator.requestMIDIAccess)
-    navigator.requestMIDIAccess().then( onMIDIStarted, onMIDISystemError );
+function isArray(obj) {
+    return !!(obj && obj.concat && obj.unshift && !obj.callee);
+}
 
-});
+
+/**
+ * Translates number of ticks to MIDI timestamp format, returning an array of
+ * bytes with the time values. Midi has a very particular time to express time,
+ * take a good look at the spec before ever touching this function.
+ *
+ * @param ticks {Integer} Number of ticks to be translated
+ * @returns Array of bytes that form the MIDI time value
+ */
+var translateTickTime = function(ticks) {
+    var buffer = ticks & 0x7F;
+
+    while (ticks = ticks >> 7) {
+        buffer <<= 8;
+        buffer |= ((ticks & 0x7F) | 0x80);
+    }
+
+    var bList = [];
+    while (true) {
+        bList.push(buffer & 0xff);
+
+        if (buffer & 0x80) { buffer >>= 8; }
+        else { break; }
+    }
+    return bList;
+};
+
+/*
+ * This is the function that assembles the MIDI file. It writes the
+ * necessary constants for the MIDI header and goes through all the tracks, appending
+ * their data to the final MIDI stream.
+ * It returns an object with the final values in hex and in base64, and with
+ * some useful methods to play an manipulate the resulting MIDI stream.
+ *
+ * @param config {Object} Configuration object. It contains the tracks, tempo
+ * and other values necessary to generate the MIDI stream.
+ *
+ * @returns An object with the hex and base64 resulting streams, as well as
+ * with some useful methods.
+ */
+var MidiWriter = function(config) {
+    if (config) {
+        var tracks  = config.tracks || [];
+        // Number of tracks in hexadecimal
+        var tracksLength = tracks.length.toString(16);
+
+        // This variable will hold the whole midi stream and we will add every
+        // chunk of MIDI data to it in the next lines.
+        var hexMidi = HDR_CHUNKID + HDR_CHUNK_SIZE + HDR_TYPE0;
+
+        // Appends the number of tracks expressed in 2 bytes, as the MIDI
+        // standard requires.
+        hexMidi += codes2Str(str2Bytes(tracksLength, 2));
+        hexMidi += HDR_SPEED;
+        // Goes through the tracks appending the hex strings that compose them.
+        tracks.forEach(function(trk) { hexMidi += codes2Str(trk.toBytes()); });
+
+        return {
+            b64: btoa(hexMidi),
+            play: function() {
+                if (document) {
+                    var embed = document.createElement("embed");
+                    embed.setAttribute("src", "data:audio/midi;base64," + this.b64);
+                    embed.setAttribute("type", "audio/midi");
+                    document.body.appendChild(embed);
+                }
+            },
+            save: function() {
+                window.open("data:audio/midi;base64," + this.b64,
+                            "JSMidi generated output",
+                            "resizable=yes,scrollbars=no,status=no");
+            }
+        };
+
+    } else {
+        throw new Error("No parameters have been passed to MidiWriter.");
+    }
+};
+
+/*
+ * Generic MidiEvent object. This object is used to create standard MIDI events
+ * (note Meta events nor SysEx events). It is passed a |params| object that may
+ * contain the keys time, type, channel, param1 and param2. Note that only the
+ * type, channel and param1 are strictly required. If the time is not provided,
+ * a time of 0 will be assumed.
+ *
+ * @param {object} params Object containing the properties of the event.
+ */
+var MidiEvent = function(params) {
+    if (params &&
+        (params.type    !== null || params.type    !== undefined) &&
+        (params.channel !== null || params.channel !== undefined) &&
+        (params.param1  !== null || params.param1  !== undefined)) {
+        this.setTime(params.time);
+        this.setType(params.type);
+        this.setChannel(params.channel);
+        this.setParam1(params.param1);
+        this.setParam2(params.param2);
+    } else {
+        throw new Error("Not enough parameters to create an event.");
+    }
+};
+
+
+/**
+ * Returns the list of events that form a note in MIDI. If the |sustained|
+ * parameter is not specified, it creates the noteOff event, which stops the
+ * note after it has been played, instead of keeping it playing.
+ *
+ * This method accepts two ways of expressing notes. The first one is a string,
+ * which will be looked up in the global |noteTable| but it will take the
+ * default values for pitch, channel, durtion and volume.
+ *
+ * If a note object is passed to the method instead, it should contain the properties
+ * channel, pitch, duration and volume, of which pitch is mandatory. In case the
+ * channel, the duration or the volume are not passed, default values will be
+ * used.
+ *
+ * @param note {object || String} Object with note properties or string
+ * @param sustained {Boolean} Whether the note has to end or keep playing
+ * @returns Array of events, with a maximum of two events (noteOn and noteOff)
+ */
+
+MidiEvent.createNote = function(note, sustained) {
+    if (!note) { throw new Error("Note not specified"); }
+
+    if (typeof note === "string") {
+        note = App.Constants.FREQUENCIES[note];
+    // The pitch is mandatory if the note object is used.
+    } else if (!note.pitch) {
+        throw new Error("The pitch is required in order to create a note.");
+    }
+
+    var events = [];
+    events.push(MidiEvent.noteOn(note));
+
+    // If there is a |sustained| parameter, the note will keep playing until
+    // a noteOff event is issued for it.
+    if (!sustained) {
+        // The noteOff event will be the one that is passed the actual duration
+        // value for the note, since it is the one that will stop playing the
+        // note at a particular time. If not specified it takes the default
+        // value for it.
+        // TODO: Is is good to have a default value for it?
+        events.push(MidiEvent.noteOff(note, note.duration || DEFAULT_DURATION));
+    }
+
+    return events;
+};
+
+/**
+ * Returns an event of the type NOTE_ON taking the values passed and falling
+ * back to defaults if they are not specified.
+ *
+ * @param note {Note || String} Note object or string
+ * @param time {Number} Duration of the note in ticks
+ * @returns MIDI event with type NOTE_ON for the note specified
+ */
+MidiEvent.noteOn = function(note, duration) {
+    return new MidiEvent({
+        time:    note.duration || duration || 0,
+        type:    EVT_NOTE_ON,
+        channel: note.channel || DEFAULT_CHANNEL,
+        param1:  note.pitch   || note,
+        param2:  note.volume  || DEFAULT_VOLUME
+    });
+};
+
+/**
+ * Returns an event of the type NOTE_OFF taking the values passed and falling
+ * back to defaults if they are not specified.
+ *
+ * @param note {Note || String} Note object or string
+ * @param time {Number} Duration of the note in ticks
+ * @returns MIDI event with type NOTE_OFF for the note specified
+ */
+
+MidiEvent.noteOff = function(note, duration) {
+    return new MidiEvent({
+        time:    note.duration || duration || 0,
+        type:    EVT_NOTE_OFF,
+        channel: note.channel || DEFAULT_CHANNEL,
+        param1:  note.pitch   || note,
+        param2:  note.volume  || DEFAULT_VOLUME
+    });
+};
+
+
+MidiEvent.prototype = {
+    type: 0,
+    channel: 0,
+    time: 0,
+    setTime: function(ticks) {
+        // The 0x00 byte is always the last one. This is how Midi
+        // interpreters know that the time measure specification ends and the
+        // rest of the event signature starts.
+
+        this.time = translateTickTime(ticks || 0);
+    },
+    setType: function(type) {
+        if (type < EVT_NOTE_OFF || type > EVT_PITCH_BEND) {
+            throw new Error("Trying to set an unknown event: " + type);
+        }
+
+        this.type = type;
+    },
+    setChannel: function(channel) {
+        if (channel < 0 || channel > 15) {
+            throw new Error("Channel is out of bounds.");
+        }
+
+        this.channel = channel;
+    },
+    setParam1: function(p) {
+        this.param1 = p;
+    },
+    setParam2: function(p) {
+        this.param2 = p;
+    },
+    toBytes: function() {
+        var byteArray = [];
+
+        var typeChannelByte =
+            parseInt(this.type.toString(16) + this.channel.toString(16), 16);
+
+        byteArray.push.apply(byteArray, this.time);
+        byteArray.push(typeChannelByte);
+        byteArray.push(this.param1);
+
+        // Some events don't have a second parameter
+        if (this.param2 !== undefined && this.param2 !== null) {
+            byteArray.push(this.param2);
+        }
+        return byteArray;
+    }
+};
+
+var MetaEvent = function(params) {
+    if (params) {
+        this.setType(params.type);
+        this.setData(params.data);
+    }
+};
+
+MetaEvent.prototype = {
+    setType: function(t) {
+        this.type = t;
+    },
+    setData: function(d) {
+        this.data = d;
+    },
+    toBytes: function() {
+        if (!this.type || !this.data) {
+            throw new Error("Type or data for meta-event not specified.");
+        }
+
+        var byteArray = [0xff, this.type];
+
+        // If data is an array, we assume that it contains several bytes. We
+        // apend them to byteArray.
+        if (isArray(this.data)) {
+            AP.push.apply(byteArray, this.data);
+        }
+
+        return byteArray;
+    }
+};
+
+var MidiTrack = function(cfg) {
+    this.events = [];
+    for (var p in cfg) {
+        if (cfg.hasOwnProperty(p)) {
+            // Get the setter for the property. The property is capitalized.
+            // Probably a try/catch should go here.
+            this["set" + p.charAt(0).toUpperCase() + p.substring(1)](cfg[p]);
+        }
+    }
+};
+
+//"MTrk" Marks the start of the track data
+MidiTrack.TRACK_START = [0x4d, 0x54, 0x72, 0x6b];
+MidiTrack.TRACK_END   = [0x0, 0xFF, 0x2F, 0x0];
+
+MidiTrack.prototype = {
+    /*
+     * Adds an event to the track.
+     *
+     * @param event {MidiEvent} Event to add to the track
+     * @returns the track where the event has been added
+     */
+    addEvent: function(event) {
+        this.events.push(event);
+        return this;
+    },
+    setEvents: function(events) {
+        AP.push.apply(this.events, events);
+        return this;
+    },
+    /*
+     * Adds a text meta-event to the track.
+     *
+     * @param type {Number} type of the text meta-event
+     * @param text {String} Optional. Text of the meta-event.
+     * @returns the track where the event ahs been added
+     */
+    setText: function(type, text) {
+        // If the param text is not specified, it is assumed that a generic
+        // text is wanted and that the type parameter is the actual text to be
+        // used.
+        if (!text) {
+            type = META_TEXT;
+            text = type;
+        }
+        return this.addEvent(new MetaEvent({ type: type, data: text }));
+    },
+    // The following are setters for different kinds of text in MIDI, they all
+    // use the |setText| method as a proxy.
+    setCopyright:  function(text) { return this.setText(META_COPYRIGHT, text);  },
+    setTrackName:  function(text) { return this.setText(META_TRACK_NAME, text); },
+    setInstrument: function(text) { return this.setText(META_INSTRUMENT, text); },
+    setLyric:      function(text) { return this.setText(META_LYRIC, text);      },
+    setMarker:     function(text) { return this.setText(META_MARKER, text);     },
+    setCuePoint:   function(text) { return this.setText(META_CUE_POINT, text);  },
+
+    setTempo: function(tempo) {
+        this.addEvent(new MetaEvent({ type: META_TEMPO, data: tempo }));
+    },
+    setTimeSig: function() {
+        // TBD
+    },
+    setKeySig: function() {
+        // TBD
+    },
+
+    toBytes: function() {
+        var trackLength = 0;
+        var eventBytes = [];
+        var startBytes = MidiTrack.TRACK_START;
+        var endBytes   = MidiTrack.TRACK_END;
+
+        /*
+         * Adds the bytes of an event to the eventBytes array and add the
+         * amount of bytes to |trackLength|.
+         *
+         * @param event {MidiEvent} MIDI event we want the bytes from.
+         */
+        var addEventBytes = function(event) {
+            var bytes = event.toBytes();
+            trackLength += bytes.length;
+            AP.push.apply(eventBytes, bytes);
+        };
+
+        this.events.forEach(addEventBytes);
+
+        // Add the end-of-track bytes to the sum of bytes for the track, since
+        // they are counted (unlike the start-of-track ones).
+        trackLength += endBytes.length;
+
+        // Makes sure that track length will fill up 4 bytes with 0s in case
+        // the length is less than that (the usual case).
+        var lengthBytes = str2Bytes(trackLength.toString(16), 4);
+
+        return startBytes.concat(lengthBytes, eventBytes, endBytes);
+    }
+};
+
+window.MidiWriter = MidiWriter;
+window.MidiEvent = MidiEvent;
+window.MetaEvent = MetaEvent;
+window.MidiTrack = MidiTrack;
+
+})(this);

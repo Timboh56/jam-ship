@@ -18,6 +18,8 @@ String.prototype.toUnderscore = function(){
     self.onPlayRecording = opts['onPlayRecording'];
     self.onStopRecording = opts['onStopRecording'];
     self.InstrumentCRUD = new App.InstrumentCRUD(opts);
+    self.notes = {};
+
     if(!saveAs) throw "FileSaver.js not included!";
 
     self.broadcast = opts['broadcast'];
@@ -74,9 +76,8 @@ String.prototype.toUnderscore = function(){
       if (recOpts['instrument'])
         instrument = recOpts['instrument'];
       else throw 'Please include an instrument to record';
-
-      self.recorder = T('rec', { timeout: self.recordingTime || opts['recordingTIme']}, instrument).on('ended', (function(buffer) {
-        var t, timestamp, buf, sr, dataview, audioBlob;
+      self.recorder = T('rec', { timeout: self.recordingTime.value || opts['recordingTime']}, instrument).on('ended', (function(buffer) {
+        var t, timestamp, buf, sr, dataview, audioBlob, midiTracks = [], song = null;
         if (buffer.buffer.length != 0) {
           timestamp = new Date().getUTCMilliseconds();
 
@@ -88,12 +89,16 @@ String.prototype.toUnderscore = function(){
           sr = buffer.samplerate;    //sample rate of the data
 
           dataview = _encodeWAV(buf, sr);
-          // Your variable with a ArrayBuffer instance containing your MIDI file
-          var anyBuffer;
 
-          // Creating the MIDIFile instance
-          //var midiFile= new MIDIFile(buf);
+          // write to MIDI File
+          for (var note in self.notes) {
+            if (self.notes[note].length > 0)
+              midiTracks.push(new MidiTrack({ events: self.notes[note] }));
+          }
 
+            song  = MidiWriter({ tracks: midiTracks });
+            song.save();
+ 
           // save blob
           audioBlob = new Blob([dataview], { type: 'audio/wav' });
           self.blobs[timestamp] = audioBlob;
@@ -239,6 +244,11 @@ String.prototype.toUnderscore = function(){
       return 60000/loopsPerMinute;
     }
 
+    self.addToMIDINoteBuffer = function(note) {
+      var midiNote = MidiEvent.createNote(note, false);
+      self.notes[note] = self.notes[note].concat(midiNote);
+    }
+
     // functions to convert timbre buffer to WAV
     function _encodeWAV(buf, sr) {
       var buffer = new ArrayBuffer(44 + buf.length * 2);
@@ -285,6 +295,9 @@ String.prototype.toUnderscore = function(){
           val  = App.Constants['DEFAULT_' + constantKey];
         self[el] = new App.Field({ name: el, value: val });
       };
+
+      for (var i in App.Constants.FREQUENCIES) self.notes[i] = [];
+
     }
 
     function _floatTo16BitPCM(output, offset, input){

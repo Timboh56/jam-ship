@@ -31,29 +31,25 @@
         keyPressed = App.Helpers.getChar(event);
         note = self.noteLookUp.apply(self, [keyPressed]);
         if (self.InstrumentControl.keyboardOn && 'live' == self.mode.value) {
-          if (App.Constants.KEYTONOTE[keyPressed] && !self.notes[note].keyDown) {
-            //self.MidiControl.noteEvents.push(MidiEvent.createNote(note, false));
-            //console.log(self.MidiControl.noteEvents);
-            //console.log('elolwhut');
-            self.notes[note].keyDown = true;
+          if (App.Constants.KEYTONOTE[keyPressed]) {
+            if (self.Sequencer.recording) {
+              self.Sequencer.addToMIDINoteBuffer(note);
+            }
             self.play({
               note: note,
               velocity: self.velocity
             });
           }
-
         }
       },
 
       onKeyUp: function(event) {
-        var keyPressed, note, velocity;
+        var keyPressed, note, velocity, midiNoteStop;
         keyPressed = App.Helpers.getChar(event);
         note = self.noteLookUp.apply(self, [keyPressed]);
         if (self.InstrumentControl.keyboardOn && 'live' == self.mode.value) {
-          if (App.Constants.KEYTONOTE[keyPressed] && self.notes[note].keyDown) {
-            self.notes[note].keyDown = false;
+          if (App.Constants.KEYTONOTE[keyPressed])
             self.stop({ note: note });
-          }
         }
       },
 
@@ -156,9 +152,6 @@
 
       switch(self.synthMode.value)
       {
-        case 'organ':
-          self.notes[note].play();
-          break;
         case 'envelope':
           self.synth.noteOnWithFreq(freq, velocity).listen(self.clip);
           break;
@@ -169,10 +162,7 @@
     }
 
     self.playIndividualNote = function(note, freq, velocity) {
-      if (self.synthMode == 'organ')
-        self.notes[note].play();
-      else
-        self.synth.noteOnWithFreq(freq, velocity);
+      self.synth.noteOnWithFreq(freq, velocity);
     }
 
     self.stop = function(opts) {
@@ -182,10 +172,7 @@
     }
 
     self.stopNote = function(note) {
-      if (self.synthMode == 'organ')
-        self.notes[note].pause();
-      else
-        self.synth.noteOff();
+      self.synth.noteOff();
     }
 
     self.attachDelayAndDist = function(synth) {
@@ -195,10 +182,7 @@
     }
 
     self.getCurrentInstrument = function() {
-      if (self.synthMode == 'organ')
-        return self.notes;
-      else
-        return self.synth;
+      return self.synth;
     }
 
     function _generateSynthFromSettings(opts) {
@@ -236,7 +220,6 @@
       }, self.oscGen).play();
 
       //osc = self.attachDelayAndDist(osc);
-      _initializeNoteBank();
 
       switch(self.synthMode.value)
       {
@@ -246,15 +229,6 @@
         case 'pluck':
           self.synth = self.generatePluck(self.attack, self.decay, self.sustain, self.release);
           break;
-      }
-    }
-
-    function _initializeNoteBank() {
-      for (var i in App.Constants.FREQUENCIES) {
-
-        //self.generateLPF(App.Constants.FREQUENCIES[i]); 
-        self.notes[i] = T(self.wave.value, {freq: App.Constants.FREQUENCIES[i] * 1.01, mul: self.mul, phase: Math.PI * 0.25 });
-        self.notes[i].noteInterval = 0;
       }
     }
 
@@ -297,6 +271,20 @@
       _generateSynthFromSettings();
       return dfd.promise();
     }
+
+    /**
+        function _initializeNoteBank() {
+          for (var i in App.Constants.FREQUENCIES) {
+
+            self.notes[i] = T(self.wave.value, {
+              freq: App.Constants.FREQUENCIES[i] * 1.01,
+              mul: self.mul, phase: Math.PI * 0.25 }
+            );
+
+            self.notes[i].noteInterval = 0;
+          }
+        }
+    **/
 
     _initialize();
 
